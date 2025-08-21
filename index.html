@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soul Fade - Barbearia Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loading-content">
+            <div class="scissors-animation">
+                <i class="fas fa-cut"></i>
+            </div>
+            <h2>Soul Fade</h2>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cursor personalizado -->
+    <div class="custom-cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <i class="fas fa-cut"></i>
+                    <span>Soul Fade</span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="#home" class="nav-link">Início</a></li>
+                    <li><a href="#about" class="nav-link">Sobre</a></li>
+                    <li><a href="#services" class="nav-link">Serviços</a></li>
+                    <li><a href="#gallery" class="nav-link">Galeria</a></li>
+                    <li><a href="#team" class="nav-link">Equipe</a></li>
+                    <li><a href="#testimonials" class="nav-link">Depoimentos</a></li>
+                    <li><a href="#contact" class="nav-link">Contato</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-background">
+            <div class="floating-elements">
+                <div class="floating-element" style="--delay: 0s;"><i class="fas fa-cut"></i></div>
+                <div class="floating-element" style="--delay: 2s;"><i class="fas fa-razor"></i></div>
+                <div class="floating-element" style="--delay: 4s;"><i class="fas fa-scissors"></i></div>
+                <div class="floating-element" style="--delay: 6s;"><i class="fas fa-cut"></i></div>
+            </div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">
+                    <span class="title-line">Soul</span>
+                    <span class="title-line">Fade</span>
+                </h1>
+                <p class="hero-subtitle">Onde estilo encontra personalidade</p>
+                <p class="hero-description">A melhor experiência em cortes masculinos, com técnicas modernas e atendimento premium</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary">Agendar Horário</button>
+                    <button class="btn btn-secondary">Ver Serviços</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="image-container">
+                    <img src="/placeholder.svg?height=600&width=500" alt="Barbeiro profissional">
+                    <div class="image-overlay"></div>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="scroll-arrow"></div>
+            <span>Role para baixo</span>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Sobre a Soul Fade</h2>
+                <p class="section-subtitle">Tradição e modernidade em cada corte</p>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <div class="text-block">
+                        <h3>Nossa História</h3>
+                        <p>Fundada em 2018, a Soul Fade nasceu da paixão por transformar não apenas o visual, mas a autoestima de cada cliente. Combinamos técnicas tradicionais da barbearia clássica com as tendências mais modernas do mercado.</p>
+                    </div>
+                    <div class="text-block">
+                        <h3>Nossa Missão</h3>
+                        <p>Proporcionar uma experiência única e personalizada, onde cada cliente sai não apenas com um novo visual, mas com a confiança renovada e o estilo que representa sua personalidade.</p>
+                    </div>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <span class="stat-number" data-target="5000">0</span>
+                            <span class="stat-label">Clientes Satisfeitos</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" data-target="6">0</span>
+                            <span class="stat-label">Anos de Experiência</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" data-target="15">0</span>
+                            <span class="stat-label">Prêmios Recebidos</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-images">
+                    <div class="image-grid">
+                        <div class="grid-item large">
+                            <img src="/placeholder.svg?height=400&width=300" alt="Interior da barbearia">
+                        </div>
+                        <div class="grid-item small">
+                            <img src="/placeholder.svg?height=200&width=200" alt="Ferramentas de barbeiro">
+                        </div>
+                        <div class="grid-item small">
+                            <img src="/placeholder.svg?height=200&width=200" alt="Cadeira de barbeiro">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Nossos Serviços</h2>
+                <p class="section-subtitle">Excelência em cada detalhe</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-cut"></i>
+                    </div>
+                    <h3>Corte Tradicional</h3>
+                    <p>Cortes clássicos executados com precisão e técnica apurada</p>
+                    <span class="price">R$ 35</span>
+                    <div class="service-overlay">
+                        <button class="btn btn-primary">Agendar</button>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-scissors"></i>
+                    </div>
+                    <h3>Fade Degradê</h3>
+                    <p>Degradês perfeitos com transições suaves e modernas</p>
+                    <span class="price">R$ 45</span>
+                    <div class="service-overlay">
+                        <button class="btn btn-primary">Agendar</button>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-razor"></i>
+                    </div>
+                    <h3>Barba Completa</h3>
+                    <p>Aparar, modelar e finalizar com produtos premium</p>
+                    <span class="price">R$ 25</span>
+                    <div class="service-overlay">
+                        <button class="btn btn-primary">Agendar</button>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-spa"></i>
+                    </div>
+                    <h3>Tratamento Capilar</h3>
+                    <p>Hidratação e cuidados especiais para seus cabelos</p>
+                    <span class="price">R$ 40</span>
+                    <div class="service-overlay">
+                        <button class="btn btn-primary">Agendar</button>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h3>Pacote Premium</h3>
+                    <p>Corte + Barba + Tratamento + Finalização</p>
+                    <span class="price">R$ 80</span>
+                    <div class="service-overlay">
+                        <button class="btn btn-primary">Agendar</button>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-child"></i>
+                    </div>
+                    <h3>Corte Infantil</h3>
+                    <p>Cortes especiais para os pequenos com muito carinho</p>
+                    <span class="price">R$ 30</span>
+                    <div class="service-overlay">
+                        <button class="btn btn-primary">Agendar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="gallery">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Galeria de Trabalhos</h2>
+                <p class="section-subtitle">Nossos melhores cortes</p>
+            </div>
+            <div class="gallery-filter">
+                <button class="filter-btn active" data-filter="all">Todos</button>
+                <button class="filter-btn" data-filter="fade">Fade</button>
+                <button class="filter-btn" data-filter="traditional">Tradicional</button>
+                <button class="filter-btn" data-filter="beard">Barba</button>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item" data-category="fade">
+                    <img src="/placeholder.svg?height=300&width=300" alt="Corte Fade">
+                    <div class="gallery-overlay">
+                        <i class="fas fa-search-plus"></i>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="traditional">
+                    <img src="/placeholder.svg?height=300&width=300" alt="Corte Tradicional">
+                    <div class="gallery-overlay">
+                        <i class="fas fa-search-plus"></i>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="beard">
+                    <img src="/placeholder.svg?height=300&width=300" alt="Barba Modelada">
+                    <div class="gallery-overlay">
+                        <i class="fas fa-search-plus"></i>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="fade">
+                    <img src="/placeholder.svg?height=300&width=300" alt="Skin Fade">
+                    <div class="gallery-overlay">
+                        <i class="fas fa-search-plus"></i>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="traditional">
+                    <img src="/placeholder.svg?height=300&width=300" alt="Pompadour">
+                    <div class="gallery-overlay">
+                        <i class="fas fa-search-plus"></i>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="beard">
+                    <img src="/placeholder.svg?height=300&width=300" alt="Barba Completa">
+                    <div class="gallery-overlay">
+                        <i class="fas fa-search-plus"></i>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="fade">
+                    <img src="/placeholder.svg?height=300&width=300" alt="Mid Fade">
+                    <div class="gallery-overlay">
+                        <i class="fas fa-search-plus"></i>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="traditional">
+                    <img src="/placeholder.svg?height=300&width=300" alt="Side Part">
+                    <div class="gallery-overlay">
+                        <i class="fas fa-search-plus"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="team">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Nossa Equipe</h2>
+                <p class="section-subtitle">Profissionais especializados</p>
+            </div>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="/placeholder.svg?height=300&width=300" alt="Carlos Silva">
+                        <div class="member-overlay">
+                            <div class="social-links">
+                                <a href="#"><i class="fab fa-instagram"></i></a>
+                                <a href="#"><i class="fab fa-facebook"></i></a>
+                                <a href="#"><i class="fab fa-whatsapp"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="member-info">
+                        <h3>Carlos Silva</h3>
+                        <p>Barbeiro Master</p>
+                        <span>8 anos de experiência</span>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="/placeholder.svg?height=300&width=300" alt="João Santos">
+                        <div class="member-overlay">
+                            <div class="social-links">
+                                <a href="#"><i class="fab fa-instagram"></i></a>
+                                <a href="#"><i class="fab fa-facebook"></i></a>
+                                <a href="#"><i class="fab fa-whatsapp"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="member-info">
+                        <h3>João Santos</h3>
+                        <p>Especialista em Fade</p>
+                        <span>5 anos de experiência</span>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="/placeholder.svg?height=300&width=300" alt="Pedro Costa">
+                        <div class="member-overlay">
+                            <div class="social-links">
+                                <a href="#"><i class="fab fa-instagram"></i></a>
+                                <a href="#"><i class="fab fa-facebook"></i></a>
+                                <a href="#"><i class="fab fa-whatsapp"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="member-info">
+                        <h3>Pedro Costa</h3>
+                        <p>Expert em Barba</p>
+                        <span>6 anos de experiência</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">O que dizem nossos clientes</h2>
+                <p class="section-subtitle">Depoimentos reais</p>
+            </div>
+            <div class="testimonials-slider">
+                <div class="testimonial-card active">
+                    <div class="testimonial-content">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p>"Melhor barbearia da cidade! Atendimento excepcional e cortes perfeitos. Sempre saio de lá me sentindo renovado."</p>
+                        <div class="testimonial-author">
+                            <img src="/placeholder.svg?height=60&width=60" alt="Cliente">
+                            <div class="author-info">
+                                <h4>Rafael Oliveira</h4>
+                                <span>Cliente há 3 anos</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p>"Profissionais incríveis! O Carlos é um artista com a tesoura. Recomendo para todos os meus amigos."</p>
+                        <div class="testimonial-author">
+                            <img src="/placeholder.svg?height=60&width=60" alt="Cliente">
+                            <div class="author-info">
+                                <h4>Marcos Ferreira</h4>
+                                <span>Cliente há 2 anos</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p>"Ambiente acolhedor e serviço de primeira qualidade. Nunca mais vou em outro lugar!"</p>
+                        <div class="testimonial-author">
+                            <img src="/placeholder.svg?height=60&width=60" alt="Cliente">
+                            <div class="author-info">
+                                <h4>Lucas Mendes</h4>
+                                <span>Cliente há 1 ano</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-nav">
+                <button class="nav-btn prev-btn"><i class="fas fa-chevron-left"></i></button>
+                <button class="nav-btn next-btn"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Entre em Contato</h2>
+                <p class="section-subtitle">Agende seu horário</p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="info-text">
+                            <h3>Endereço</h3>
+                            <p>Rua das Flores, 123<br>Centro - São Paulo/SP</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="info-text">
+                            <h3>Telefone</h3>
+                            <p>(11) 99999-9999</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="info-text">
+                            <h3>Horário</h3>
+                            <p>Seg - Sex: 9h às 19h<br>Sáb: 8h às 17h</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="info-text">
+                            <h3>Email</h3>
+                            <p>contato@soulfade.com.br</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <input type="text" id="name" name="name" placeholder="Seu nome" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" name="email" placeholder="Seu email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" id="phone" name="phone" placeholder="Seu telefone" required>
+                        </div>
+                        <div class="form-group">
+                            <select id="service" name="service" required>
+                                <option value="">Escolha um serviço</option>
+                                <option value="corte">Corte Tradicional</option>
+                                <option value="fade">Fade Degradê</option>
+                                <option value="barba">Barba Completa</option>
+                                <option value="tratamento">Tratamento Capilar</option>
+                                <option value="premium">Pacote Premium</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="message" name="message" placeholder="Mensagem (opcional)" rows="4"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Enviar Mensagem</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-cut"></i>
+                        <span>Soul Fade</span>
+                    </div>
+                    <p>A melhor experiência em cortes masculinos, onde estilo encontra personalidade.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="#home">Início</a></li>
+                        <li><a href="#about">Sobre</a></li>
+                        <li><a href="#services">Serviços</a></li>
+                        <li><a href="#gallery">Galeria</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Serviços</h3>
+                    <ul>
+                        <li><a href="#">Corte Tradicional</a></li>
+                        <li><a href="#">Fade Degradê</a></li>
+                        <li><a href="#">Barba Completa</a></li>
+                        <li><a href="#">Tratamento Capilar</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contato</h3>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Rua das Flores, 123 - Centro</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>(11) 99999-9999</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>contato@soulfade.com.br</span>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Soul Fade. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="back-to-top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <script src="script.js"></script>
+</body>
+</html>
