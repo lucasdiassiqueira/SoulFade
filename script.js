@@ -5,7 +5,7 @@ window.addEventListener('load', function() {
         loadingScreen.style.opacity = '0';
         setTimeout(() => {
             loadingScreen.style.display = 'none';
-            document.body.style.cursor = 'none';
+            document.body.style.cursor = 'auto';
         }, 500);
     }, 3000);
 });
