@@ -11,15 +11,17 @@ window.addEventListener('load', function() {
 });
 
 
-// Header Scroll Effect
-const header = document.getElementById('header');
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 100) {
-        header.classList.add('scrolled');
-    } else {
-        header.classList.remove('scrolled');
-    }
+// Header
+const header = document.getElementById("header");
+
+window.addEventListener("scroll", () => {
+  if (window.scrollY > 50) {
+    header.classList.add("show");
+  } else {
+    header.classList.remove("show");
+  }
 });
+
 
 // Mobile Menu Toggle
 const hamburger = document.querySelector('.hamburger');
