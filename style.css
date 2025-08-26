@@ -130,7 +130,7 @@ body {
 }
 
 .header.show {
-  background: rgba(0,0,0,0.85); /* aparece fundo ao descer */
+  background: rgba(228, 225, 225, 0.85); /* aparece fundo ao descer */
   transform: translateY(0);
 }
 
