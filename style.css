@@ -9,7 +9,7 @@
     --secondary-color: #D2B48C;
     --accent-color: #CD853F;
     --dark-brown: #654321;
-    --light-beige: #F5F5DC;
+    --light-beige: #ede1d8;
     --text-dark: #2C1810;
     --text-light: #FFFFFF;
     --gradient-primary: linear-gradient(135deg, #8B4513, #CD853F);
@@ -95,8 +95,7 @@ body {
 }
 
 
-/* Header */
-/* Hero com imagem fullscreen */
+/* Header */  
 .hero {
   position: relative;
   width: 100%;
@@ -126,28 +125,28 @@ body {
   padding: 15px 40px;
   transition: transform 0.4s ease-in-out, background 0.3s ease-in-out;
   z-index: 1000;
-  background: transparent; /* transparente na hero */
+  background: transparent;
 }
 
 .header.show {
-  background: rgba(228, 225, 225, 0.85); /* aparece fundo ao descer */
+  background: #543d2d; 
   transform: translateY(0);
 }
 
 .header.hide {
-  transform: translateY(-100%); /* some ao subir */
+  transform: translateY(-100%); 
 }
 
 /* Navbar */
 .navbar {
   display: flex;
-  justify-content: flex-end; /* Alinha o menu à direita */
+  justify-content: flex-end; 
   align-items: center;
   width: 100%;
 }
 
 .logo {
-  flex-grow: 1; /* Faz com que o logo ocupe o máximo de espaço à esquerda */
+  flex-grow: 1; 
 }
 
 .logo img {
@@ -164,18 +163,18 @@ body {
   color: #fff;
   text-decoration: none;
   font-weight: 500;
+  font-size: 18px;
   transition: color 0.3s;
 }
 
 .nav-link:hover {
-  color: #f4c542;
+  color: #e7820d;
 }
 
 /* Hamburger */
 .hamburger {
-  display: none; /* Deixe esse botão de menu mobile escondido por enquanto */
+  display: none;
 }
-
 
 
 /* Container */
@@ -220,7 +219,7 @@ body {
 /* About Section */
 .about {
     padding: 6rem 0;
-    background: var(--light-beige);
+    background: #ede1d8;
 }
 
 .about-content {
