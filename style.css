@@ -117,7 +117,7 @@ body {
   z-index: -1;
 }
 
-/* Header inicial (transparente em cima da hero) */
+/* Header */
 .header {
   position: fixed;
   top: 0;
@@ -138,10 +138,16 @@ body {
   transform: translateY(-100%); /* some ao subir */
 }
 
+/* Navbar */
 .navbar {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end; /* Alinha o menu à direita */
   align-items: center;
+  width: 100%;
+}
+
+.logo {
+  flex-grow: 1; /* Faz com que o logo ocupe o máximo de espaço à esquerda */
 }
 
 .logo img {
@@ -164,6 +170,12 @@ body {
 .nav-link:hover {
   color: #f4c542;
 }
+
+/* Hamburger */
+.hamburger {
+  display: none; /* Deixe esse botão de menu mobile escondido por enquanto */
+}
+
 
 
 /* Container */
