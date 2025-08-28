@@ -129,7 +129,7 @@ body {
 }
 
 .header.show {
-  background: #543d2d; 
+  background: rgb(84, 61, 45, 0.7);
   transform: translateY(0);
 }
 
@@ -163,7 +163,7 @@ body {
   color: #fff;
   text-decoration: none;
   font-weight: 500;
-  font-size: 18px;
+  font-size: 21px;
   transition: color 0.3s;
 }
 
@@ -585,6 +585,21 @@ body {
 }
 
 /* Testimonials Section */
+
+.section-title-depoimento {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--light-beige);
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.section-subtitle-depoimento {
+    font-size: 1.2rem;
+    color: var(--light-beige);
+    font-weight: 300;
+}
+
 .testimonials {
     padding: 6rem 0;
     background: var(--gradient-primary);
