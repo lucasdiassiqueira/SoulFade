@@ -178,17 +178,18 @@ body {
 /* Navbar */
 .navbar {
   display: flex;
-  justify-content: flex-end; 
+  justify-content: space-between; 
   align-items: center;
   width: 100%;
 }
 
 .logo {
-  flex-grow: 1; 
+  flex-grow: 0; 
 }
 
 .logo img {
   height: 50px;
+  width: auto;
 }
 
 .nav-menu {
