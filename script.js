@@ -23,6 +23,32 @@ window.addEventListener("scroll", () => {
 });
 
 
+document.addEventListener("DOMContentLoaded", () => {
+    const modal = document.getElementById("imageModal");
+    const modalImg = document.getElementById("modalImg");
+    const closeBtn = document.querySelector(".close");
+
+    // Quando clica na imagem, abre no modal
+    document.querySelectorAll(".gallery-item img").forEach(img => {
+        img.addEventListener("click", () => {
+            modal.style.display = "flex";
+            modalImg.src = img.src;
+        });
+    });
+
+    // Fecha ao clicar no botão
+    closeBtn.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+
+    // Fecha ao clicar fora da imagem
+    modal.addEventListener("click", (e) => {
+        if (e.target === modal) {
+            modal.style.display = "none";
+        }
+    });
+});
+
 // Mobile Menu Toggle
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
