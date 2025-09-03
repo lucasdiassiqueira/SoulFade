@@ -457,6 +457,22 @@ body {
     opacity: 1;
 }
 
+.service-card .btn {
+  background-color: #fff;      /* fundo branco */
+  color: #000;                 /* texto preto */
+  border: 2px solid #000;      /* borda preta */
+  border-radius: 25px;         /* bordas arredondadas */
+  padding: 10px 20px;          /* espaço interno */
+  font-weight: bold;           /* texto mais destacado */
+  cursor: pointer;             /* mãozinha no hover */
+  transition: all 0.3s ease;   /* animação suave */
+}
+
+.service-card .btn:hover {
+  background-color: #000;   /* fundo preto */
+  color: #fff;              /* texto branco */
+}
+
 /* Gallery Section */
 .gallery {
     padding: 6rem 0;
