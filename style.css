@@ -469,8 +469,8 @@ body {
 }
 
 .service-card .btn:hover {
-  background-color: var(--primary-color);   
-  color: #fff;
+  background-color: var(--accent-color);   
+  color: #000000;
 }
 
 /* Gallery Section */
@@ -1121,4 +1121,15 @@ body {
 .scale-in.visible {
     opacity: 1;
     transform: scale(1);
+}
+
+.form-group .btn {
+  background-color: #fff;     
+  color: #000;                 
+  border: 2px solid var(--primary-color);     
+  border-radius: 10px;         
+  padding: 10px 20px;          
+  font-weight: bold;           
+  cursor: pointer;             
+  transition: all 0.3s ease;   
 }
