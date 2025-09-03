@@ -458,19 +458,19 @@ body {
 }
 
 .service-card .btn {
-  background-color: #fff;      /* fundo branco */
-  color: #000;                 /* texto preto */
-  border: 2px solid #000;      /* borda preta */
-  border-radius: 25px;         /* bordas arredondadas */
-  padding: 10px 20px;          /* espaço interno */
-  font-weight: bold;           /* texto mais destacado */
-  cursor: pointer;             /* mãozinha no hover */
-  transition: all 0.3s ease;   /* animação suave */
+  background-color: #fff;     
+  color: #000;                 
+  border: 2px solid var(--primary-color);     
+  border-radius: 10px;         
+  padding: 10px 20px;          
+  font-weight: bold;           
+  cursor: pointer;             
+  transition: all 0.3s ease;   
 }
 
 .service-card .btn:hover {
-  background-color: #000;   /* fundo preto */
-  color: #fff;              /* texto branco */
+  background-color: var(--primary-color);   
+  color: #fff;
 }
 
 /* Gallery Section */
