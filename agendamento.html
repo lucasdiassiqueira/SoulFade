@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agendamento - Soul Fade</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #111, #222);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .agendamento-container {
+      background: #1e1e1e;
+      border-radius: 16px;
+      padding: 40px;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      animation: fadeIn 0.7s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    .agendamento-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 28px;
+      font-weight: 700;
+      color: #f5f5f5;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      font-weight: 500;
+      display: block;
+      margin-bottom: 8px;
+      color: #ccc;
+    }
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      outline: none;
+      background: #2a2a2a;
+      color: #fff;
+      font-size: 15px;
+    }
+    input:focus, select:focus {
+      background: #333;
+    }
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      background: #e63946;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #fff;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .btn-submit:hover {
+      background: #ff4757;
+    }
+  </style>
+</head>
+<body>
+  <div class="agendamento-container">
+    <h2>Agende seu Horário</h2>
+    <form id="agendamentoForm">
+      <!-- Serviço já preenchido -->
+      <div class="form-group">
+        <label for="servico">Serviço Escolhido</label>
+        <input type="text" id="servico" name="servico" readonly>
+      </div>
+
+      <!-- Escolher barbeiro -->
+      <div class="form-group">
+        <label for="barbeiro">Selecione o Barbeiro</label>
+        <select id="barbeiro" name="barbeiro" required>
+          <option value="">-- Escolha --</option>
+          <option value="Lucas Dias">Lucas Dias - Barbeiro Master</option>
+          <option value="Isaias Barreto">Isaias Barreto - Trancista e Dreadmaker</option>
+          <option value="Isaias Menezes">Isaias Menezes - Expert em Barba</option>
+        </select>
+      </div>
+
+      <!-- Data e horário -->
+      <div class="form-group">
+        <label for="datahora">Escolha a Data e Horário</label>
+        <input type="datetime-local" id="datahora" name="datahora" required>
+      </div>
+
+      <!-- Nome -->
+      <div class="form-group">
+        <label for="nome">Seu Nome</label>
+        <input type="text" id="nome" name="nome" placeholder="Digite seu nome" required>
+      </div>
+
+      <!-- Telefone -->
+      <div class="form-group">
+        <label for="telefone">Telefone</label>
+        <input type="tel" id="telefone" name="telefone" placeholder="(41) 99999-9999" required>
+      </div>
+
+      <!-- Botão -->
+      <button type="submit" class="btn-submit">Confirmar Agendamento</button>
+    </form>
+  </div>
+
+  <script>
+    // Pega o serviço vindo da página inicial
+    const urlParams = new URLSearchParams(window.location.search);
+    const servico = urlParams.get("servico");
+    if(servico){
+      document.getElementById("servico").value = servico;
+    }
+
+    // Simulação de envio
+    document.getElementById("agendamentoForm").addEventListener("submit", function(e){
+      e.preventDefault();
+      alert("Agendamento realizado com sucesso! 🚀");
+    });
+  </script>
+</body>
+</html>
