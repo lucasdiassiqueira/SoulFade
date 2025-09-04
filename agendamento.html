@@ -3,135 +3,221 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agendamento - Soul Fade</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <title>Agendamento - Barbearia</title>
+  <link rel="stylesheet" href="styles.css">
   <style>
     body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #111, #222);
+      font-family: Arial, sans-serif;
+      background: #111;
       color: #fff;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
+      margin: 0;
+      padding: 0;
     }
-    .agendamento-container {
+
+    .container {
+      max-width: 900px;
+      margin: 50px auto;
+      padding: 30px;
       background: #1e1e1e;
       border-radius: 16px;
-      padding: 40px;
-      max-width: 600px;
-      width: 100%;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-      animation: fadeIn 0.7s ease-in-out;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
     }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px);}
-      to { opacity: 1; transform: translateY(0);}
-    }
-    .agendamento-container h2 {
+
+    h1 {
       text-align: center;
       margin-bottom: 20px;
-      font-size: 28px;
-      font-weight: 700;
-      color: #f5f5f5;
     }
+
     .form-group {
       margin-bottom: 20px;
     }
+
     label {
-      font-weight: 500;
       display: block;
       margin-bottom: 8px;
-      color: #ccc;
+      font-weight: bold;
     }
-    input, select {
+
+    input, select, button {
       width: 100%;
       padding: 12px;
-      border: none;
       border-radius: 10px;
+      border: none;
       outline: none;
+      font-size: 16px;
+    }
+
+    input, select {
       background: #2a2a2a;
       color: #fff;
-      font-size: 15px;
     }
-    input:focus, select:focus {
-      background: #333;
-    }
-    .btn-submit {
-      width: 100%;
-      padding: 14px;
-      background: #e63946;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
+
+    button {
+      background: #ffb400;
+      color: #000;
+      cursor: pointer;
+      transition: 0.3s;
       font-weight: bold;
-      color: #fff;
+    }
+
+    button:hover {
+      background: #ffc933;
+    }
+
+    .days {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .day {
+      flex: 1;
+      text-align: center;
+      padding: 12px;
+      background: #2a2a2a;
+      border-radius: 10px;
       cursor: pointer;
       transition: 0.3s;
     }
-    .btn-submit:hover {
-      background: #ff4757;
+
+    .day:hover, .day.active {
+      background: #ffb400;
+      color: #000;
+      font-weight: bold;
+    }
+
+    .hours {
+      display: none;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .hour {
+      flex: 1 1 80px;
+      text-align: center;
+      padding: 10px;
+      background: #2a2a2a;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .hour:hover, .hour.active {
+      background: #ffb400;
+      color: #000;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <div class="agendamento-container">
-    <h2>Agende seu Horário</h2>
-    <form id="agendamentoForm">
-      <!-- Serviço já preenchido -->
-      <div class="form-group">
-        <label for="servico">Serviço Escolhido</label>
-        <input type="text" id="servico" name="servico" readonly>
-      </div>
-
-      <!-- Escolher barbeiro -->
-      <div class="form-group">
-        <label for="barbeiro">Selecione o Barbeiro</label>
-        <select id="barbeiro" name="barbeiro" required>
-          <option value="">-- Escolha --</option>
-          <option value="Lucas Dias">Lucas Dias - Barbeiro Master</option>
-          <option value="Isaias Barreto">Isaias Barreto - Trancista e Dreadmaker</option>
-          <option value="Isaias Menezes">Isaias Menezes - Expert em Barba</option>
-        </select>
-      </div>
-
-      <!-- Data e horário -->
-      <div class="form-group">
-        <label for="datahora">Escolha a Data e Horário</label>
-        <input type="datetime-local" id="datahora" name="datahora" required>
-      </div>
-
+  <div class="container">
+    <h1>Agende seu Horário</h1>
+    <form id="form-agendamento">
       <!-- Nome -->
       <div class="form-group">
         <label for="nome">Seu Nome</label>
-        <input type="text" id="nome" name="nome" placeholder="Digite seu nome" required>
+        <input type="text" id="nome" name="nome" required>
       </div>
 
-      <!-- Telefone -->
+      <!-- Corte escolhido -->
       <div class="form-group">
-        <label for="telefone">Telefone</label>
-        <input type="tel" id="telefone" name="telefone" placeholder="(41) 99999-9999" required>
+        <label for="servico">Serviço</label>
+        <input type="text" id="servico" name="servico" readonly>
       </div>
 
-      <!-- Botão -->
-      <button type="submit" class="btn-submit">Confirmar Agendamento</button>
+      <!-- Barbeiro -->
+      <div class="form-group">
+        <label for="barbeiro">Escolha o Barbeiro</label>
+        <select id="barbeiro" name="barbeiro" required>
+          <option value="">Selecione</option>
+          <option value="Lucas Dias">Lucas Dias</option>
+          <option value="Isaias Barreto">Isaias Barreto</option>
+          <option value="Outro">Outro</option>
+        </select>
+      </div>
+
+      <!-- Dias da semana -->
+      <div class="form-group">
+        <label>Escolha o Dia</label>
+        <div class="days">
+          <div class="day" data-day="Segunda">Seg</div>
+          <div class="day" data-day="Terça">Ter</div>
+          <div class="day" data-day="Quarta">Qua</div>
+          <div class="day" data-day="Quinta">Qui</div>
+          <div class="day" data-day="Sexta">Sex</div>
+          <div class="day" data-day="Sábado">Sáb</div>
+        </div>
+      </div>
+
+      <!-- Horários -->
+      <div class="form-group">
+        <label>Escolha o Horário</label>
+        <div class="hours" id="hours"></div>
+      </div>
+
+      <!-- Botão enviar -->
+      <button type="submit">Confirmar Agendamento</button>
     </form>
   </div>
 
   <script>
-    // Pega o serviço vindo da página inicial
+    // Preencher serviço vindo da home
     const urlParams = new URLSearchParams(window.location.search);
     const servico = urlParams.get("servico");
-    if(servico){
+    if (servico) {
       document.getElementById("servico").value = servico;
     }
 
-    // Simulação de envio
-    document.getElementById("agendamentoForm").addEventListener("submit", function(e){
+    // Geração de horários (09h até 18h)
+    function gerarHorarios() {
+      let horarios = [];
+      for (let h = 9; h <= 18; h++) {
+        horarios.push(h.toString().padStart(2, "0") + ":00");
+      }
+      return horarios;
+    }
+
+    const days = document.querySelectorAll(".day");
+    const hoursContainer = document.getElementById("hours");
+    let selectedDay = null;
+    let selectedHour = null;
+
+    days.forEach(day => {
+      day.addEventListener("click", () => {
+        // Reset seleção de dias
+        days.forEach(d => d.classList.remove("active"));
+        day.classList.add("active");
+        selectedDay = day.dataset.day;
+
+        // Gerar horários
+        hoursContainer.innerHTML = "";
+        gerarHorarios().forEach(h => {
+          const btn = document.createElement("div");
+          btn.classList.add("hour");
+          btn.textContent = h;
+          btn.addEventListener("click", () => {
+            document.querySelectorAll(".hour").forEach(hr => hr.classList.remove("active"));
+            btn.classList.add("active");
+            selectedHour = h;
+          });
+          hoursContainer.appendChild(btn);
+        });
+
+        hoursContainer.style.display = "flex";
+      });
+    });
+
+    // Captura envio
+    document.getElementById("form-agendamento").addEventListener("submit", e => {
       e.preventDefault();
-      alert("Agendamento realizado com sucesso! 🚀");
+      if (!selectedDay || !selectedHour) {
+        alert("Por favor, escolha um dia e horário.");
+        return;
+      }
+      alert("Agendamento confirmado!\nServiço: " + servico + "\nDia: " + selectedDay + "\nHora: " + selectedHour);
     });
   </script>
 </body>
