@@ -4,113 +4,128 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Agendamento</title>
-  <link rel="stylesheet" href="styles.css">
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #D2B48C;
-      color: #fff;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: #654321;
+      color: #333;
       margin: 0;
       padding: 0;
     }
 
     .container {
-      max-width: 900px;
-      margin: 50px auto;
+      max-width: 800px;
+      margin: 40px auto;
       padding: 30px;
-      background: #4f2406;
+      background: #fff;
       border-radius: 16px;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
     }
 
     h1 {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
+      color: #222;
     }
 
     .form-group {
-      margin-bottom: 20px;
+      margin-bottom: 25px;
     }
 
     label {
       display: block;
-      margin-bottom: 8px;
-      font-weight: bold;
-    }
-
-    input, select, button {
-      width: 100%;
-      padding: 12px;
-      border-radius: 10px;
-      border: none;
-      outline: none;
-      font-size: 16px;
+      margin-bottom: 10px;
+      font-weight: 600;
+      font-size: 15px;
+      color: #444;
     }
 
     input, select {
-      background: #ffffff;
-      color: #212020;
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      background: #fafafa;
+      transition: 0.3s;
+    }
+
+    input:focus, select:focus {
+      border-color: #0077ff;
+      background: #fff;
+      outline: none;
     }
 
     button {
-      background: #ff7104;
-      color: #000;
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      border: none;
+      font-size: 16px;
+      background: #0077ff;
+      color: #fff;
       cursor: pointer;
-      transition: 0.3s;
       font-weight: bold;
+      transition: 0.3s;
     }
 
     button:hover {
-      background: #ed8c1e;
+      background: #005fd1;
     }
 
+    /* Dias */
     .days {
       display: flex;
-      justify-content: space-between;
-      margin-bottom: 20px;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 12px;
+      margin-bottom: 20px;
     }
 
     .day {
-      flex: 1;
+      flex: 1 1 calc(33.3% - 10px);
       text-align: center;
       padding: 12px;
-      background: #ffffff;
-      color: #212020;
+      background: #f1f1f1;
       border-radius: 10px;
       cursor: pointer;
       transition: 0.3s;
+      font-size: 14px;
     }
 
     .day:hover, .day.active {
-      background: #ff7104;
-      color: #000;
+      background: #0077ff;
+      color: #fff;
       font-weight: bold;
     }
 
+    /* Horários */
     .hours {
       display: none;
       flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 20px;
+      gap: 12px;
     }
 
     .hour {
-      flex: 1 1 80px;
+      flex: 1 1 calc(25% - 10px);
       text-align: center;
       padding: 10px;
-      background: #ffffff;
-      color: #212020;
+      background: #f1f1f1;
+      color: #333;
       border-radius: 8px;
       cursor: pointer;
       transition: 0.3s;
+      font-size: 14px;
     }
 
     .hour:hover, .hour.active {
-      background: #ff7104;
-      color: #000;
+      background: #0077ff;
+      color: #fff;
       font-weight: bold;
+    }
+
+    @media (max-width: 600px) {
+      .day { flex: 1 1 45%; }
+      .hour { flex: 1 1 45%; }
     }
   </style>
 </head>
@@ -141,17 +156,10 @@
         </select>
       </div>
 
-      <!-- Dias da semana -->
+      <!-- Dias -->
       <div class="form-group">
         <label>Selecione o Dia</label>
-        <div class="days">
-          <div class="day" data-day="Segunda">Seg</div>
-          <div class="day" data-day="Terça">Ter</div>
-          <div class="day" data-day="Quarta">Qua</div>
-          <div class="day" data-day="Quinta">Qui</div>
-          <div class="day" data-day="Sexta">Sex</div>
-          <div class="day" data-day="Sábado">Sáb</div>
-        </div>
+        <div class="days" id="days"></div>
       </div>
 
       <!-- Horários -->
@@ -173,7 +181,31 @@
       document.getElementById("servico").value = servico;
     }
 
-    // horários
+    // Gerar dias da semana com datas reais
+    const diasSemana = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+    const daysContainer = document.getElementById("days");
+
+    function gerarSemana() {
+      const hoje = new Date();
+      daysContainer.innerHTML = "";
+      for (let i = 0; i < 7; i++) {
+        let data = new Date();
+        data.setDate(hoje.getDate() + i);
+        const dia = data.getDate().toString().padStart(2, "0");
+        const mes = (data.getMonth() + 1).toString().padStart(2, "0");
+        const texto = `${diasSemana[data.getDay()]} - ${dia}/${mes}`;
+
+        const div = document.createElement("div");
+        div.classList.add("day");
+        div.textContent = texto;
+        div.dataset.date = data.toISOString().split("T")[0];
+        daysContainer.appendChild(div);
+      }
+    }
+
+    gerarSemana();
+
+    // Horários
     function gerarHorarios() {
       let horarios = [];
       for (let h = 9; h <= 18; h++) {
@@ -187,14 +219,12 @@
     let selectedDay = null;
     let selectedHour = null;
 
-    days.forEach(day => {
-      day.addEventListener("click", () => {
-        // Reset seleção de dias
-        days.forEach(d => d.classList.remove("active"));
-        day.classList.add("active");
-        selectedDay = day.dataset.day;
+    daysContainer.addEventListener("click", e => {
+      if (e.target.classList.contains("day")) {
+        document.querySelectorAll(".day").forEach(d => d.classList.remove("active"));
+        e.target.classList.add("active");
+        selectedDay = e.target.dataset.date;
 
-        // Gerar horários
         hoursContainer.innerHTML = "";
         gerarHorarios().forEach(h => {
           const btn = document.createElement("div");
@@ -209,7 +239,7 @@
         });
 
         hoursContainer.style.display = "flex";
-      });
+      }
     });
 
     // Captura envio
