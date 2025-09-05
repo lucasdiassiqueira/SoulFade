@@ -222,12 +222,12 @@
       const username = document.getElementById("username").value;
 
       if(email && password && username){
-        message.textContent = "Conta criada ou login bem-sucedido!";
+        message.textContent = "Login bem-sucedido!";
         message.className = "message success";
         message.style.display = "block";
 
         setTimeout(() => {
-          window.location.href = "dashboard.html"; // Redireciona para outra página
+          window.location.href = "agendamento.html"; // Redireciona para outra página
         }, 1500);
       } else {
         message.textContent = "Preencha todos os campos!";
