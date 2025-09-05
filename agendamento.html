@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agendamento - Barbearia</title>
+  <title>Agendamento</title>
   <link rel="stylesheet" href="styles.css">
   <style>
     body {
@@ -53,7 +53,7 @@
     }
 
     button {
-      background: #ffb400;
+      background: #ff7104;
       color: #000;
       cursor: pointer;
       transition: 0.3s;
@@ -61,7 +61,7 @@
     }
 
     button:hover {
-      background: #ffc933;
+      background: #ed8c1e;
     }
 
     .days {
@@ -83,7 +83,7 @@
     }
 
     .day:hover, .day.active {
-      background: #ffb400;
+      background: #ff7104;
       color: #000;
       font-weight: bold;
     }
@@ -106,7 +106,7 @@
     }
 
     .hour:hover, .hour.active {
-      background: #ffb400;
+      background: #ff7104;
       color: #000;
       font-weight: bold;
     }
@@ -130,7 +130,7 @@
 
       <!-- Barbeiro -->
       <div class="form-group">
-        <label for="barbeiro">Escolha o Barbeiro</label>
+        <label for="barbeiro">Selecione o Barbeiro</label>
         <select id="barbeiro" name="barbeiro" required>
           <option value="">Selecione</option>
           <option value="Lucas Dias">Lucas Dias</option>
@@ -141,7 +141,7 @@
 
       <!-- Dias da semana -->
       <div class="form-group">
-        <label>Escolha o Dia</label>
+        <label>Selecione o Dia</label>
         <div class="days">
           <div class="day" data-day="Segunda">Seg</div>
           <div class="day" data-day="Terça">Ter</div>
@@ -154,7 +154,7 @@
 
       <!-- Horários -->
       <div class="form-group">
-        <label>Escolha o Horário</label>
+        <label>Selecione o Horário</label>
         <div class="hours" id="hours"></div>
       </div>
 
@@ -171,7 +171,7 @@
       document.getElementById("servico").value = servico;
     }
 
-    // Geração de horários (09h até 18h)
+    // horários
     function gerarHorarios() {
       let horarios = [];
       for (let h = 9; h <= 18; h++) {
