@@ -169,67 +169,76 @@
       </div>
 
       <!-- Botão enviar -->
-      <button type="submit">Confirmar Agendamento</button>
+      <button type="button" id="btn-confirmar">Confirmar Agendamento</button>
     </form>
   </div>
 
-  <script>
-    // Preencher serviço vindo da home
-    const urlParams = new URLSearchParams(window.location.search);
-    const servico = urlParams.get("servico");
-    if (servico) {
-      document.getElementById("servico").value = servico;
+ <script>
+  // Preencher serviço vindo da home
+  const urlParams = new URLSearchParams(window.location.search);
+  const servico = urlParams.get("servico");
+  if (servico) {
+    document.getElementById("servico").value = servico;
+  }
+
+  // Gerar dias da semana com datas reais
+  const diasSemana = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+  const daysContainer = document.getElementById("days");
+
+  function gerarSemana() {
+    const hoje = new Date();
+    daysContainer.innerHTML = "";
+    for (let i = 0; i < 7; i++) {
+      let data = new Date();
+      data.setDate(hoje.getDate() + i);
+      const dia = data.getDate().toString().padStart(2, "0");
+      const mes = (data.getMonth() + 1).toString().padStart(2, "0");
+      const texto = `${diasSemana[data.getDay()]} - ${dia}/${mes}`;
+
+      const div = document.createElement("div");
+      div.classList.add("day");
+      div.textContent = texto;
+      div.dataset.date = data.toISOString().split("T")[0];
+      daysContainer.appendChild(div);
     }
+  }
 
-    // Gerar dias da semana com datas reais
-    const diasSemana = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
-    const daysContainer = document.getElementById("days");
+  gerarSemana();
 
-    function gerarSemana() {
-      const hoje = new Date();
-      daysContainer.innerHTML = "";
-      for (let i = 0; i < 7; i++) {
-        let data = new Date();
-        data.setDate(hoje.getDate() + i);
-        const dia = data.getDate().toString().padStart(2, "0");
-        const mes = (data.getMonth() + 1).toString().padStart(2, "0");
-        const texto = `${diasSemana[data.getDay()]} - ${dia}/${mes}`;
-
-        const div = document.createElement("div");
-        div.classList.add("day");
-        div.textContent = texto;
-        div.dataset.date = data.toISOString().split("T")[0];
-        daysContainer.appendChild(div);
-      }
+  // Horários
+  function gerarHorarios() {
+    let horarios = [];
+    for (let h = 9; h <= 18; h++) {
+      horarios.push(h.toString().padStart(2, "0") + ":00");
     }
+    return horarios;
+  }
 
-    gerarSemana();
+  const hoursContainer = document.getElementById("hours");
+  let selectedDay = null;
+  let selectedHour = null;
 
-    // Horários
-    function gerarHorarios() {
-      let horarios = [];
-      for (let h = 9; h <= 18; h++) {
-        horarios.push(h.toString().padStart(2, "0") + ":00");
-      }
-      return horarios;
-    }
+  // Restaurar dados do localStorage
+  window.addEventListener('load', () => {
+    const saved = JSON.parse(localStorage.getItem('agendamento'));
+    if (saved) {
+      document.getElementById('nome').value = saved.nome || '';
+      document.getElementById('servico').value = saved.servico || '';
+      document.getElementById('barbeiro').value = saved.barbeiro || '';
+      selectedDay = saved.dia || null;
+      selectedHour = saved.horario || null;
 
-    const days = document.querySelectorAll(".day");
-    const hoursContainer = document.getElementById("hours");
-    let selectedDay = null;
-    let selectedHour = null;
-
-    daysContainer.addEventListener("click", e => {
-      if (e.target.classList.contains("day")) {
-        document.querySelectorAll(".day").forEach(d => d.classList.remove("active"));
-        e.target.classList.add("active");
-        selectedDay = e.target.dataset.date;
-
-        hoursContainer.innerHTML = "";
+      if (selectedDay) {
+        gerarSemana();
+        document.querySelectorAll(".day").forEach(d => {
+          if (d.dataset.date === selectedDay) d.classList.add("active");
+        });
+        hoursContainer.style.display = "flex";
         gerarHorarios().forEach(h => {
           const btn = document.createElement("div");
           btn.classList.add("hour");
           btn.textContent = h;
+          if (h === selectedHour) btn.classList.add("active");
           btn.addEventListener("click", () => {
             document.querySelectorAll(".hour").forEach(hr => hr.classList.remove("active"));
             btn.classList.add("active");
@@ -237,20 +246,54 @@
           });
           hoursContainer.appendChild(btn);
         });
-
-        hoursContainer.style.display = "flex";
       }
-    });
+    }
+  });
 
-    // Captura envio
-    document.getElementById("form-agendamento").addEventListener("submit", e => {
-      e.preventDefault();
-      if (!selectedDay || !selectedHour) {
-        alert("Por favor, escolha um dia e horário.");
-        return;
-      }
-      alert("Agendamento confirmado!\nServiço: " + servico + "\nDia: " + selectedDay + "\nHora: " + selectedHour);
-    });
-  </script>
+  // Seleção de dias
+  daysContainer.addEventListener("click", e => {
+    if (e.target.classList.contains("day")) {
+      document.querySelectorAll(".day").forEach(d => d.classList.remove("active"));
+      e.target.classList.add("active");
+      selectedDay = e.target.dataset.date;
+
+      hoursContainer.innerHTML = "";
+      gerarHorarios().forEach(h => {
+        const btn = document.createElement("div");
+        btn.classList.add("hour");
+        btn.textContent = h;
+        btn.addEventListener("click", () => {
+          document.querySelectorAll(".hour").forEach(hr => hr.classList.remove("active"));
+          btn.classList.add("active");
+          selectedHour = h;
+        });
+        hoursContainer.appendChild(btn);
+      });
+
+      hoursContainer.style.display = "flex";
+    }
+  });
+
+  // Botão Confirmar -> salvar e ir para login
+  document.getElementById('btn-confirmar').addEventListener('click', () => {
+    if (!selectedDay || !selectedHour) {
+      alert("Por favor, escolha um dia e horário.");
+      return;
+    }
+
+    const agendamento = {
+      nome: document.getElementById('nome').value,
+      servico: document.getElementById('servico').value,
+      barbeiro: document.getElementById('barbeiro').value,
+      dia: selectedDay,
+      horario: selectedHour
+    };
+
+    localStorage.setItem('agendamento', JSON.stringify(agendamento));
+
+    // Redireciona para login
+    window.location.href = 'login.html';
+  });
+</script>
 </body>
 </html>

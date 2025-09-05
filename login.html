@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0d6efd;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      display: flex;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      max-width: 900px;
+      width: 100%;
+    }
+
+    .left {
+      flex: 1;
+      background: #0d6efd;
+      color: white;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .left h2 {
+      font-size: 28px;
+      margin-bottom: 15px;
+    }
+
+    .left p {
+      font-size: 16px;
+      line-height: 1.6;
+      opacity: 0.9;
+    }
+
+    .right {
+      flex: 1;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    h3 {
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #0d6efd;
+      border: none;
+      color: white;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background: #0b5ed7;
+    }
+
+    .forgot {
+      text-align: right;
+      margin-top: 10px;
+    }
+
+    .forgot a {
+      font-size: 14px;
+      color: #0d6efd;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .social-login {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .social-btn {
+      flex: 1;
+      margin: 0 5px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.3s;
+    }
+
+    .social-btn:hover {
+      background: #f1f1f1;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      width: 400px;
+      text-align: center;
+    }
+
+    .modal-content input {
+      margin-top: 15px;
+    }
+
+    .close {
+      float: right;
+      font-size: 20px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="left">
+      <h2>Bem-vindo de volta!</h2>
+      <p>Entre com seu email e senha para acessar sua conta.  
+         Se esqueceu sua senha, você pode recuperá-la facilmente.</p>
+    </div>
+    <div class="right">
+      <h3>Login</h3>
+      <input type="email" placeholder="Email">
+      <input type="password" placeholder="Senha">
+      <button>Entrar</button>
+      <div class="forgot">
+        <a id="forgot-link">Esqueceu a senha?</a>
+      </div>
+
+      <div class="social-login">
+        <div class="social-btn">Google</div>
+        <div class="social-btn">Facebook</div>
+        <div class="social-btn">Apple</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Recuperar Senha -->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <span class="close" id="close">&times;</span>
+      <h3>Recuperar Senha</h3>
+      <p>Digite seu email para receber um link de recuperação.</p>
+      <input type="email" placeholder="Seu email">
+      <button>Enviar</button>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById("modal");
+    const link = document.getElementById("forgot-link");
+    const closeBtn = document.getElementById("close");
+
+    link.onclick = () => modal.style.display = "flex";
+    closeBtn.onclick = () => modal.style.display = "none";
+    window.onclick = (e) => {
+      if (e.target === modal) modal.style.display = "none";
+    }
+  </script>
+
+</body>
+</html>
