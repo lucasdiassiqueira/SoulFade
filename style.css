@@ -75,12 +75,12 @@ body {
 .support-btn {
   position: fixed;
   bottom: 100px; 
-  right: 20px;
+  right: 23px;
   z-index: 9999;
   background: #fff;
   border-radius: 50%;
-  width: 55px;
-  height: 55px;
+  width: 53px;
+  height: 53px;
   display: flex;
   align-items: center;
   justify-content: center;
