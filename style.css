@@ -74,7 +74,7 @@ body {
 /* Botão de Suporte */
 .support-btn {
   position: fixed;
-  bottom: 100px; 
+  bottom: 110px; 
   right: 23px;
   z-index: 9999;
   background: #fff;

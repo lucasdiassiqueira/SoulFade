@@ -504,7 +504,6 @@
     <a href="politica-de-privacidade.html" target="_blank">Política de Privacidade</a>.
   </p>
   <button id="accept-cookies">Aceitar</button>
-  <button id="decline-cookies">Recusar</button>
 </div>
 
 <style>
@@ -567,10 +566,6 @@ document.getElementById("accept-cookies").addEventListener("click", function() {
   document.getElementById("cookie-banner").style.display = "none";
 });
 
-document.getElementById("decline-cookies").addEventListener("click", function() {
-  localStorage.setItem("cookiesAccepted", "false");
-  document.getElementById("cookie-banner").style.display = "none";
-});
 </script>
 
     <!-- Back to Top Button -->
