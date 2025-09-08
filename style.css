@@ -519,6 +519,108 @@ body {
     transform: scale(1.1);
 }
 
+/*Dicas*/
+.cabelo-black-section {
+  padding: 80px 20px;
+  background: linear-gradient(135deg, #1a1a1a, #333333);
+  color: #fff;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+}
+
+.cabelo-black-section .section-title {
+  font-size: 2.8rem;
+  margin-bottom: 10px;
+  color: #ffcc00;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.cabelo-black-section .section-subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 50px;
+  color: #ddd;
+}
+
+.cards-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+}
+
+.black-card {
+  background: #222;
+  border-radius: 20px;
+  overflow: hidden;
+  width: 300px;
+  height: 400px;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.5s, box-shadow 0.5s;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+}
+
+.black-card:hover {
+  transform: translateY(-15px) scale(1.05);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+
+.black-card .card-bg {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.5);
+  transition: transform 0.5s;
+}
+
+.black-card:hover .card-bg {
+  transform: scale(1.1);
+}
+
+.black-card h3 {
+  margin: 0;
+  font-size: 1.8rem;
+  color: #ffcc00;
+  z-index: 2;
+  position: relative;
+}
+
+.black-card p {
+  color: #fff;
+  font-size: 0.95rem;
+  margin-top: 10px;
+  z-index: 2;
+  position: relative;
+}
+
+.black-card .arrow {
+  font-size: 2rem;
+  color: #ffcc00;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  transition: transform 0.3s;
+}
+
+.black-card:hover .arrow {
+  transform: translateX(5px);
+}
+
+/* Background images for cards */
+.card-bg.locs { background-image: url('https://images.unsplash.com/photo-1614285577869-6b5a7c0df8dc?auto=format&fit=crop&w=800&q=80'); }
+.card-bg.trancas { background-image: url('https://images.unsplash.com/photo-1614285545120-3b52f9ee5d0c?auto=format&fit=crop&w=800&q=80'); }
+.card-bg.black { background-image: url('https://images.unsplash.com/photo-1614285566721-4c3a5b75c3d1?auto=format&fit=crop&w=800&q=80'); }
+
+@media (max-width: 1024px) {
+  .cards-wrapper { flex-direction: column; align-items: center; }
+}
+
 /* Team Section */
 .team {
     padding: 6rem 0;
