@@ -73,8 +73,8 @@
 
   button:hover { background: #492f15; }
 
-  .forgot { text-align: right; margin-top: 10px; }
-  .forgot a { font-size: 14px; color: #242525; text-decoration: none; cursor: pointer; }
+  .forgot, .create { text-align: right; margin-top: 10px; }
+  .forgot a, .create a { font-size: 14px; color: #242525; text-decoration: none; cursor: pointer; }
 
   .social-login {
     margin-top: 20px;
@@ -166,9 +166,8 @@
     <input id="password" type="password" placeholder="Senha">
     <button id="login-btn">Entrar</button>
     <div class="spinner" id="spinner"></div>
-    <div class="forgot">
-      <a id="forgot-link">Esqueceu a senha?</a>
-    </div>
+    <div class="forgot"><a id="forgot-link">Esqueceu a senha?</a></div>
+    <div class="create"><a id="create-link">Criar conta</a></div>
 
     <div class="social-login">
       <div class="social-btn">Google</div>
@@ -181,9 +180,9 @@
 </div>
 
 <!-- Modal Recuperar Senha -->
-<div class="modal" id="modal">
+<div class="modal" id="modal-recovery">
   <div class="modal-content">
-    <span class="close" id="close">&times;</span>
+    <span class="close" id="close-recovery">&times;</span>
     <h3>Recuperar Senha</h3>
     <p>Digite seu email para receber um link de recuperação.</p>
     <input id="recovery-email" type="email" placeholder="Seu email">
@@ -192,29 +191,71 @@
   </div>
 </div>
 
+<!-- Modal Criar Conta -->
+<div class="modal" id="modal-create">
+  <div class="modal-content">
+    <span class="close" id="close-create">&times;</span>
+    <h3>Criar Conta</h3>
+    <input id="new-email" type="email" placeholder="Novo email">
+    <input id="new-password" type="password" placeholder="Nova senha">
+    <button id="create-account">Cadastrar</button>
+    <div id="create-msg" class="message"></div>
+  </div>
+</div>
+
 <script>
-  const modal = document.getElementById("modal");
-  const link = document.getElementById("forgot-link");
-  const closeBtn = document.getElementById("close");
+  const modalRecovery = document.getElementById("modal-recovery");
+  const modalCreate = document.getElementById("modal-create");
+  const linkForgot = document.getElementById("forgot-link");
+  const linkCreate = document.getElementById("create-link");
+  const closeRecovery = document.getElementById("close-recovery");
+  const closeCreate = document.getElementById("close-create");
   const loginBtn = document.getElementById("login-btn");
   const message = document.getElementById("message");
   const spinner = document.getElementById("spinner");
   const sendEmailBtn = document.getElementById("send-email");
   const recoveryMsg = document.getElementById("recovery-msg");
+  const createAccountBtn = document.getElementById("create-account");
+  const createMsg = document.getElementById("create-msg");
 
-  // Email e senha pré-definidos
-  const predefinedEmail = "lucas@escola.pr.gov.br";
-  const predefinedPassword = "2710";
+  // Mostrar modais
+  linkForgot.onclick = () => modalRecovery.style.display = "flex";
+  linkCreate.onclick = () => modalCreate.style.display = "flex";
+  closeRecovery.onclick = () => modalRecovery.style.display = "none";
+  closeCreate.onclick = () => modalCreate.style.display = "none";
+  window.onclick = (e) => {
+    if(e.target === modalRecovery) modalRecovery.style.display = "none";
+    if(e.target === modalCreate) modalCreate.style.display = "none";
+  }
 
-  link.onclick = () => modal.style.display = "flex";
-  closeBtn.onclick = () => modal.style.display = "none";
-  window.onclick = (e) => { if(e.target === modal) modal.style.display = "none"; }
+  // Criar conta
+  createAccountBtn.onclick = () => {
+    const email = document.getElementById("new-email").value;
+    const password = document.getElementById("new-password").value;
 
+    if(email && password){
+      localStorage.setItem(email, password);
+      createMsg.textContent = "Conta criada com sucesso!";
+      createMsg.className = "message success";
+      createMsg.style.display = "block";
+      setTimeout(() => {
+        modalCreate.style.display = "none";
+        createMsg.style.display = "none";
+      }, 1500);
+    } else {
+      createMsg.textContent = "Preencha todos os campos!";
+      createMsg.className = "message error";
+      createMsg.style.display = "block";
+    }
+  }
+
+  // Login
   loginBtn.onclick = () => {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
+    const savedPassword = localStorage.getItem(email);
 
-    if(email === predefinedEmail && password === predefinedPassword){
+    if(savedPassword && password === savedPassword){
       message.style.display = "none";
       spinner.style.display = "block";
 
@@ -227,7 +268,7 @@
         setTimeout(() => {
           window.location.href = "agendamento.html"; // Redireciona
         }, 1000);
-      }, 1500); // tempo do "carregamento"
+      }, 1500);
     } else {
       message.textContent = "Email ou senha incorretos!";
       message.className = "message error";
@@ -235,19 +276,20 @@
     }
   }
 
+  // Recuperar senha
   sendEmailBtn.onclick = () => {
     const recoveryEmail = document.getElementById("recovery-email").value;
-    if(recoveryEmail){
+    if(localStorage.getItem(recoveryEmail)){
       recoveryMsg.textContent = "Email de recuperação enviado!";
       recoveryMsg.className = "message success";
       recoveryMsg.style.display = "block";
 
       setTimeout(() => {
-        modal.style.display = "none";
+        modalRecovery.style.display = "none";
         recoveryMsg.style.display = "none";
       }, 1500);
     } else {
-      recoveryMsg.textContent = "Digite um email válido!";
+      recoveryMsg.textContent = "Email não encontrado!";
       recoveryMsg.className = "message error";
       recoveryMsg.style.display = "block";
     }
