@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuidados com Cabelo Locs</title>
+    <style>
+        /* Estilos gerais */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f1e8;
+            color: #4a3c2a;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Cores em tons de marrom */
+        :root {
+            --marrom-escuro: #3d2b1f;
+            --marrom-medio: #7a5c3c;
+            --marrom-claro: #a87c5c;
+            --marrom-super-claro: #d3bc9a;
+            --dourado: #c8a97e;
+            --bege: #f5f1e8;
+        }
+        
+        /* Cabeçalho */
+        header {
+            background: linear-gradient(135deg, var(--marrom-escuro) 0%, var(--marrom-medio) 100%);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='100' height='100'%3E%3Ccircle cx='50' cy='50' r='2' fill='%23c8a97e' opacity='0.2'/%3E%3C/svg%3E");
+            opacity: 0.2;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        
+        /* Navegação */
+        nav {
+            background-color: var(--marrom-claro);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: center;
+        }
+        
+        .nav-list {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-list li {
+            padding: 15px 0;
+        }
+        
+        .nav-list a {
+            color: white;
+            text-decoration: none;
+            padding: 15px 20px;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-list a:hover {
+            background-color: var(--marrom-medio);
+        }
+        
+        /* Conteúdo principal */
+        main {
+            padding: 40px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            color: var(--marrom-escuro);
+            font-size: 2rem;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--dourado);
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background-color: var(--marrom-claro);
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-img {
+            height: 200px;
+            background-color: var(--marrom-super-claro);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-img::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--marrom-claro) 0%, transparent 100%);
+            opacity: 0.3;
+        }
+        
+        .card h3 {
+            background-color: var(--marrom-medio);
+            color: white;
+            padding: 15px 20px;
+            font-size: 1.3rem;
+        }
+        
+        .card-content {
+            padding: 20px;
+        }
+        
+        .card-content p {
+            margin-bottom: 15px;
+        }
+        
+        /* Destaque */
+        .highlight {
+            background: linear-gradient(to right, var(--marrom-escuro), var(--marrom-medio));
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+            margin: 50px 0;
+        }
+        
+        .highlight h2 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+        }
+        
+        .highlight p {
+            max-width: 800px;
+            margin: 0 auto 30px;
+            font-size: 1.1rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--dourado);
+            color: var(--marrom-escuro);
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: 2px solid var(--dourado);
+        }
+        
+        .btn:hover {
+            background-color: transparent;
+            color: var(--dourado);
+        }
+        
+        /* Galeria */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        .gallery-item {
+            height: 200px;
+            background-color: var(--marrom-super-claro);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.3s;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.03);
+        }
+        
+        .gallery-item::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 0%, var(--marrom-escuro) 100%);
+            opacity: 0.2;
+            transition: opacity 0.3s;
+        }
+        
+        .gallery-item:hover::before {
+            opacity: 0.4;
+        }
+        
+        /* FAQ */
+        .faq-item {
+            background-color: white;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .faq-question {
+            padding: 15px 20px;
+            background-color: var(--marrom-claro);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s, padding 0.3s;
+        }
+        
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+            padding: 20px;
+        }
+        
+        /* Contato */
+        .contact-form {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--marrom-escuro);
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--marrom-claro);
+            outline: none;
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            background-color: var(--marrom-medio);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background-color: var(--marrom-escuro);
+        }
+        
+        /* Rodapé */
+        footer {
+            background-color: var(--marrom-escuro);
+            color: white;
+            padding: 40px 0 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-section h3 {
+            color: var(--dourado);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-section p,
+        .footer-section a {
+            color: #e0d6c8;
+            margin-bottom: 10px;
+            display: block;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section a:hover {
+            color: var(--dourado);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .social-links a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            transition: background-color 0.3s;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--dourado);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #c8b299;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .nav-list {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .gallery {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cabeçalho -->
+    <header>
+        <div class="container">
+            <div class="logo">Locs Beauty</div>
+            <p class="tagline">Cuidados naturais para seus cabelos locs</p>
+        </div>
+    </header>
+    
+    <!-- Navegação -->
+    <nav>
+        <div class="container nav-container">
+            <ul class="nav-list">
+                <li><a href="#inicio">Início</a></li>
+                <li><a href="#cuidados">Cuidados</a></li>
+                <li><a href="#produtos">Produtos</a></li>
+                <li><a href="#galeria">Galeria</a></li>
+                <li><a href="#duvidas">Dúvidas</a></li>
+                <li><a href="#contato">Contato</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Conteúdo Principal -->
+    <main class="container">
+        <!-- Seção de Introdução -->
+        <section id="inicio">
+            <h2 class="section-title">O que são Locs?</h2>
+            <div class="content-grid">
+                <div class="card">
+                    <div class="card-img">
+                        <div style="font-size: 3rem; color: var(--marrom-escuro);">✸</div>
+                    </div>
+                    <h3>História dos Locs</h3>
+                    <div class="card-content">
+                        <p>Os locs, também conhecidos como dreadlocks, são um penteado antigo com profundas raízes culturais e espirituais em várias civilizações ao redor do mundo, incluindo egípcios, hindus, gregos e várias culturas africanas.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-img">
+                        <div style="font-size: 3rem; color: var(--marrom-escuro);">✸</div>
+                    </div>
+                    <h3>Significado Cultural</h3>
+                    <div class="card-content">
+                        <p>Muito mais que um estilo, os locs representam uma conexão espiritual, resistência cultural e expressão de identidade. Em muitas tradições, simbolizam a jornada espiritual e a quebra de convenções sociais.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-img">
+                        <div style="font-size: 3rem; color: var(--marrom-escuro);">✸</div>
+                    </div>
+                    <h3>Estilos Variados</h3>
+                    <div class="card-content">
+                        <p>Existem diversos tipos de locs, desde os mais finos e numerosos até os mais grossos e robustos. Cada tipo requer cuidados específicos e tem um tempo de formação diferente.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Destaque -->
+        <div class="highlight">
+            <div class="container">
+                <h2>Descubra a Beleza Natural dos Seus Locs</h2>
+                <p>Com os cuidados certos, seus locs podem ser fortes, saudáveis e expressivos. Aprenda as melhores técnicas de manutenção e produtos naturais para realçar sua beleza natural.</p>
+                <a href="#cuidados" class="btn">Começar Agora</a>
+            </div>
+        </div>
+        
+        <!-- Seção de Cuidados -->
+        <section id="cuidados">
+            <h2 class="section-title">Cuidados Essenciais</h2>
+            <div class="content-grid">
+                <div class="card">
+                    <div class="card-img">
+                        <div style="font-size: 3rem; color: var(--marrom-escuro);">✸</div>
+                    </div>
+                    <h3>Limpeza Regular</h3>
+                    <div class="card-content">
+                        <p>A higiene é fundamental para manter os locs saudáveis. Use shampoos Residue-Free (sem resíduos) para evitar acúmulo de produtos. Lave a cada 1-2 semanas, dependendo do seu tipo de couro cabeludo.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-img">
+                        <div style="font-size: 3rem; color: var(--marrom-escuro);">✸</div>
+                    </div>
+                    <h3>Hidratação</h3>
+                    <div class="card-content">
+                        <p>Hidratar os locs é essencial para evitar o ressecamento e quebra. Use óleos naturais como alecrim, jojoba ou coco. Aplicar com moderação para não criar acúmulo.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-img">
+                        <div style="font-size: 3rem; color: var(--marrom-escuro);">✸</div>
+                    </div>
+                    <h3>Manutenção</h3>
+                    <div class="card-content">
+                        <p>A manutenção regular (retwist) ajuda a manter o formato e a saúde dos locs. Faça a cada 4-8 semanas, dependendo do crescimento e estilo desejado.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Seção de Produtos -->
+        <section id="produtos">
+            <h2 class="section-title">Produtos Recomendados</h2>
+            <div class="content-grid">
+                <div class="card">
+                    <div class="card-img">
+                        <div style="font-size: 3rem; color: var(--marrom-escuro);">✸</div>
+                    </div>
+                    <h3>Shampoos Residue-Free</h3>
+                    <div class="card-content">
+                        <p>Produtos de limpeza específicos para locs não deixam resíduos que possam causar acúmulo e enfraquecer a estrutura. Prefira fórmulas naturais e suaves.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-img">
+                        <div style="font-size: 3rem; color: var(--marrom-escuro);">✸</div>
+                    </div>
+                    <h3>Óleos Naturais</h3>
+                    <div class="card-content">
+                        <p>Óleos vegetais como jojoba, rícino, coco e alecrim proporcionam hidratação profunda sem pesar os fios. Aplicar com moderação para evitar acúmulo.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-img">
+                        <div style="font-size: 3rem; color: var(--marrom-escuro);">✸</div>
+                    </div>
+                    <h3>Sprays Hidratantes</h3>
+                    <div class="card-content">
+                        <p>Sprays com ingredientes naturais podem ser usados diariamente para refrescar e hidratar os locs sem a necessidade de lavagem constante.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Galeria -->
+        <section id="galeria">
+            <h2 class="section-title">Galeria de Estilos</h2>
+            <div class="gallery">
+                <div class="gallery-item"></div>
+                <div class="gallery-item"></div>
+                <div class="gallery-item"></div>
+                <div class="gallery-item"></div>
+                <div class="gallery-item"></div>
+                <div class="gallery-item"></div>
+            </div>
+        </section>
+        
+        <!-- FAQ -->
+        <section id="duvidas">
+            <h2 class="section-title">Perguntas Frequentes</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    Quanto tempo leva para os locs se formarem completamente?
+                    <span>+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>O tempo de formação varia conforme o tipo de cabelo, espessura dos locs e método de iniciação. Em geral, leva de 6 meses a 2 anos para que os locs estejam totalmente maduros.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    Posso colorir meus locs?
+                    <span>+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Sim, mas é recomendável esperar até que os locs estejam maduros (pelo menos 1 ano) antes de colorir. Use produtos suaves e faça hidratações profundas após o processo.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    Como evitar coceira no couro cabeludo?
+                    <span>+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Mantenha a higiene adequada, use óleos essenciais com propriedades antissépticas (como tea tree) e evite produtos com químicos agressivos que podem ressecar o couro cabeludo.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    Posso praticar natação com locs?
+                    <span>+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Sim, mas é importante proteger os locs com uma touca de natação e lavá-los logo após a exposição ao cloro ou água salgada, seguindo com uma hidratação profunda.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Contato -->
+        <section id="contato">
+            <h2 class="section-title">Entre em Contato</h2>
+            
+            <div class="contact-form">
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Nome</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Mensagem</label>
+                        <textarea id="message" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Enviar Mensagem</button>
+                </form>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Rodapé -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Sobre Nós</h3>
+                    <p>Somos especialistas em cuidados com cabelos locs, oferecendo informações e produtos para manter seus cabelos saudáveis e belos.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Links Rápidos</h3>
+                    <a href="#inicio">Início</a>
+                    <a href="#cuidados">Cuidados</a>
+                    <a href="#produtos">Produtos</a>
+                    <a href="#galeria">Galeria</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contato</h3>
+                    <p>Email: contato@locsbeauty.com</p>
+                    <p>Telefone: (11) 99999-9999</p>
+                    
+                    <div class="social-links">
+                        <a href="#">F</a>
+                        <a href="#">I</a>
+                        <a href="#">T</a>
+                        <a href="#">Y</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 Locs Beauty - Todos os direitos reservados</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // FAQ interativo
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const item = question.parentElement;
+                item.classList.toggle('active');
+                
+                // Alterna entre + e -
+                const icon = question.querySelector('span');
+                icon.textContent = item.classList.contains('active') ? '-' : '+';
+            });
+        });
+        
+        // Formulário de contato
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Obrigado por entrar em contato! Retornaremos em breve.');
+            this.reset();
+        });
+        
+        // Navegação suave
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 70,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
