@@ -174,6 +174,12 @@
             position: relative;
             transition: transform 0.3s;
         }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; 
+        }
         
         .gallery-item:hover {
             transform: scale(1.03);
@@ -194,6 +200,82 @@
         .gallery-item:hover::before {
             opacity: 0.4;
         }
+
+        .lightbox-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s;
+  z-index: 1000;
+}
+
+/* Ativo */
+.lightbox-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Imagem grande */
+.lightbox-image {
+  max-width: 90%;
+  max-height: 80%;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* Setas */
+.lightbox-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 3rem;
+  color: white;
+  cursor: pointer;
+  user-select: none;
+  padding: 10px;
+  background: rgba(0,0,0,0.3);
+  border-radius: 50%;
+  transition: background 0.3s;
+}
+
+.lightbox-arrow:hover {
+  background: rgba(0,0,0,0.6);
+}
+
+.lightbox-prev {
+  left: 30px;
+}
+
+.lightbox-next {
+  right: 30px;
+}
+
+/* Botão fechar */
+.lightbox-close {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  font-size: 2.5rem;
+  color: white;
+  cursor: pointer;
+  background: rgba(0,0,0,0.3);
+  padding: 5px 10px;
+  border-radius: 5px;
+  transition: background 0.3s;
+}
+
+.lightbox-close:hover {
+  background: rgba(0,0,0,0.6);
+}
+
         
         /* FAQ */
         .faq-item {
@@ -460,6 +542,13 @@
   </div>
 </section>
 
+<div class="lightbox-overlay" id="lightbox">
+  <span class="lightbox-close" id="lightboxClose">&times;</span>
+  <span class="lightbox-arrow lightbox-prev" id="lightboxPrev">&#10094;</span>
+  <img src="" alt="" class="lightbox-image" id="lightboxImage">
+  <span class="lightbox-arrow lightbox-next" id="lightboxNext">&#10095;</span>
+</div>
+
         
         <!-- FAQ -->
         <section id="duvidas">
@@ -557,13 +646,6 @@
             });
         });
         
-        // Formulário de contato
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Obrigado por entrar em contato! Retornaremos em breve.');
-            this.reset();
-        });
-        
         // Navegação suave
         document.querySelectorAll('nav a').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
@@ -577,6 +659,59 @@
                 });
             });
         });
+
+const galleryItems = document.querySelectorAll('.gallery-item img');
+const lightbox = document.getElementById('lightbox');
+const lightboxImage = document.getElementById('lightboxImage');
+const closeBtn = document.getElementById('lightboxClose');
+const prevBtn = document.getElementById('lightboxPrev');
+const nextBtn = document.getElementById('lightboxNext');
+
+let currentIndex = 0;
+
+function openLightbox(index) {
+  currentIndex = index;
+  lightboxImage.src = galleryItems[currentIndex].src;
+  lightbox.classList.add('active');
+}
+
+function closeLightbox() {
+  lightbox.classList.remove('active');
+}
+
+function showPrev() {
+  currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
+  lightboxImage.src = galleryItems[currentIndex].src;
+}
+
+function showNext() {
+  currentIndex = (currentIndex + 1) % galleryItems.length;
+  lightboxImage.src = galleryItems[currentIndex].src;
+}
+
+// Abrir ao clicar
+galleryItems.forEach((img, i) => {
+  img.addEventListener('click', () => openLightbox(i));
+});
+
+// Botões
+closeBtn.addEventListener('click', closeLightbox);
+prevBtn.addEventListener('click', showPrev);
+nextBtn.addEventListener('click', showNext);
+
+// Fechar clicando fora da imagem
+lightbox.addEventListener('click', e => {
+  if (e.target === lightbox) closeLightbox();
+});
+
+// Navegação com teclado
+document.addEventListener('keydown', e => {
+  if (!lightbox.classList.contains('active')) return;
+  if (e.key === 'ArrowLeft') showPrev();
+  if (e.key === 'ArrowRight') showNext();
+  if (e.key === 'Escape') closeLightbox();
+});
+
     </script>
 </body>
 </html>
