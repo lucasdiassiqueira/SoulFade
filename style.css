@@ -583,6 +583,19 @@ body {
   transform: scale(1.1);
 }
 
+
+.black-card .card-bg.locs {
+  background-image: url("https://i.pinimg.com/736x/8a/7e/5e/8a7e5ecdaacbcb5577d03a4832cd6da3.jpg");
+}
+
+.black-card .card-bg.trancas {
+  background-image: url("https://i.pinimg.com/736x/22/f0/be/22f0beea510775da55e3623416e6042c.jpg");
+}
+
+.black-card .card-bg.black {
+  background-image: url("https://i.em.com.br/TEeQerjbaDQqBWGnPHJGrNr4PHc=/1200x1200/smart/imgsapp.em.com.br/app/noticia_127983242361/2021/11/19/1323463/kenyo-hoffman-um-homem-negro-com-cabelo-black-power-posa-contra-um-fundo-cor-creme_1_75193.png");
+}
+
 .black-card h3 {
   margin: 0;
   font-size: 1.8rem;
