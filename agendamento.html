@@ -174,7 +174,7 @@
     </form>
   </div>
 
- <script>
+<script>
   // Preencher serviço vindo da home
   const urlParams = new URLSearchParams(window.location.search);
   const servico = urlParams.get("servico");
@@ -219,38 +219,6 @@
   let selectedDay = null;
   let selectedHour = null;
 
-  // Restaurar dados do localStorage
-  window.addEventListener('load', () => {
-    const saved = JSON.parse(localStorage.getItem('agendamento'));
-    if (saved) {
-      document.getElementById('nome').value = saved.nome || '';
-      document.getElementById('servico').value = saved.servico || '';
-      document.getElementById('barbeiro').value = saved.barbeiro || '';
-      selectedDay = saved.dia || null;
-      selectedHour = saved.horario || null;
-
-      if (selectedDay) {
-        gerarSemana();
-        document.querySelectorAll(".day").forEach(d => {
-          if (d.dataset.date === selectedDay) d.classList.add("active");
-        });
-        hoursContainer.style.display = "flex";
-        gerarHorarios().forEach(h => {
-          const btn = document.createElement("div");
-          btn.classList.add("hour");
-          btn.textContent = h;
-          if (h === selectedHour) btn.classList.add("active");
-          btn.addEventListener("click", () => {
-            document.querySelectorAll(".hour").forEach(hr => hr.classList.remove("active"));
-            btn.classList.add("active");
-            selectedHour = h;
-          });
-          hoursContainer.appendChild(btn);
-        });
-      }
-    }
-  });
-
   // Seleção de dias
   daysContainer.addEventListener("click", e => {
     if (e.target.classList.contains("day")) {
@@ -290,9 +258,9 @@
       horario: selectedHour
     };
 
+    // Salva somente no login.html
     localStorage.setItem('agendamento', JSON.stringify(agendamento));
 
-    // Redireciona para login
     window.location.href = 'login.html';
   });
 </script>
