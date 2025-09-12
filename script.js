@@ -1,15 +1,3 @@
-// Loading Screen
-window.addEventListener('load', function() {
-    setTimeout(() => {
-        const loadingScreen = document.getElementById('loading-screen');
-        loadingScreen.style.opacity = '0';
-        setTimeout(() => {
-            loadingScreen.style.display = 'none';
-            document.body.style.cursor = 'auto';
-        }, 500);
-    }, 3000);
-});
-
 
 // Header
 const header = document.getElementById("header");
