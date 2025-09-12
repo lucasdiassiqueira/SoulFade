@@ -387,6 +387,19 @@ document.querySelectorAll('.nav-link').forEach((link, index) => {
     link.style.animationDelay = `${index * 0.1}s`;
 });
 
+// Mostrar mais galeria
+document.addEventListener("DOMContentLoaded", () => {
+    const showMoreBtn = document.getElementById("show-more-btn");
+    if (showMoreBtn) {
+        showMoreBtn.addEventListener("click", () => {
+            document.querySelectorAll(".gallery-item.extra").forEach(item => {
+                item.style.display = "block";
+            });
+            showMoreBtn.style.display = "none"; // esconde botão depois de abrir
+        });
+    }
+});
+
 // Performance optimization: Throttle scroll events
 function throttle(func, limit) {
     let inThrottle;

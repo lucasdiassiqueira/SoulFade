@@ -519,6 +519,34 @@ body {
     transform: scale(1.1);
 }
 
+/* Esconde os itens extras da galeria */
+.gallery-item.extra {
+    display: none;
+}
+
+/* Botão Mostrar mais */
+.gallery-more {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+#show-more-btn {
+    padding: 0.8rem 1.5rem;
+    border: 2px solid var(--primary-color);
+    background: var(--primary-color);
+    color: var(--text-light);
+    border-radius: 25px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#show-more-btn:hover {
+    background: transparent;
+    color: var(--primary-color);
+}
+
 /*Dicas*/
 .cabelo-black-section {
   padding: 80px 20px;
