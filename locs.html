@@ -206,10 +206,10 @@
     opacity: 0.4;
 }
 
-.gallery .gallery-item:nth-last-child(-n+2) {
-  grid-column: 1 / -1;     
-  justify-self: center;    
-  max-width: 300px;         
+.gallery .gallery-item:nth-last-child(2),
+.gallery .gallery-item:nth-last-child(1) {
+  grid-column: span 1;
+  justify-self: center;
 }
 
         .lightbox-overlay {
