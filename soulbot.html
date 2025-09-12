@@ -77,7 +77,7 @@
         }
 
         .chat-header {
-            background: linear-gradient(90deg, rgba(18, 18, 18, 0.1), rgba(24, 25, 25, 0.1));
+            background: linear-gradient(90deg, rgba(0, 0, 0, 0.1), rgba(2, 2, 2, 0.1));
             border-bottom: 1px solid #374151;
             padding: 24px;
             display: flex;
@@ -106,13 +106,13 @@
             align-items: center;
             gap: 8px;
             font-size: 14px;
-            color: #10b981;
+            color: #35c515;
         }
 
         .status-dot {
             width: 8px;
             height: 8px;
-            background: #10b981;
+            background: #35c515;
             border-radius: 50%;
             animation: pulse 2s infinite;
         }
@@ -469,17 +469,52 @@
         const lower = message.toLowerCase();
 
         const respostas = [
-            { keywords: ["olá", "ola", "oi", "tudo bem", "dúvida", "duvida", "pergunta"], text: "Olá, Tudo bem? Como posso ajudar?" },
-            { keywords: ["preço", "custo", "orçamento", "valor"], text: "Nossos preços variam conforme o escopo. Projetos simples a partir de R$ 1.500. Quer um orçamento rápido?" },
-            { keywords: ["prazo", "cronograma", "tempo"], text: "Depende do projeto: sites 2-4 semanas, sistemas 8-16 semanas. Você já tem uma data de entrega em mente?" },
-            { keywords: ["consulta", "reunião", "contato"], text: "Podemos agendar uma reunião gratuita pelo nosso site ou WhatsApp. Qual prefere?" },
-            { keywords: ["suporte", "manutenção"], text: "Temos planos a partir de R$ 299/mês com atualizações, segurança e suporte técnico." },
-            { keywords: ["tecnologia", "linguagem", "framework"], text: "Trabalhamos com React, Next.js, Node.js, Python, AWS e muito mais. Quer saber se usamos alguma específica?" },
-            { keywords: ["design", "interface", "ux", "ui"], text: "Sim, fazemos UI/UX com foco em usabilidade e aparência profissional." },
-            { keywords: ["mudança", "alteração", "revisão"], text: "Sim, aceitamos revisões. Mudanças grandes podem alterar prazo e custo." },
-            { keywords: ["pagamento", "forma de pagamento"], text: "Aceitamos PIX, cartão e boleto. Parcelamos em até 6x sem juros." },
-            { keywords: ["trabalho remoto", "presencial"], text: "Trabalhamos 100% online, mas podemos agendar encontros presenciais em casos específicos." },
-        ];
+    { 
+        keywords: ["olá", "ola", "oi", "oii", "opa", "tudo bem", "bom dia", "boa tarde", "boa noite", "olá!", "ola!"], 
+        text: "Olá! Seja bem-vindo à Soul Fade! Como posso te ajudar hoje?" 
+    },
+    { 
+        keywords: ["preço","preco", "custo", "valor", "quanto", "taxa", "orçamento"], 
+        text: "Nossos valores variam conforme o serviço (corte, barba, pigmentação, hidratação etc). Quer que eu te passe a tabela completa? 💈" 
+    },
+    { 
+        keywords: ["agendar", "marcar", "horário", "consulta", "reserva", "disponibilidade"], 
+        text: "Você pode agendar pelo nosso site ou WhatsApp. Quer que eu te mande o link do agendamento?" 
+    },
+    { 
+        keywords: ["tempo", "duração", "prazo", "quanto tempo", "duracao", "duracão"], 
+        text: "O tempo depende do serviço: cortes em média 40 min, já pigmentação ou tratamentos podem levar até 1h30." 
+    },
+    { 
+        keywords: ["serviços", "trabalhos", "fazem", "oferecem", "o que vocês fazem"], 
+        text: "Aqui na Soul Fade oferecemos cortes, barba, locs, tranças, hidratação e cuidados especiais para cabelo black e locs." 
+    },
+    { 
+        keywords: ["locs", "cabelo black", "cabelo crespo", "black power", "trança", "trancas", "tranças", "tranca"], 
+        text: "Temos especialistas em cabelo black e locs. Usamos técnicas e produtos próprios para manter o estilo sempre no topo." 
+    },
+    { 
+        keywords: ["pagamento", "pix", "cartão", "dinheiro", "pagar"], 
+        text: "Aceitamos PIX, cartão (débito e crédito) e dinheiro." 
+    },
+    { 
+        keywords: ["cancelar", "remarcar", "mudar horário", "adiar"], 
+        text: "Sem problemas! É só nos avisar antes que ajustamos seu horário." 
+    },
+    { 
+        keywords: ["criança", "filho", "menino", "menina"], 
+        text: "Sim, atendemos crianças, sempre com muito cuidado e paciência pra que seja uma boa experiência." 
+    },
+    { 
+        keywords: ["obrigado", "valeu", "agradeço", "tmj"], 
+        text: "Nós que agradecemos! 💈 Qualquer coisa é só chamar." 
+    },
+    { 
+        keywords: ["duvida", "dúvida", "ajuda", "informação"], 
+        text: "Pode perguntar à vontade! Estou aqui pra tirar todas as suas dúvidas." 
+    }
+];
+
 
         for (let r of respostas) {
             if (r.keywords.some(k => lower.includes(k))) {
