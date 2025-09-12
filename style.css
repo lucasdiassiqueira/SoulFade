@@ -519,12 +519,10 @@ body {
     transform: scale(1.1);
 }
 
-/* Esconde os itens extras da galeria */
 .gallery-item.extra {
     display: none;
 }
 
-/* Botão Mostrar mais */
 .gallery-more {
     text-align: center;
     margin-top: 2rem;
@@ -640,8 +638,6 @@ body {
   position: relative;
 }
 
-
-/* Background images for cards */
 .card-bg.locs { background-image: url('https://images.unsplash.com/photo-1614285577869-6b5a7c0df8dc?auto=format&fit=crop&w=800&q=80'); }
 .card-bg.trancas { background-image: url('https://images.unsplash.com/photo-1614285545120-3b52f9ee5d0c?auto=format&fit=crop&w=800&q=80'); }
 .card-bg.black { background-image: url('https://images.unsplash.com/photo-1614285566721-4c3a5b75c3d1?auto=format&fit=crop&w=800&q=80'); }
@@ -660,7 +656,7 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
-    box-shadow: var(--shadow-medium);
+    box-shadow: none;
 }
 
 .team-member {
@@ -669,11 +665,12 @@ body {
     border-radius: 20px;
     padding: 2rem;
     box-shadow: var(--shadow-light);
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .team-member:hover {
     transform: translateY(-10px);
+    box-shadow: var(--shadow-medium); 
 }
 
 .member-image {
