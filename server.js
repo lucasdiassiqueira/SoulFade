@@ -21,6 +21,19 @@ app.get("/", (req, res) => {
   res.send("Backend da Soul Fade rodando com PostgreSQL 🚀");
 });
 
+await pool.query(`
+  CREATE TABLE IF NOT EXISTS agendamentos (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    servico VARCHAR(100) NOT NULL,
+    barbeiro VARCHAR(100) NOT NULL,
+    dia DATE NOT NULL,
+    horario VARCHAR(10) NOT NULL,
+    UNIQUE (barbeiro, dia, horario)
+  );
+`);
+
+
 // rota pra testar conexão
 app.get("/dbtest", async (req, res) => {
   try {
