@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel do Barbeiro</title>
+  <link rel="icon" type="image/png" href="favicon-removebg-preview.png">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: #654321;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 30px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #222;
+    }
+
+    select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 12px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    th {
+      background: #654321;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+      background: #f1f1f1;
+    }
+
+    .no-appointments {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 16px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Painel do Barbeiro</h1>
+
+    <!-- Seleção do barbeiro -->
+    <label for="barbeiroSelect">Selecione o Barbeiro:</label>
+    <select id="barbeiroSelect">
+      <option value="">-- Escolha um barbeiro --</option>
+      <option value="Lucas Dias">Lucas Dias</option>
+      <option value="Isaias Barreto">Isaias Barreto</option>
+      <option value="Isaias Santana">Isaias Santana</option>
+    </select>
+
+    <!-- Tabela de agendamentos -->
+    <table id="agendaTable">
+      <thead>
+        <tr>
+          <th>Horário</th>
+          <th>Cliente</th>
+          <th>Serviço</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <div class="no-appointments" id="noAppointments">Selecione um barbeiro para ver os agendamentos.</div>
+  </div>
+
+<script>
+  const barbeiroSelect = document.getElementById("barbeiroSelect");
+  const tableBody = document.querySelector("#agendaTable tbody");
+  const noAppointments = document.getElementById("noAppointments");
+
+  async function carregarAgendamentos(barbeiro) {
+    if (!barbeiro) {
+      tableBody.innerHTML = "";
+      noAppointments.textContent = "Selecione um barbeiro para ver os agendamentos.";
+      noAppointments.style.display = "block";
+      return;
+    }
+
+    const hoje = new Date().toISOString().split("T")[0];
+    try {
+      const res = await fetch(`http://localhost:3000/agendamentos?barbeiro=${encodeURIComponent(barbeiro)}&dia=${hoje}`);
+      const ocupados = await res.json(); // array de horários já ocupados
+      tableBody.innerHTML = "";
+
+      if (ocupados.length === 0) {
+        noAppointments.textContent = "Nenhum agendamento para hoje.";
+        noAppointments.style.display = "block";
+        return;
+      }
+
+      noAppointments.style.display = "none";
+
+      // Para cada horário, buscar nome e serviço
+      for (let horario of ocupados) {
+        const detalheRes = await fetch(`http://localhost:3000/agendamentos?barbeiro=${encodeURIComponent(barbeiro)}&dia=${hoje}`);
+        const agendamentosFull = await detalheRes.json();
+
+        // Como agora nossa rota só retorna horários, precisamos criar outra rota ou pegar todos agendamentos
+        // Melhor: criar rota "/agendamentosFull?barbeiro=&dia=" que retorna {nome, servico, horario}
+        // Por enquanto vamos usar só horários
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${horario}</td>
+          <td>Cliente</td>
+          <td>Serviço</td>
+        `;
+        tableBody.appendChild(row);
+      }
+    } catch (err) {
+      console.error(err);
+      tableBody.innerHTML = "";
+      noAppointments.textContent = "Erro ao carregar agendamentos.";
+      noAppointments.style.display = "block";
+    }
+  }
+
+  barbeiroSelect.addEventListener("change", () => {
+    carregarAgendamentos(barbeiroSelect.value);
+  });
+</script>
+</body>
+</html>
