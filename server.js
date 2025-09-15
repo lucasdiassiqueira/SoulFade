@@ -10,13 +10,18 @@ const app = express();
 
 // Middleware
 app.use(express.json());
-app.use(
-  cors({
-    origin: "*", // permite requisições de qualquer frontend
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type"],
-  })
-);
+
+// Configurar CORS manualmente
+app.use(cors()); 
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*"); // libera qualquer origem
+  res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS"); 
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+  next();
+});
 
 // Configuração do banco
 const pool = new Pool({
@@ -55,9 +60,7 @@ app.get("/", (req, res) => {
 app.post("/agendamentos", async (req, res) => {
   const { nome, servico, barbeiro, dia, horario } = req.body;
   if (!nome || !servico || !barbeiro || !dia || !horario) {
-    return res
-      .status(400)
-      .json({ success: false, message: "Todos os campos são obrigatórios" });
+    return res.status(400).json({ success: false, message: "Todos os campos são obrigatórios" });
   }
 
   try {
@@ -69,14 +72,10 @@ app.post("/agendamentos", async (req, res) => {
     res.json({ success: true, agendamento: result.rows[0] });
   } catch (err) {
     if (err.code === "23505") {
-      res
-        .status(400)
-        .json({ success: false, message: "Horário já ocupado" });
+      res.status(400).json({ success: false, message: "Horário já ocupado" });
     } else {
       console.error("Erro ao salvar agendamento:", err);
-      res
-        .status(500)
-        .json({ success: false, message: "Erro no servidor" });
+      res.status(500).json({ success: false, message: "Erro no servidor" });
     }
   }
 });
@@ -85,9 +84,7 @@ app.post("/agendamentos", async (req, res) => {
 app.get("/agendamentos", async (req, res) => {
   const { barbeiro, dia } = req.query;
   if (!barbeiro || !dia) {
-    return res
-      .status(400)
-      .json({ success: false, message: "Barbeiro e dia são obrigatórios" });
+    return res.status(400).json({ success: false, message: "Barbeiro e dia são obrigatórios" });
   }
 
   try {
@@ -95,12 +92,10 @@ app.get("/agendamentos", async (req, res) => {
       "SELECT horario FROM agendamentos WHERE barbeiro = $1 AND dia = $2 ORDER BY horario",
       [barbeiro, dia]
     );
-    res.json(result.rows.map((r) => r.horario));
+    res.json(result.rows.map(r => r.horario));
   } catch (err) {
     console.error("Erro ao buscar agendamentos:", err);
-    res
-      .status(500)
-      .json({ success: false, message: "Erro no servidor" });
+    res.status(500).json({ success: false, message: "Erro no servidor" });
   }
 });
 
@@ -108,9 +103,7 @@ app.get("/agendamentos", async (req, res) => {
 const PORT = process.env.PORT || 3000;
 const startServer = async () => {
   await createTable();
-  app.listen(PORT, () =>
-    console.log(`Servidor rodando em http://localhost:${PORT}`)
-  );
+  app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
 };
 
 startServer();
