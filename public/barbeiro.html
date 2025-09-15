@@ -6,62 +6,82 @@
 <title>Painel do Barbeiro</title>
 <link rel="icon" type="image/png" href="favicon-removebg-preview.png">
 <style>
+  /* Reset e fontes */
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
   body {
-    margin: 0;
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-    background: #f2f2f2;
+    background: linear-gradient(to right, #f8f9fa, #e9ecef);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 20px;
   }
 
   /* Container geral */
   .container {
+    width: 100%;
     max-width: 900px;
-    margin: 40px auto;
-    padding: 30px;
     background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    padding: 40px 30px;
+    transition: all 0.3s ease;
   }
 
   h1, h2 {
     text-align: center;
-    color: #333;
+    margin-bottom: 30px;
+    color: #343a40;
+    font-weight: 600;
   }
 
-  /* Login */
+  /* LOGIN */
   #loginContainer {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
     max-width: 400px;
     margin: 50px auto;
   }
 
-  input[type="email"], input[type="password"], button {
+  input[type="email"], input[type="password"] {
     width: 100%;
-    padding: 12px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid #ced4da;
     font-size: 16px;
+    transition: all 0.3s;
+  }
+
+  input[type="email"]:focus, input[type="password"]:focus {
+    outline: none;
+    border-color: #6c757d;
+    box-shadow: 0 0 8px rgba(108,117,125,0.2);
   }
 
   button {
-    background: #654321;
-    color: white;
+    padding: 15px;
+    border-radius: 12px;
     border: none;
+    font-size: 16px;
+    font-weight: 500;
     cursor: pointer;
-    transition: background 0.3s;
+    background: #795548;
+    color: #fff;
+    transition: all 0.3s;
   }
 
   button:hover {
-    background: #492f15;
+    background: #5d4037;
   }
 
   .message {
     text-align: center;
     font-size: 14px;
-    padding: 8px;
-    border-radius: 6px;
+    padding: 10px;
+    border-radius: 8px;
     display: none;
+    font-weight: 500;
   }
 
   .success { background: #d4edda; color: #155724; }
@@ -70,49 +90,70 @@
   .forgot a {
     font-size: 14px;
     text-decoration: none;
-    color: #654321;
+    color: #795548;
     cursor: pointer;
     display: block;
     text-align: right;
+    transition: color 0.3s;
   }
 
-  /* Painel */
-  #painelContainer {
-    display: none;
-  }
+  .forgot a:hover { color: #5d4037; }
+
+  /* PAINEL */
+  #painelContainer { display: none; }
 
   select {
     width: 100%;
-    padding: 12px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid #ced4da;
     font-size: 16px;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    transition: all 0.3s;
+  }
+
+  select:focus {
+    outline: none;
+    border-color: #6c757d;
+    box-shadow: 0 0 8px rgba(108,117,125,0.2);
   }
 
   table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+    font-size: 16px;
   }
 
   th, td {
     text-align: left;
-    padding: 12px;
-    border-bottom: 1px solid #ccc;
+    padding: 14px;
   }
 
   th {
-    background: #654321;
+    background: #795548;
     color: #fff;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
   }
 
-  tr:nth-child(even) { background: #f1f1f1; }
+  tr {
+    background: #f8f9fa;
+    border-radius: 12px;
+    transition: transform 0.2s;
+  }
+
+  tr:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
 
   .no-appointments {
     text-align: center;
     margin-top: 20px;
     font-size: 16px;
-    color: #555;
+    color: #6c757d;
+    font-style: italic;
   }
 </style>
 </head>
@@ -173,7 +214,6 @@
   const tableBody = document.querySelector("#agendaTable tbody");
   const noAppointments = document.getElementById("noAppointments");
 
-  // LOGIN
   loginBtn.onclick = () => {
     const email = emailInput.value;
     const password = passwordInput.value;
@@ -184,8 +224,6 @@
     if(user){
       loginContainer.style.display = "none";
       painelContainer.style.display = "block";
-
-      // pré-seleciona o barbeiro logado
       barbeiroSelect.value = user.name;
       carregarAgendamentos(user.name);
     } else {
@@ -195,12 +233,10 @@
     }
   }
 
-  // Esqueci senha
   forgotLink.onclick = () => {
     window.open("https://wa.me/5541999016634?text=Ol%C3%A1,%20esqueci%20minha%20senha%20do%20painel", "_blank");
   }
 
-  // CARREGAR AGENDAMENTOS
   const API_URL = "https://soulfade.onrender.com/api";
 
   async function carregarAgendamentos(barbeiro) {
@@ -244,6 +280,5 @@
     carregarAgendamentos(barbeiroSelect.value);
   });
 </script>
-
 </body>
 </html>
