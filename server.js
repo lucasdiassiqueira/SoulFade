@@ -12,7 +12,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Middleware
-app.use(cors());
+app.use(cors({ origin: "*" })); // libera geral (pode colocar só o domínio do site se preferir)
 app.use(express.json()); // para body JSON
 
 // Banco PostgreSQL (Render fornece DATABASE_URL)
@@ -68,7 +68,7 @@ app.post("/api/agendamentos", async (req, res) => {
   }
 });
 
-// Fallback: se não achar rota da API, devolve index.html (SPA ou frontend puro)
+// Fallback: só entra se não for rota de API
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });

@@ -29,9 +29,7 @@
       color: #222;
     }
 
-    .form-group {
-      margin-bottom: 25px;
-    }
+    .form-group { margin-bottom: 25px; }
 
     label {
       display: block;
@@ -70,11 +68,8 @@
       transition: 0.3s;
     }
 
-    button:hover {
-      background: #815830;
-    }
+    button:hover { background: #815830; }
 
-    /* Dias */
     .days {
       display: flex;
       flex-wrap: wrap;
@@ -99,7 +94,6 @@
       font-weight: bold;
     }
 
-    /* Horários */
     .hours {
       display: none;
       flex-wrap: wrap;
@@ -134,19 +128,16 @@
   <div class="container">
     <h1>Agende seu Horário</h1>
     <form id="form-agendamento">
-      <!-- Nome -->
       <div class="form-group">
         <label for="nome">Seu Nome</label>
         <input type="text" id="nome" name="nome" required>
       </div>
 
-      <!-- Corte escolhido -->
       <div class="form-group">
         <label for="servico">Serviço</label>
         <input type="text" id="servico" name="servico" readonly>
       </div>
 
-      <!-- Barbeiro -->
       <div class="form-group">
         <label for="barbeiro">Selecione o Barbeiro</label>
         <select id="barbeiro" name="barbeiro" required>
@@ -157,35 +148,28 @@
         </select>
       </div>
 
-      <!-- Dias -->
       <div class="form-group">
         <label>Selecione o Dia</label>
         <div class="days" id="days"></div>
       </div>
 
-      <!-- Horários -->
       <div class="form-group">
         <label>Selecione o Horário</label>
         <div class="hours" id="hours"></div>
       </div>
 
-      <!-- Botão enviar -->
       <button type="button" id="btn-confirmar">Confirmar Agendamento</button>
     </form>
   </div>
 
 <script>
-  // 👉 Altere para a URL do backend no Render
-  const API_URL = "https://soulfade-backend.onrender.com";
+  // Agora não precisa de domínio fixo
+  const API_URL = "/api";
 
-  // Preencher serviço vindo da home
   const urlParams = new URLSearchParams(window.location.search);
   const servico = urlParams.get("servico");
-  if (servico) {
-    document.getElementById("servico").value = servico;
-  }
+  if (servico) document.getElementById("servico").value = servico;
 
-  // Gerar dias da semana com datas reais
   const diasSemana = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
   const daysContainer = document.getElementById("days");
 
@@ -206,15 +190,11 @@
       daysContainer.appendChild(div);
     }
   }
-
   gerarSemana();
 
-  // Horários
   function gerarHorarios() {
     const horarios = [];
-    for (let h = 9; h <= 18; h++) {
-      horarios.push(h.toString().padStart(2, "0") + ":00");
-    }
+    for (let h = 9; h <= 18; h++) horarios.push(h.toString().padStart(2, "0") + ":00");
     return horarios;
   }
 
@@ -222,19 +202,17 @@
   let selectedDay = null;
   let selectedHour = null;
 
-  // Função para carregar horários ocupados do backend
   async function carregarHorariosOcupados(barbeiro, dia) {
     try {
       const res = await fetch(`${API_URL}/agendamentos?barbeiro=${encodeURIComponent(barbeiro)}&dia=${dia}`);
       if (!res.ok) throw new Error("Erro ao buscar horários ocupados");
-      return await res.json(); // array de horários
+      return await res.json();
     } catch (err) {
       console.error(err);
       return [];
     }
   }
 
-  // Seleção de dias
   daysContainer.addEventListener("click", async e => {
     if (e.target.classList.contains("day")) {
       document.querySelectorAll(".day").forEach(d => d.classList.remove("active"));
@@ -274,7 +252,6 @@
     }
   });
 
-  // Atualizar horários se o barbeiro mudar
   document.getElementById("barbeiro").addEventListener("change", () => {
     selectedDay = null;
     selectedHour = null;
@@ -282,7 +259,6 @@
     document.querySelectorAll(".day").forEach(d => d.classList.remove("active"));
   });
 
-  // Botão Confirmar -> salvar no backend
   document.getElementById('btn-confirmar').addEventListener('click', async () => {
     const nome = document.getElementById('nome').value;
     const servicoVal = document.getElementById('servico').value;
@@ -302,11 +278,11 @@
         body: JSON.stringify(agendamento)
       });
       const data = await res.json();
-      if (data.success) {
+      if (res.ok) {
         alert("Agendamento confirmado!");
         window.location.href = "login.html";
       } else {
-        alert(data.message);
+        alert(data.error || "Erro ao confirmar agendamento.");
       }
     } catch (err) {
       console.error(err);
