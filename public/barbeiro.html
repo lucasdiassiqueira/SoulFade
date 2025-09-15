@@ -96,6 +96,7 @@
   </div>
 
 <script>
+  const API_URL = "https://soulfade.onrender.com/api"; // backend Render
   const barbeiroSelect = document.getElementById("barbeiroSelect");
   const tableBody = document.querySelector("#agendaTable tbody");
   const noAppointments = document.getElementById("noAppointments");
@@ -108,36 +109,33 @@
       return;
     }
 
-    const hoje = new Date().toISOString().split("T")[0];
     try {
-      const res = await fetch(`http://localhost:3000/agendamentos?barbeiro=${encodeURIComponent(barbeiro)}&dia=${hoje}`);
-      const ocupados = await res.json(); // array de horários já ocupados
+      const res = await fetch(`${API_URL}/agendamentos`);
+      const agendamentos = await res.json(); // retorna array completo
+
+      // Filtrar pelos do barbeiro selecionado
+      const agendamentosFiltrados = agendamentos.filter(a => a.barbeiro === barbeiro);
+
       tableBody.innerHTML = "";
 
-      if (ocupados.length === 0) {
-        noAppointments.textContent = "Nenhum agendamento para hoje.";
+      if (agendamentosFiltrados.length === 0) {
+        noAppointments.textContent = "Nenhum agendamento para este barbeiro.";
         noAppointments.style.display = "block";
         return;
       }
 
       noAppointments.style.display = "none";
 
-      // Para cada horário, buscar nome e serviço
-      for (let horario of ocupados) {
-        const detalheRes = await fetch(`http://localhost:3000/agendamentos?barbeiro=${encodeURIComponent(barbeiro)}&dia=${hoje}`);
-        const agendamentosFull = await detalheRes.json();
-
-        // Como agora nossa rota só retorna horários, precisamos criar outra rota ou pegar todos agendamentos
-        // Melhor: criar rota "/agendamentosFull?barbeiro=&dia=" que retorna {nome, servico, horario}
-        // Por enquanto vamos usar só horários
+      agendamentosFiltrados.forEach(a => {
         const row = document.createElement("tr");
         row.innerHTML = `
-          <td>${horario}</td>
-          <td>Cliente</td>
-          <td>Serviço</td>
+          <td>${a.horario}</td>
+          <td>${a.nome}</td>
+          <td>${a.servico}</td>
         `;
         tableBody.appendChild(row);
-      }
+      });
+
     } catch (err) {
       console.error(err);
       tableBody.innerHTML = "";
@@ -150,5 +148,6 @@
     carregarAgendamentos(barbeiroSelect.value);
   });
 </script>
+
 </body>
 </html>

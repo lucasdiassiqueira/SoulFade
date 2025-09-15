@@ -163,7 +163,6 @@
   </div>
 
 <script>
-  // Agora não precisa de domínio fixo
   const API_URL = "/api";
 
   const urlParams = new URLSearchParams(window.location.search);
@@ -234,7 +233,7 @@
         btn.classList.add("hour");
         btn.textContent = h;
 
-        if (ocupados.includes(h)) {
+        if (ocupados.some(a => a.horario === h)) {
           btn.style.opacity = "0.5";
           btn.style.pointerEvents = "none";
         }
@@ -280,7 +279,12 @@
       const data = await res.json();
       if (res.ok) {
         alert("Agendamento confirmado!");
-        window.location.href = "login.html";
+        // Limpar seleção e formulário
+        document.getElementById('nome').value = "";
+        selectedDay = null;
+        selectedHour = null;
+        hoursContainer.style.display = "none";
+        document.querySelectorAll(".day").forEach(d => d.classList.remove("active"));
       } else {
         alert(data.error || "Erro ao confirmar agendamento.");
       }
@@ -290,5 +294,6 @@
     }
   });
 </script>
+
 </body>
 </html>
