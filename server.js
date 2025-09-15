@@ -2,8 +2,6 @@ import express from "express";
 import pkg from "pg";
 import dotenv from "dotenv";
 import cors from "cors";
-app.use(cors());
-
 
 dotenv.config();
 const { Pool } = pkg;
@@ -43,7 +41,7 @@ app.post("/agendamentos", async (req, res) => {
     );
     res.json({ success: true, agendamento: result.rows[0] });
   } catch (err) {
-    if (err.code === "23505") { // chave única violada
+    if (err.code === "23505") {
       res.status(400).json({ success: false, message: "Horário já ocupado" });
     } else {
       console.error(err);
@@ -73,7 +71,9 @@ app.get("/", (req, res) => res.send("Backend Soul Fade rodando!"));
 const PORT = process.env.PORT || 3000;
 const startServer = async () => {
   await createTable();
-  app.listen(PORT, () => console.log(`Servidor rodando em http://localhost:${PORT}`));
+  app.listen(PORT, () =>
+    console.log(`Servidor rodando em http://localhost:${PORT}`)
+  );
 };
 
 startServer();
