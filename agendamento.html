@@ -175,6 +175,9 @@
   </div>
 
 <script>
+  // 👉 Altere para a URL do backend no Render
+  const API_URL = "https://soulfade-backend.onrender.com";
+
   // Preencher serviço vindo da home
   const urlParams = new URLSearchParams(window.location.search);
   const servico = urlParams.get("servico");
@@ -222,7 +225,7 @@
   // Função para carregar horários ocupados do backend
   async function carregarHorariosOcupados(barbeiro, dia) {
     try {
-      const res = await fetch(`http://localhost:3000/agendamentos?barbeiro=${encodeURIComponent(barbeiro)}&dia=${dia}`);
+      const res = await fetch(`${API_URL}/agendamentos?barbeiro=${encodeURIComponent(barbeiro)}&dia=${dia}`);
       if (!res.ok) throw new Error("Erro ao buscar horários ocupados");
       return await res.json(); // array de horários
     } catch (err) {
@@ -293,7 +296,7 @@
     const agendamento = { nome, servico: servicoVal, barbeiro, dia: selectedDay, horario: selectedHour };
 
     try {
-      const res = await fetch("http://localhost:3000/agendamentos", {
+      const res = await fetch(`${API_URL}/agendamentos`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(agendamento)
