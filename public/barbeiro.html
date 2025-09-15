@@ -1,105 +1,207 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Painel do Barbeiro</title>
-  <link rel="icon" type="image/png" href="favicon-removebg-preview.png">
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, sans-serif;
-      background: #654321;
-      color: #333;
-      margin: 0;
-      padding: 0;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel do Barbeiro</title>
+<link rel="icon" type="image/png" href="favicon-removebg-preview.png">
+<style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: #f2f2f2;
+  }
 
-    .container {
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 30px;
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-    }
+  /* Container geral */
+  .container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  }
 
-    h1 {
-      text-align: center;
-      margin-bottom: 30px;
-      color: #222;
-    }
+  h1, h2 {
+    text-align: center;
+    color: #333;
+  }
 
-    select {
-      width: 100%;
-      padding: 12px;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-      font-size: 16px;
-      margin-bottom: 20px;
-    }
+  /* Login */
+  #loginContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 400px;
+    margin: 50px auto;
+  }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
+  input[type="email"], input[type="password"], button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+  }
 
-    th, td {
-      text-align: left;
-      padding: 12px;
-      border-bottom: 1px solid #ccc;
-    }
+  button {
+    background: #654321;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
 
-    th {
-      background: #654321;
-      color: #fff;
-      font-weight: bold;
-    }
+  button:hover {
+    background: #492f15;
+  }
 
-    tr:nth-child(even) {
-      background: #f1f1f1;
-    }
+  .message {
+    text-align: center;
+    font-size: 14px;
+    padding: 8px;
+    border-radius: 6px;
+    display: none;
+  }
 
-    .no-appointments {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 16px;
-      color: #555;
-    }
-  </style>
+  .success { background: #d4edda; color: #155724; }
+  .error { background: #f8d7da; color: #721c24; }
+
+  .forgot a {
+    font-size: 14px;
+    text-decoration: none;
+    color: #654321;
+    cursor: pointer;
+    display: block;
+    text-align: right;
+  }
+
+  /* Painel */
+  #painelContainer {
+    display: none;
+  }
+
+  select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th, td {
+    text-align: left;
+    padding: 12px;
+    border-bottom: 1px solid #ccc;
+  }
+
+  th {
+    background: #654321;
+    color: #fff;
+  }
+
+  tr:nth-child(even) { background: #f1f1f1; }
+
+  .no-appointments {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 16px;
+    color: #555;
+  }
+</style>
 </head>
 <body>
-  <div class="container">
-    <h1>Painel do Barbeiro</h1>
 
-    <!-- Seleção do barbeiro -->
-    <label for="barbeiroSelect">Selecione o Barbeiro:</label>
-    <select id="barbeiroSelect">
-      <option value="">-- Escolha um barbeiro --</option>
-      <option value="Lucas Dias">Lucas Dias</option>
-      <option value="Isaias Barreto">Isaias Barreto</option>
-      <option value="Isaias Santana">Isaias Santana</option>
-    </select>
+<!-- LOGIN -->
+<div id="loginContainer" class="container">
+  <h2>Login do Barbeiro</h2>
+  <input id="email" type="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Senha">
+  <button id="loginBtn">Entrar</button>
+  <div class="message" id="loginMessage"></div>
+  <div class="forgot"><a id="forgotLink">Esqueceu a senha?</a></div>
+</div>
 
-    <!-- Tabela de agendamentos -->
-    <table id="agendaTable">
-      <thead>
-        <tr>
-          <th>Horário</th>
-          <th>Cliente</th>
-          <th>Serviço</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+<!-- PAINEL -->
+<div id="painelContainer" class="container">
+  <h1>Painel do Barbeiro</h1>
 
-    <div class="no-appointments" id="noAppointments">Selecione um barbeiro para ver os agendamentos.</div>
-  </div>
+  <label for="barbeiroSelect">Selecione o Barbeiro:</label>
+  <select id="barbeiroSelect">
+    <option value="">-- Escolha um barbeiro --</option>
+    <option value="Lucas Dias">Lucas Dias</option>
+    <option value="Isaias Barreto">Isaias Barreto</option>
+    <option value="Isaias Santana">Isaias Santana</option>
+  </select>
+
+  <table id="agendaTable">
+    <thead>
+      <tr>
+        <th>Horário</th>
+        <th>Cliente</th>
+        <th>Serviço</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <div class="no-appointments" id="noAppointments">Selecione um barbeiro para ver os agendamentos.</div>
+</div>
 
 <script>
-  const API_URL = "https://soulfade.onrender.com/api"; // backend Render
+  const users = [
+    {email: "barbeiro1@exemplo.com", password: "123456", name: "Lucas Dias"},
+    {email: "barbeiro2@exemplo.com", password: "654321", name: "Isaias Barreto"},
+    {email: "barbeiro3@exemplo.com", password: "abc123", name: "Isaias Santana"}
+  ];
+
+  const loginBtn = document.getElementById("loginBtn");
+  const emailInput = document.getElementById("email");
+  const passwordInput = document.getElementById("password");
+  const loginMessage = document.getElementById("loginMessage");
+  const forgotLink = document.getElementById("forgotLink");
+
+  const loginContainer = document.getElementById("loginContainer");
+  const painelContainer = document.getElementById("painelContainer");
   const barbeiroSelect = document.getElementById("barbeiroSelect");
   const tableBody = document.querySelector("#agendaTable tbody");
   const noAppointments = document.getElementById("noAppointments");
+
+  // LOGIN
+  loginBtn.onclick = () => {
+    const email = emailInput.value;
+    const password = passwordInput.value;
+    const user = users.find(u => u.email === email && u.password === password);
+
+    loginMessage.style.display = "none";
+
+    if(user){
+      loginContainer.style.display = "none";
+      painelContainer.style.display = "block";
+
+      // pré-seleciona o barbeiro logado
+      barbeiroSelect.value = user.name;
+      carregarAgendamentos(user.name);
+    } else {
+      loginMessage.textContent = "Email ou senha incorretos!";
+      loginMessage.className = "message error";
+      loginMessage.style.display = "block";
+    }
+  }
+
+  // Esqueci senha
+  forgotLink.onclick = () => {
+    window.open("https://wa.me/SEUNUMERO?text=Ol%C3%A1,%20esqueci%20minha%20senha%20do%20painel", "_blank");
+  }
+
+  // CARREGAR AGENDAMENTOS
+  const API_URL = "https://soulfade.onrender.com/api";
 
   async function carregarAgendamentos(barbeiro) {
     if (!barbeiro) {
@@ -111,9 +213,7 @@
 
     try {
       const res = await fetch(`${API_URL}/agendamentos`);
-      const agendamentos = await res.json(); // retorna array completo
-
-      // Filtrar pelos do barbeiro selecionado
+      const agendamentos = await res.json();
       const agendamentosFiltrados = agendamentos.filter(a => a.barbeiro === barbeiro);
 
       tableBody.innerHTML = "";
@@ -128,11 +228,7 @@
 
       agendamentosFiltrados.forEach(a => {
         const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${a.horario}</td>
-          <td>${a.nome}</td>
-          <td>${a.servico}</td>
-        `;
+        row.innerHTML = `<td>${a.horario}</td><td>${a.nome}</td><td>${a.servico}</td>`;
         tableBody.appendChild(row);
       });
 
