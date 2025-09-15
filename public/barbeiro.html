@@ -8,91 +8,121 @@
 <style>
   body {
     margin: 0;
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-    background: #f2f2f2;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #e7d4c0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
   }
 
-  /* Container geral */
   .container {
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 30px;
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    display: flex;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+    max-width: 1000px;
+    width: 100%;
+    min-height: 500px;
   }
 
-  h1, h2 {
-    text-align: center;
-    color: #333;
-  }
-
-  /* Login */
-  #loginContainer {
+  /* Lado esquerdo do login */
+  .left {
+    flex: 1;
+    background: #654321;
+    color: white;
+    padding: 50px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    max-width: 400px;
-    margin: 50px auto;
+    justify-content: center;
   }
 
-  input[type="email"], input[type="password"], button {
+  .left h2 { font-size: 32px; margin-bottom: 20px; }
+  .left p { font-size: 16px; line-height: 1.6; opacity: 0.9; }
+
+  /* Lado direito login / painel */
+  .right {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  h3 { margin-bottom: 20px; text-align: center; color: #333; }
+
+  input[type="email"], input[type="password"], select {
     width: 100%;
-    padding: 12px;
-    border-radius: 10px;
+    padding: 14px;
+    margin: 10px 0;
     border: 1px solid #ccc;
+    border-radius: 8px;
     font-size: 16px;
   }
 
   button {
+    width: 100%;
+    padding: 14px;
     background: #654321;
-    color: white;
     border: none;
+    color: white;
+    border-radius: 8px;
+    font-size: 16px;
     cursor: pointer;
+    margin-top: 10px;
     transition: background 0.3s;
   }
 
-  button:hover {
-    background: #492f15;
+  button:hover { background: #492f15; }
+
+  .forgot {
+    text-align: right;
+    margin-top: 10px;
+  }
+
+  .forgot a {
+    font-size: 14px;
+    color: #654321;
+    text-decoration: none;
+    cursor: pointer;
   }
 
   .message {
-    text-align: center;
+    margin-top: 15px;
     font-size: 14px;
-    padding: 8px;
-    border-radius: 6px;
+    text-align: center;
     display: none;
+    padding: 10px;
+    border-radius: 6px;
   }
 
   .success { background: #d4edda; color: #155724; }
   .error { background: #f8d7da; color: #721c24; }
 
-  .forgot a {
-    font-size: 14px;
-    text-decoration: none;
-    color: #654321;
-    cursor: pointer;
-    display: block;
-    text-align: right;
-  }
-
-  /* Painel */
-  #painelContainer {
+  .spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #654321;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin: 10px auto;
     display: none;
   }
 
-  select {
-    width: 100%;
-    padding: 12px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-    margin-bottom: 20px;
+  @keyframes spin { 100% { transform: rotate(360deg); } }
+
+  /* Painel do barbeiro */
+  #painelContainer {
+    display: none;
+    flex-direction: column;
   }
 
   table {
     width: 100%;
     border-collapse: collapse;
+    margin-top: 20px;
   }
 
   th, td {
@@ -103,7 +133,7 @@
 
   th {
     background: #654321;
-    color: #fff;
+    color: white;
   }
 
   tr:nth-child(even) { background: #f1f1f1; }
@@ -118,72 +148,89 @@
 </head>
 <body>
 
-<!-- LOGIN -->
-<div id="loginContainer" class="container">
-  <h2>Login do Barbeiro</h2>
-  <input id="email" type="email" placeholder="Email">
-  <input id="password" type="password" placeholder="Senha">
-  <button id="loginBtn">Entrar</button>
-  <div class="message" id="loginMessage"></div>
-  <div class="forgot"><a id="forgotLink">Esqueceu a senha?</a></div>
-</div>
+<div class="container">
+  <!-- Lado esquerdo -->
+  <div class="left">
+    <h2>Bem-vindo ao Painel</h2>
+    <p>Entre com seu email e senha para acessar os agendamentos do dia.  
+       Se esqueceu sua senha, você pode recuperá-la facilmente.</p>
+  </div>
 
-<!-- PAINEL -->
-<div id="painelContainer" class="container">
-  <h1>Painel do Barbeiro</h1>
+  <!-- Lado direito -->
+  <div class="right">
+    <!-- LOGIN -->
+    <div id="loginContainer">
+      <h3>Login do Barbeiro</h3>
+      <input id="email" type="email" placeholder="Email">
+      <input id="password" type="password" placeholder="Senha">
+      <button id="loginBtn">Entrar</button>
+      <div class="spinner" id="spinner"></div>
+      <div class="message" id="loginMessage"></div>
+      <div class="forgot"><a id="forgotLink">Esqueceu a senha?</a></div>
+    </div>
 
-  <label for="barbeiroSelect">Selecione o Barbeiro:</label>
-  <select id="barbeiroSelect">
-    <option value="">-- Escolha um barbeiro --</option>
-    <option value="Lucas Dias">Lucas Dias</option>
-    <option value="Isaias Barreto">Isaias Barreto</option>
-    <option value="Isaias Santana">Isaias Santana</option>
-  </select>
+    <!-- PAINEL -->
+    <div id="painelContainer">
+      <h3>Painel do Barbeiro</h3>
 
-  <table id="agendaTable">
-    <thead>
-      <tr>
-        <th>Horário</th>
-        <th>Cliente</th>
-        <th>Serviço</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+      <label for="barbeiroSelect">Selecione o Barbeiro:</label>
+      <select id="barbeiroSelect">
+        <option value="">-- Escolha um barbeiro --</option>
+        <option value="Lucas Dias">Lucas Dias</option>
+        <option value="Isaias Barreto">Isaias Barreto</option>
+        <option value="Isaias Santana">Isaias Santana</option>
+      </select>
 
-  <div class="no-appointments" id="noAppointments">Selecione um barbeiro para ver os agendamentos.</div>
+      <table id="agendaTable">
+        <thead>
+          <tr>
+            <th>Horário</th>
+            <th>Cliente</th>
+            <th>Serviço</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <div class="no-appointments" id="noAppointments">Selecione um barbeiro para ver os agendamentos.</div>
+    </div>
+  </div>
 </div>
 
 <script>
-  const users = [
-    {email: "lucas2710", password: "lucas2710", name: "Lucas Dias"},
-    {email: "isaias1234", password: "isaias1234", name: "Isaias Barreto"},
-    {email: "isaiasm1234", password: "isaiasm1234", name: "Isaias Santana"}
-  ];
+const users = [
+  {email: "lucas2710", password: "lucas2710", name: "Lucas Dias"},
+  {email: "isaias1234", password: "isaias1234", name: "Isaias Barreto"},
+  {email: "isaiasm1234", password: "isaiasm1234", name: "Isaias Santana"}
+];
 
-  const loginBtn = document.getElementById("loginBtn");
-  const emailInput = document.getElementById("email");
-  const passwordInput = document.getElementById("password");
-  const loginMessage = document.getElementById("loginMessage");
-  const forgotLink = document.getElementById("forgotLink");
+const loginBtn = document.getElementById("loginBtn");
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+const loginMessage = document.getElementById("loginMessage");
+const spinner = document.getElementById("spinner");
+const forgotLink = document.getElementById("forgotLink");
 
-  const loginContainer = document.getElementById("loginContainer");
-  const painelContainer = document.getElementById("painelContainer");
-  const barbeiroSelect = document.getElementById("barbeiroSelect");
-  const tableBody = document.querySelector("#agendaTable tbody");
-  const noAppointments = document.getElementById("noAppointments");
+const loginContainer = document.getElementById("loginContainer");
+const painelContainer = document.getElementById("painelContainer");
+const barbeiroSelect = document.getElementById("barbeiroSelect");
+const tableBody = document.querySelector("#agendaTable tbody");
+const noAppointments = document.getElementById("noAppointments");
 
-  // LOGIN
-  loginBtn.onclick = () => {
-    const email = emailInput.value;
-    const password = passwordInput.value;
-    const user = users.find(u => u.email === email && u.password === password);
+// LOGIN
+loginBtn.onclick = () => {
+  const email = emailInput.value;
+  const password = passwordInput.value;
+  const user = users.find(u => u.email === email && u.password === password);
 
-    loginMessage.style.display = "none";
+  loginMessage.style.display = "none";
+  spinner.style.display = "block";
 
+  setTimeout(() => {
+    spinner.style.display = "none";
     if(user){
       loginContainer.style.display = "none";
-      painelContainer.style.display = "block";
+      painelContainer.style.display = "flex";
 
       // pré-seleciona o barbeiro logado
       barbeiroSelect.value = user.name;
@@ -193,56 +240,57 @@
       loginMessage.className = "message error";
       loginMessage.style.display = "block";
     }
+  }, 800);
+}
+
+// Esqueci senha -> WhatsApp
+forgotLink.onclick = () => {
+  window.open("https://wa.me/5541999016634?text=Ol%C3%A1,%20esqueci%20minha%20senha%20do%20painel", "_blank");
+}
+
+// CARREGAR AGENDAMENTOS
+const API_URL = "https://soulfade.onrender.com/api";
+
+async function carregarAgendamentos(barbeiro) {
+  if (!barbeiro) {
+    tableBody.innerHTML = "";
+    noAppointments.textContent = "Selecione um barbeiro para ver os agendamentos.";
+    noAppointments.style.display = "block";
+    return;
   }
 
-  // Esqueci senha
-  forgotLink.onclick = () => {
-    window.open("https://wa.me/5541999016634?text=Ol%C3%A1,%20esqueci%20minha%20senha%20do%20painel", "_blank");
-  }
+  try {
+    const res = await fetch(`${API_URL}/agendamentos`);
+    const agendamentos = await res.json();
+    const agendamentosFiltrados = agendamentos.filter(a => a.barbeiro === barbeiro);
 
-  // CARREGAR AGENDAMENTOS
-  const API_URL = "https://soulfade.onrender.com/api";
+    tableBody.innerHTML = "";
 
-  async function carregarAgendamentos(barbeiro) {
-    if (!barbeiro) {
-      tableBody.innerHTML = "";
-      noAppointments.textContent = "Selecione um barbeiro para ver os agendamentos.";
+    if (agendamentosFiltrados.length === 0) {
+      noAppointments.textContent = "Nenhum agendamento para este barbeiro.";
       noAppointments.style.display = "block";
       return;
     }
 
-    try {
-      const res = await fetch(`${API_URL}/agendamentos`);
-      const agendamentos = await res.json();
-      const agendamentosFiltrados = agendamentos.filter(a => a.barbeiro === barbeiro);
+    noAppointments.style.display = "none";
 
-      tableBody.innerHTML = "";
+    agendamentosFiltrados.forEach(a => {
+      const row = document.createElement("tr");
+      row.innerHTML = `<td>${a.horario}</td><td>${a.nome}</td><td>${a.servico}</td>`;
+      tableBody.appendChild(row);
+    });
 
-      if (agendamentosFiltrados.length === 0) {
-        noAppointments.textContent = "Nenhum agendamento para este barbeiro.";
-        noAppointments.style.display = "block";
-        return;
-      }
-
-      noAppointments.style.display = "none";
-
-      agendamentosFiltrados.forEach(a => {
-        const row = document.createElement("tr");
-        row.innerHTML = `<td>${a.horario}</td><td>${a.nome}</td><td>${a.servico}</td>`;
-        tableBody.appendChild(row);
-      });
-
-    } catch (err) {
-      console.error(err);
-      tableBody.innerHTML = "";
-      noAppointments.textContent = "Erro ao carregar agendamentos.";
-      noAppointments.style.display = "block";
-    }
+  } catch (err) {
+    console.error(err);
+    tableBody.innerHTML = "";
+    noAppointments.textContent = "Erro ao carregar agendamentos.";
+    noAppointments.style.display = "block";
   }
+}
 
-  barbeiroSelect.addEventListener("change", () => {
-    carregarAgendamentos(barbeiroSelect.value);
-  });
+barbeiroSelect.addEventListener("change", () => {
+  carregarAgendamentos(barbeiroSelect.value);
+});
 </script>
 
 </body>
