@@ -27,7 +27,6 @@
     min-height: 500px;
   }
 
-  /* Lado esquerdo do login */
   .left {
     flex: 1;
     background: #654321;
@@ -41,7 +40,6 @@
   .left h2 { font-size: 32px; margin-bottom: 20px; }
   .left p { font-size: 16px; line-height: 1.6; opacity: 0.9; }
 
-  /* Lado direito login / painel */
   .right {
     flex: 1;
     padding: 40px;
@@ -52,7 +50,7 @@
 
   h3 { margin-bottom: 20px; text-align: center; color: #333; }
 
-  input[type="email"], input[type="password"], select {
+  input[type="email"], input[type="password"] {
     width: 100%;
     padding: 14px;
     margin: 10px 0;
@@ -113,7 +111,6 @@
 
   @keyframes spin { 100% { transform: rotate(360deg); } }
 
-  /* Painel do barbeiro */
   #painelContainer {
     display: none;
     flex-direction: column;
@@ -149,16 +146,13 @@
 <body>
 
 <div class="container">
-  <!-- Lado esquerdo -->
   <div class="left">
     <h2>Bem-vindo ao Painel</h2>
     <p>Entre com seu email e senha para acessar os agendamentos do dia.  
        Se esqueceu sua senha, você pode recuperá-la facilmente.</p>
   </div>
 
-  <!-- Lado direito -->
   <div class="right">
-    <!-- LOGIN -->
     <div id="loginContainer">
       <h3>Login do Barbeiro</h3>
       <input id="email" type="email" placeholder="Email">
@@ -169,18 +163,8 @@
       <div class="forgot"><a id="forgotLink">Esqueceu a senha?</a></div>
     </div>
 
-    <!-- PAINEL -->
     <div id="painelContainer">
       <h3>Painel do Barbeiro</h3>
-
-      <label for="barbeiroSelect">Selecione o Barbeiro:</label>
-      <select id="barbeiroSelect">
-        <option value="">-- Escolha um barbeiro --</option>
-        <option value="Lucas Dias">Lucas Dias</option>
-        <option value="Isaias Barreto">Isaias Barreto</option>
-        <option value="Isaias Santana">Isaias Santana</option>
-      </select>
-
       <table id="agendaTable">
         <thead>
           <tr>
@@ -191,8 +175,7 @@
         </thead>
         <tbody></tbody>
       </table>
-
-      <div class="no-appointments" id="noAppointments">Selecione um barbeiro para ver os agendamentos.</div>
+      <div class="no-appointments" id="noAppointments">Carregando agendamentos...</div>
     </div>
   </div>
 </div>
@@ -213,11 +196,9 @@ const forgotLink = document.getElementById("forgotLink");
 
 const loginContainer = document.getElementById("loginContainer");
 const painelContainer = document.getElementById("painelContainer");
-const barbeiroSelect = document.getElementById("barbeiroSelect");
 const tableBody = document.querySelector("#agendaTable tbody");
 const noAppointments = document.getElementById("noAppointments");
 
-// LOGIN
 loginBtn.onclick = () => {
   const email = emailInput.value;
   const password = passwordInput.value;
@@ -231,9 +212,6 @@ loginBtn.onclick = () => {
     if(user){
       loginContainer.style.display = "none";
       painelContainer.style.display = "flex";
-
-      // pré-seleciona o barbeiro logado
-      barbeiroSelect.value = user.name;
       carregarAgendamentos(user.name);
     } else {
       loginMessage.textContent = "Email ou senha incorretos!";
@@ -243,22 +221,14 @@ loginBtn.onclick = () => {
   }, 800);
 }
 
-// Esqueci senha -> WhatsApp
 forgotLink.onclick = () => {
   window.open("https://wa.me/5541999016634?text=Ol%C3%A1,%20esqueci%20minha%20senha%20do%20painel", "_blank");
 }
 
-// CARREGAR AGENDAMENTOS
 const API_URL = "https://soulfade.onrender.com/api";
 
 async function carregarAgendamentos(barbeiro) {
-  if (!barbeiro) {
-    tableBody.innerHTML = "";
-    noAppointments.textContent = "Selecione um barbeiro para ver os agendamentos.";
-    noAppointments.style.display = "block";
-    return;
-  }
-
+  if (!barbeiro) return;
   try {
     const res = await fetch(`${API_URL}/agendamentos`);
     const agendamentos = await res.json();
@@ -267,7 +237,7 @@ async function carregarAgendamentos(barbeiro) {
     tableBody.innerHTML = "";
 
     if (agendamentosFiltrados.length === 0) {
-      noAppointments.textContent = "Nenhum agendamento para este barbeiro.";
+      noAppointments.textContent = "Nenhum agendamento para hoje.";
       noAppointments.style.display = "block";
       return;
     }
@@ -287,10 +257,6 @@ async function carregarAgendamentos(barbeiro) {
     noAppointments.style.display = "block";
   }
 }
-
-barbeiroSelect.addEventListener("change", () => {
-  carregarAgendamentos(barbeiroSelect.value);
-});
 </script>
 
 </body>
