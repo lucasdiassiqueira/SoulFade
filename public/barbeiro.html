@@ -17,7 +17,7 @@
   }
   .container {
     width: 100%;
-    max-width: 900px;
+    max-width: 1000px;
     background: #fff;
     border-radius: 20px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.15);
@@ -144,9 +144,11 @@
   <table id="agendaTable">
     <thead>
       <tr>
+        <th>Dia</th>
         <th>Horário</th>
         <th>Cliente</th>
         <th>Serviço</th>
+        <th>Barbeiro</th>
       </tr>
     </thead>
     <tbody></tbody>
@@ -211,7 +213,11 @@
     try {
       const res = await fetch(`${API_URL}/agendamentos`);
       const agendamentos = await res.json();
-      const agendamentosFiltrados = agendamentos.filter(a => a.barbeiro === barbeiro && a.dia === dia);
+
+      // força a data no mesmo formato yyyy-mm-dd
+      const agendamentosFiltrados = agendamentos.filter(a => 
+        a.barbeiro === barbeiro && a.dia.split("T")[0] === dia
+      );
 
       tableBody.innerHTML = "";
 
@@ -225,7 +231,13 @@
 
       agendamentosFiltrados.forEach(a => {
         const row = document.createElement("tr");
-        row.innerHTML = `<td>${a.horario}</td><td>${a.nome}</td><td>${a.servico}</td>`;
+        row.innerHTML = `
+          <td>${new Date(a.dia).toLocaleDateString("pt-BR")}</td>
+          <td>${a.horario}</td>
+          <td>${a.nome}</td>
+          <td>${a.servico}</td>
+          <td>${a.barbeiro}</td>
+        `;
         tableBody.appendChild(row);
       });
 
