@@ -157,6 +157,14 @@
   <div class="no-appointments" id="noAppointments">Selecione um barbeiro e uma data para ver os agendamentos.</div>
 </div>
 
+<!-- PAINEL DO GERENTE -->
+<div id="gerentePanel" style="display:none; margin-top:30px; padding:20px; background:#f1f1f1; border-radius:12px;">
+  <h2>Dashboard do Gerente</h2>
+  <p>Aqui você verá vendas e desempenho dos barbeiros:</p>
+  <ul id="ganhosBarbeiros"></ul>
+</div>
+
+
 <script>
   const users = [
     {email: "lucasmanager", password: "lucas2710", name: "Lucas Dias"},
@@ -258,6 +266,33 @@
   dateSelect.addEventListener("change", () => {
     carregarAgendamentos(barbeiroSelect.value, dateSelect.value);
   });
+
+  if(user){
+  loginContainer.style.display = "none";
+  painelContainer.style.display = "block";
+  barbeiroSelect.value = user.name;
+  carregarAgendamentos(user.name, dateSelect.value);
+
+  // MOSTRAR PAINEL DO GERENTE
+  if(user.email === "lucasmanager") {
+    const gerentePanel = document.getElementById("gerentePanel");
+    gerentePanel.style.display = "block";
+
+    fetch(`${API_URL}/ganhos`)
+      .then(res => res.json())
+      .then(ganhos => {
+        const ul = document.getElementById("ganhosBarbeiros");
+        ul.innerHTML = "";
+        for (let barbeiro in ganhos) {
+          const li = document.createElement("li");
+          li.textContent = `${barbeiro}: R$ ${ganhos[barbeiro].toFixed(2)}`;
+          ul.appendChild(li);
+        }
+      })
+      .catch(err => console.error(err));
+  }
+}
+
 </script>
 </body>
 </html>

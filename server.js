@@ -68,6 +68,36 @@ app.post("/api/agendamentos", async (req, res) => {
   }
 });
 
+// Supondo que cada serviço tenha valor fixo, você pode criar um objeto:
+const valoresServico = {
+  "Corte Simples": 50,
+  "Corte + Barba": 80,
+  "Barba": 30,
+  "Corte Especial": 100
+};
+
+// Rota para o gerente ver ganhos
+app.get("/api/ganhos", async (req, res) => {
+  try {
+    const result = await pool.query("SELECT * FROM agendamentos ORDER BY dia, horario");
+    const agendamentos = result.rows;
+
+    // Calcular 20% de cada serviço
+    const ganhos = {};
+    agendamentos.forEach(a => {
+      const valor = valoresServico[a.servico] || 50; // padrão 50 se não definido
+      if (!ganhos[a.barbeiro]) ganhos[a.barbeiro] = 0;
+      ganhos[a.barbeiro] += valor * 0.2; // 20%
+    });
+
+    res.json(ganhos);
+  } catch (err) {
+    console.error("Erro ao buscar ganhos:", err);
+    res.status(500).json({ error: "Erro no servidor" });
+  }
+});
+
+
 // Fallback: só entra se não for rota de API
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
