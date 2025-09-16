@@ -215,9 +215,11 @@
       const agendamentos = await res.json();
 
       // força a data no mesmo formato yyyy-mm-dd
-      const agendamentosFiltrados = agendamentos.filter(a => 
-        a.barbeiro === barbeiro && a.dia.split("T")[0] === dia
-      );
+      const agendamentosFiltrados = agendamentos.filter(a => {
+      const dataBanco = new Date(a.dia).toISOString().split("T")[0]; 
+      return a.barbeiro === barbeiro && dataBanco === dia;
+      });
+      ;
 
       tableBody.innerHTML = "";
 
