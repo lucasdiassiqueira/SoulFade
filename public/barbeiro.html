@@ -6,7 +6,6 @@
 <title>Painel do Barbeiro</title>
 <link rel="icon" type="image/png" href="favicon-removebg-preview.png">
 <style>
-  /* Reset e fontes */
   * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
   body {
     background: #5d4037;
@@ -16,8 +15,6 @@
     align-items: flex-start;
     padding: 40px 20px;
   }
-
-  /* Container geral */
   .container {
     width: 100%;
     max-width: 900px;
@@ -27,15 +24,12 @@
     padding: 40px 30px;
     transition: all 0.3s ease;
   }
-
   h1, h2 {
     text-align: center;
     margin-bottom: 30px;
     color: #343a40;
     font-weight: 600;
   }
-
-  /* LOGIN */
   #loginContainer {
     display: flex;
     flex-direction: column;
@@ -43,8 +37,7 @@
     max-width: 400px;
     margin: 50px auto;
   }
-
-  input[type="email"], input[type="password"] {
+  input[type="email"], input[type="password"], input[type="date"], select {
     width: 100%;
     padding: 15px;
     border-radius: 12px;
@@ -52,13 +45,11 @@
     font-size: 16px;
     transition: all 0.3s;
   }
-
-  input[type="email"]:focus, input[type="password"]:focus {
+  input:focus, select:focus {
     outline: none;
     border-color: #6c757d;
     box-shadow: 0 0 8px rgba(108,117,125,0.2);
   }
-
   button {
     padding: 15px;
     border-radius: 12px;
@@ -70,11 +61,7 @@
     color: #fff;
     transition: all 0.3s;
   }
-
-  button:hover {
-    background: #5d4037;
-  }
-
+  button:hover { background: #5d4037; }
   .message {
     text-align: center;
     font-size: 14px;
@@ -83,10 +70,8 @@
     display: none;
     font-weight: 500;
   }
-
   .success { background: #d4edda; color: #155724; }
   .error { background: #f8d7da; color: #721c24; }
-
   .forgot a {
     font-size: 14px;
     text-decoration: none;
@@ -96,58 +81,30 @@
     text-align: right;
     transition: color 0.3s;
   }
-
   .forgot a:hover { color: #5d4037; }
-
-  /* PAINEL */
   #painelContainer { display: none; }
-
-  select {
-    width: 100%;
-    padding: 14px;
-    border-radius: 12px;
-    border: 1px solid #ced4da;
-    font-size: 16px;
-    margin-bottom: 25px;
-    transition: all 0.3s;
-  }
-
-  select:focus {
-    outline: none;
-    border-color: #6c757d;
-    box-shadow: 0 0 8px rgba(108,117,125,0.2);
-  }
-
   table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0 8px;
     font-size: 16px;
   }
-
-  th, td {
-    text-align: left;
-    padding: 14px;
-  }
-
+  th, td { text-align: left; padding: 14px; }
   th {
     background: #795548;
     color: #fff;
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
   }
-
   tr {
     background: #f8f9fa;
     border-radius: 12px;
     transition: transform 0.2s;
   }
-
   tr:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   }
-
   .no-appointments {
     text-align: center;
     margin-top: 20px;
@@ -181,6 +138,9 @@
     <option value="Isaias Santana">Isaias Santana</option>
   </select>
 
+  <label for="dateSelect">Selecione a Data:</label>
+  <input type="date" id="dateSelect">
+
   <table id="agendaTable">
     <thead>
       <tr>
@@ -192,14 +152,14 @@
     <tbody></tbody>
   </table>
 
-  <div class="no-appointments" id="noAppointments">Selecione um barbeiro para ver os agendamentos.</div>
+  <div class="no-appointments" id="noAppointments">Selecione um barbeiro e uma data para ver os agendamentos.</div>
 </div>
 
 <script>
   const users = [
-    {email: "lucas2710", password: "lucas2710", name: "Lucas Dias"},
+    {email: "lucasmanager", password: "lucas2710", name: "Lucas Dias"},
     {email: "isaias1234", password: "isaias1234", name: "Isaias Barreto"},
-    {email: "isaiasm1234", password: "isaiasm1234", name: "Isaias Santana"}
+    {email: "isaiasbarber", password: "isaias1708", name: "Isaias Santana"}
   ];
 
   const loginBtn = document.getElementById("loginBtn");
@@ -211,6 +171,7 @@
   const loginContainer = document.getElementById("loginContainer");
   const painelContainer = document.getElementById("painelContainer");
   const barbeiroSelect = document.getElementById("barbeiroSelect");
+  const dateSelect = document.getElementById("dateSelect");
   const tableBody = document.querySelector("#agendaTable tbody");
   const noAppointments = document.getElementById("noAppointments");
 
@@ -225,7 +186,7 @@
       loginContainer.style.display = "none";
       painelContainer.style.display = "block";
       barbeiroSelect.value = user.name;
-      carregarAgendamentos(user.name);
+      carregarAgendamentos(user.name, dateSelect.value);
     } else {
       loginMessage.textContent = "Email ou senha incorretos!";
       loginMessage.className = "message error";
@@ -239,10 +200,10 @@
 
   const API_URL = "https://soulfade.onrender.com/api";
 
-  async function carregarAgendamentos(barbeiro) {
-    if (!barbeiro) {
+  async function carregarAgendamentos(barbeiro, dia) {
+    if (!barbeiro || !dia) {
       tableBody.innerHTML = "";
-      noAppointments.textContent = "Selecione um barbeiro para ver os agendamentos.";
+      noAppointments.textContent = "Selecione um barbeiro e uma data para ver os agendamentos.";
       noAppointments.style.display = "block";
       return;
     }
@@ -250,12 +211,12 @@
     try {
       const res = await fetch(`${API_URL}/agendamentos`);
       const agendamentos = await res.json();
-      const agendamentosFiltrados = agendamentos.filter(a => a.barbeiro === barbeiro);
+      const agendamentosFiltrados = agendamentos.filter(a => a.barbeiro === barbeiro && a.dia === dia);
 
       tableBody.innerHTML = "";
 
       if (agendamentosFiltrados.length === 0) {
-        noAppointments.textContent = "Nenhum agendamento para este barbeiro.";
+        noAppointments.textContent = "Nenhum agendamento para este barbeiro nesta data.";
         noAppointments.style.display = "block";
         return;
       }
@@ -277,7 +238,11 @@
   }
 
   barbeiroSelect.addEventListener("change", () => {
-    carregarAgendamentos(barbeiroSelect.value);
+    carregarAgendamentos(barbeiroSelect.value, dateSelect.value);
+  });
+
+  dateSelect.addEventListener("change", () => {
+    carregarAgendamentos(barbeiroSelect.value, dateSelect.value);
   });
 </script>
 </body>
