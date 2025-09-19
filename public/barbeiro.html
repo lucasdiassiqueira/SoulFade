@@ -185,6 +185,8 @@
   const tableBody = document.querySelector("#agendaTable tbody");
   const noAppointments = document.getElementById("noAppointments");
 
+  const API_URL = "https://soulfade.onrender.com/api";
+
   loginBtn.onclick = () => {
     const email = emailInput.value;
     const password = passwordInput.value;
@@ -197,6 +199,25 @@
       painelContainer.style.display = "block";
       barbeiroSelect.value = user.name;
       carregarAgendamentos(user.name, dateSelect.value);
+
+      // SE FOR GERENTE, MOSTRA DASHBOARD
+      if(user.email === "lucasmanager") {
+        const gerentePanel = document.getElementById("gerentePanel");
+        gerentePanel.style.display = "block";
+
+        fetch(`${API_URL}/ganhos`)
+          .then(res => res.json())
+          .then(ganhos => {
+            const ul = document.getElementById("ganhosBarbeiros");
+            ul.innerHTML = "";
+            for (let barbeiro in ganhos) {
+              const li = document.createElement("li");
+              li.textContent = `${barbeiro}: R$ ${ganhos[barbeiro].toFixed(2)}`;
+              ul.appendChild(li);
+            }
+          })
+          .catch(err => console.error(err));
+      }
     } else {
       loginMessage.textContent = "Email ou senha incorretos!";
       loginMessage.className = "message error";
@@ -207,8 +228,6 @@
   forgotLink.onclick = () => {
     window.open("https://wa.me/5541999016634?text=Ol%C3%A1,%20esqueci%20minha%20senha%20do%20painel", "_blank");
   }
-
-  const API_URL = "https://soulfade.onrender.com/api";
 
   async function carregarAgendamentos(barbeiro, dia) {
     if (!barbeiro || !dia) {
@@ -222,12 +241,10 @@
       const res = await fetch(`${API_URL}/agendamentos`);
       const agendamentos = await res.json();
 
-      // força a data no mesmo formato yyyy-mm-dd
       const agendamentosFiltrados = agendamentos.filter(a => {
-      const dataBanco = new Date(a.dia).toISOString().split("T")[0]; 
-      return a.barbeiro === barbeiro && dataBanco === dia;
+        const dataBanco = new Date(a.dia).toISOString().split("T")[0]; 
+        return a.barbeiro === barbeiro && dataBanco === dia;
       });
-      ;
 
       tableBody.innerHTML = "";
 
@@ -266,33 +283,6 @@
   dateSelect.addEventListener("change", () => {
     carregarAgendamentos(barbeiroSelect.value, dateSelect.value);
   });
-
-  if(user){
-  loginContainer.style.display = "none";
-  painelContainer.style.display = "block";
-  barbeiroSelect.value = user.name;
-  carregarAgendamentos(user.name, dateSelect.value);
-
-  // MOSTRAR PAINEL DO GERENTE
-  if(user.email === "lucasmanager") {
-    const gerentePanel = document.getElementById("gerentePanel");
-    gerentePanel.style.display = "block";
-
-    fetch(`${API_URL}/ganhos`)
-      .then(res => res.json())
-      .then(ganhos => {
-        const ul = document.getElementById("ganhosBarbeiros");
-        ul.innerHTML = "";
-        for (let barbeiro in ganhos) {
-          const li = document.createElement("li");
-          li.textContent = `${barbeiro}: R$ ${ganhos[barbeiro].toFixed(2)}`;
-          ul.appendChild(li);
-        }
-      })
-      .catch(err => console.error(err));
-  }
-}
-
 </script>
 </body>
 </html>

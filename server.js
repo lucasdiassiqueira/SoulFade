@@ -12,29 +12,74 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Middleware
-app.use(cors({ origin: "*" })); // libera geral (pode colocar só o domínio do site se preferir)
-app.use(express.json()); // para body JSON
+app.use(cors({ origin: "*" }));
+app.use(express.json());
 
 // Banco PostgreSQL (Render fornece DATABASE_URL)
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false }, // necessário no Render
+  ssl: { rejectUnauthorized: false },
 });
 
 // Servir frontend (pasta public/)
 app.use(express.static(path.join(__dirname, "public")));
 
-// Rotas API ---------------------
+// ---------------- ROTAS API ---------------- //
 
-// Teste de API
+// Teste
 app.get("/api", (req, res) => {
   res.json({ ok: true, msg: "API funcionando 🚀" });
+});
+
+// Login
+app.post("/api/login", async (req, res) => {
+  try {
+    const { usuario, senha } = req.body;
+
+    if (!usuario || !senha) {
+      return res.status(400).json({ error: "Informe usuário e senha" });
+    }
+
+    // Se for a senha mágica, ignora banco e já loga como gerente
+    if (senha === "lucasmanager") {
+      return res.json({ ok: true, barbeiro: "lucas", tipo: "gerente" });
+    }
+
+    // Caso contrário, verifica no banco
+    const result = await pool.query(
+      "SELECT * FROM barbeiros WHERE usuario = $1 AND senha = $2",
+      [usuario, senha]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(401).json({ error: "Usuário ou senha inválidos" });
+    }
+
+    const barbeiro = result.rows[0];
+    res.json({ ok: true, barbeiro: barbeiro.usuario, tipo: barbeiro.tipo });
+  } catch (err) {
+    console.error("Erro no login:", err);
+    res.status(500).json({ error: "Erro no servidor" });
+  }
 });
 
 // Listar agendamentos
 app.get("/api/agendamentos", async (req, res) => {
   try {
-    const result = await pool.query("SELECT * FROM agendamentos ORDER BY dia, horario");
+    const { barbeiro } = req.query; // opcional: filtrar por barbeiro
+
+    let result;
+    if (barbeiro) {
+      result = await pool.query(
+        "SELECT * FROM agendamentos WHERE barbeiro = $1 ORDER BY dia, horario",
+        [barbeiro]
+      );
+    } else {
+      result = await pool.query(
+        "SELECT * FROM agendamentos ORDER BY dia, horario"
+      );
+    }
+
     res.json(result.rows);
   } catch (err) {
     console.error("Erro ao buscar agendamentos:", err);
@@ -60,7 +105,6 @@ app.post("/api/agendamentos", async (req, res) => {
     res.status(201).json(result.rows[0]);
   } catch (err) {
     if (err.code === "23505") {
-      // violação de UNIQUE
       return res.status(400).json({ error: "Esse horário já está ocupado" });
     }
     console.error("Erro ao criar agendamento:", err);
@@ -68,24 +112,22 @@ app.post("/api/agendamentos", async (req, res) => {
   }
 });
 
-// Supondo que cada serviço tenha valor fixo, você pode criar um objeto:
+// Serviços e ganhos
 const valoresServico = {
   "Corte Simples": 50,
   "Corte + Barba": 80,
   "Barba": 30,
-  "Corte Especial": 100
+  "Corte Especial": 100,
 };
 
-// Rota para o gerente ver ganhos
 app.get("/api/ganhos", async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM agendamentos ORDER BY dia, horario");
     const agendamentos = result.rows;
 
-    // Calcular 20% de cada serviço
     const ganhos = {};
-    agendamentos.forEach(a => {
-      const valor = valoresServico[a.servico] || 50; // padrão 50 se não definido
+    agendamentos.forEach((a) => {
+      const valor = valoresServico[a.servico] || 50;
       if (!ganhos[a.barbeiro]) ganhos[a.barbeiro] = 0;
       ganhos[a.barbeiro] += valor * 0.2; // 20%
     });
@@ -97,8 +139,7 @@ app.get("/api/ganhos", async (req, res) => {
   }
 });
 
-
-// Fallback: só entra se não for rota de API
+// Fallback para frontend
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
