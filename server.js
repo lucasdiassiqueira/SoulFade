@@ -66,10 +66,15 @@ app.post("/api/login", async (req, res) => {
 // Listar agendamentos
 app.get("/api/agendamentos", async (req, res) => {
   try {
-    const { barbeiro } = req.query; // opcional: filtrar por barbeiro
+    const { barbeiro, dia } = req.query;
 
     let result;
-    if (barbeiro) {
+    if (barbeiro && dia) {
+      result = await pool.query(
+        "SELECT * FROM agendamentos WHERE barbeiro = $1 AND dia = $2 ORDER BY horario",
+        [barbeiro, dia]
+      );
+    } else if (barbeiro) {
       result = await pool.query(
         "SELECT * FROM agendamentos WHERE barbeiro = $1 ORDER BY dia, horario",
         [barbeiro]
@@ -86,6 +91,7 @@ app.get("/api/agendamentos", async (req, res) => {
     res.status(500).json({ error: "Erro no servidor" });
   }
 });
+
 
 // Criar agendamento
 app.post("/api/agendamentos", async (req, res) => {
