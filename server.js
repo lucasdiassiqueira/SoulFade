@@ -99,6 +99,16 @@ app.post("/api/agendamentos", async (req, res) => {
       return res.status(400).json({ error: "Dados incompletos" });
     }
 
+    // Verifica se já existe um agendamento para esse barbeiro, nesse dia e horário
+    const existe = await pool.query(
+      "SELECT * FROM agendamentos WHERE barbeiro = $1 AND dia = $2 AND horario = $3",
+      [barbeiro, dia, horario]
+    );
+
+    if (existe.rows.length > 0) {
+      return res.status(400).json({ error: "Esse horário já está ocupado para este barbeiro" });
+    }
+
     const result = await pool.query(
       `INSERT INTO agendamentos (nome, servico, barbeiro, dia, horario)
        VALUES ($1, $2, $3, $4, $5) RETURNING *`,
@@ -107,9 +117,6 @@ app.post("/api/agendamentos", async (req, res) => {
 
     res.status(201).json(result.rows[0]);
   } catch (err) {
-    if (err.code === "23505") {
-      return res.status(400).json({ error: "Esse horário já está ocupado" });
-    }
     console.error("Erro ao criar agendamento:", err);
     res.status(500).json({ error: "Erro no servidor" });
   }
@@ -119,10 +126,20 @@ app.post("/api/agendamentos", async (req, res) => {
 app.put("/api/agendamentos/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const { dia, horario } = req.body;
+    const { dia, horario, barbeiro } = req.body;
 
-    if (!dia || !horario) {
-      return res.status(400).json({ error: "Informe dia e horário" });
+    if (!dia || !horario || !barbeiro) {
+      return res.status(400).json({ error: "Informe barbeiro, dia e horário" });
+    }
+
+    // Verifica conflito antes de atualizar
+    const conflito = await pool.query(
+      "SELECT * FROM agendamentos WHERE barbeiro = $1 AND dia = $2 AND horario = $3 AND id <> $4",
+      [barbeiro, dia, horario, id]
+    );
+
+    if (conflito.rows.length > 0) {
+      return res.status(400).json({ error: "Esse horário já está ocupado para este barbeiro" });
     }
 
     const result = await pool.query(
