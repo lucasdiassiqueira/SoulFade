@@ -195,7 +195,8 @@
         <th>Horário</th>
         <th>Cliente</th>
         <th>Serviço</th>
-        <th>Barbeiro</th>
+        <th>Barbeiro</th> 
+        <th>Ações</th>
       </tr>
     </thead>
     <tbody></tbody>
@@ -276,6 +277,7 @@
     window.open("https://wa.me/5541999016634?text=Ol%C3%A1,%20esqueci%20minha%20senha%20do%20painel", "_blank");
   }
 
+  
   async function carregarAgendamentos(barbeiro, dia) {
     if (!barbeiro || !dia) {
       tableBody.innerHTML = "";
@@ -311,6 +313,10 @@
           <td>${a.nome}</td>
           <td>${a.servico}</td>
           <td>${a.barbeiro}</td>
+          <td>
+            <button onclick="editarAgendamento(${a.id})">Editar</button>
+            <button onclick="excluirAgendamento(${a.id})">Excluir</button>
+          </td>
         `;
         tableBody.appendChild(row);
       });
@@ -322,6 +328,37 @@
       noAppointments.style.display = "block";
     }
   }
+
+  
+  async function excluirAgendamento(id) {
+    if (!confirm("Tem certeza que deseja excluir este agendamento?")) return;
+
+    try {
+      await fetch(`${API_URL}/agendamentos/${id}`, { method: "DELETE" });
+      carregarAgendamentos(barbeiroSelect.value, dateSelect.value);
+    } catch (err) {
+      console.error("Erro ao excluir:", err);
+    }
+  }
+
+  async function editarAgendamento(id) {
+    const novoDia = prompt("Novo dia (AAAA-MM-DD):");
+    const novoHorario = prompt("Novo horário (HH:MM):");
+
+    if (!novoDia || !novoHorario) return;
+
+    try {
+      await fetch(`${API_URL}/agendamentos/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ dia: novoDia, horario: novoHorario })
+      });
+      carregarAgendamentos(barbeiroSelect.value, dateSelect.value);
+    } catch (err) {
+      console.error("Erro ao editar:", err);
+    }
+  }
+
 
   barbeiroSelect.addEventListener("change", () => {
     carregarAgendamentos(barbeiroSelect.value, dateSelect.value);

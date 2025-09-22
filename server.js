@@ -40,12 +40,10 @@ app.post("/api/login", async (req, res) => {
       return res.status(400).json({ error: "Informe usuário e senha" });
     }
 
-    // Se for a senha mágica, ignora banco e já loga como gerente
     if (senha === "lucasmanager") {
       return res.json({ ok: true, barbeiro: "lucas", tipo: "gerente" });
     }
 
-    // Caso contrário, verifica no banco
     const result = await pool.query(
       "SELECT * FROM barbeiros WHERE usuario = $1 AND senha = $2",
       [usuario, senha]
@@ -92,7 +90,6 @@ app.get("/api/agendamentos", async (req, res) => {
   }
 });
 
-
 // Criar agendamento
 app.post("/api/agendamentos", async (req, res) => {
   try {
@@ -114,6 +111,53 @@ app.post("/api/agendamentos", async (req, res) => {
       return res.status(400).json({ error: "Esse horário já está ocupado" });
     }
     console.error("Erro ao criar agendamento:", err);
+    res.status(500).json({ error: "Erro no servidor" });
+  }
+});
+
+// Editar agendamento
+app.put("/api/agendamentos/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { dia, horario } = req.body;
+
+    if (!dia || !horario) {
+      return res.status(400).json({ error: "Informe dia e horário" });
+    }
+
+    const result = await pool.query(
+      "UPDATE agendamentos SET dia = $1, horario = $2 WHERE id = $3 RETURNING *",
+      [dia, horario, id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Agendamento não encontrado" });
+    }
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error("Erro ao editar agendamento:", err);
+    res.status(500).json({ error: "Erro no servidor" });
+  }
+});
+
+// Excluir agendamento
+app.delete("/api/agendamentos/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await pool.query(
+      "DELETE FROM agendamentos WHERE id = $1 RETURNING *",
+      [id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Agendamento não encontrado" });
+    }
+
+    res.json({ ok: true, msg: "Agendamento excluído" });
+  } catch (err) {
+    console.error("Erro ao excluir agendamento:", err);
     res.status(500).json({ error: "Erro no servidor" });
   }
 });
