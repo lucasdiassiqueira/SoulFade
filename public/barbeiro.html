@@ -6,398 +6,254 @@
 <title>Painel do Barbeiro</title>
 <link rel="icon" type="image/png" href="favicon-removebg-preview.png" />
 <style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-  }
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; }
+  body { background:#f4f1ee; min-height:100vh; display:flex; align-items:flex-start; padding:30px; }
 
-  body {
-    background: #f4f1ee;
-    min-height: 100vh;
-    display: flex;
-    align-items: flex-start;
-    padding: 30px;
-  }
+  #painelContainer { width:100%; max-width:1400px; margin:0 auto; display:flex; gap:20px; }
 
-  #painelContainer {
-    width: 100%;
-    max-width: 1400px;
-    margin: 0 auto;
-    display: flex;
-    gap: 20px;
-  }
+  .sidebar { width:240px; background:#4e342e; color:#fff; border-radius:16px; padding:22px; flex-shrink:0; box-shadow:0 6px 16px rgba(0,0,0,0.15);}
+  .sidebar h2 { margin-bottom:28px; text-align:center; font-size:22px; }
+  .sidebar a { display:block; color:#f8e9e4; text-decoration:none; padding:12px 14px; border-radius:10px; margin:8px 0; transition:0.2s; }
+  .sidebar a:hover { background:#6d4c41; }
 
-  /* Sidebar */
-  .sidebar {
-    width: 240px;
-    background: #4e342e; 
-    color: #fff;
-    border-radius: 16px;
-    padding: 22px;
-    flex-shrink: 0;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-  }
+  .main { flex:1; }
+  .main h1 { margin-bottom:18px; font-size:26px; color:#4e342e; }
 
-  .sidebar h2 {
-    margin-bottom: 28px;
-    text-align: center;
-    font-size: 22px;
-    color: #fff;
-  }
+  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:18px; margin-bottom:22px; }
+  .card { background:#fff; padding:20px; border-radius:14px; box-shadow:0 6px 20px rgba(0,0,0,0.07); text-align:center; transition:0.2s; }
+  .card:hover { transform:translateY(-3px); }
+  .card h3 { font-size:15px; color:#7b5e57; margin-bottom:10px; }
+  .card p { font-size:22px; color:#4e342e; font-weight:700; }
 
-  .sidebar a {
-    display: block;
-    color: #f8e9e4;
-    text-decoration: none;
-    padding: 12px 14px;
-    border-radius: 10px;
-    margin: 8px 0;
-    transition: 0.2s;
-  }
+  .filters { display:flex; gap:14px; align-items:center; margin-bottom:16px; flex-wrap:wrap; }
+  .filters label { font-weight:600; color:#4e342e; }
+  select, input[type="date"] { padding:10px 12px; border-radius:10px; border:1px solid #c7b7ad; background:#fff; }
+  .filters button { padding:10px 14px; border-radius:10px; border:none; background:#a1887f; cursor:pointer; font-weight:600; color:#fff; transition:0.2s; }
+  .filters button:hover { background:#8d6e63; }
 
-  .sidebar a:hover {
-    background: #6d4c41; 
-    color: #fff;
-  }
+  table { width:100%; border-collapse:collapse; background:#fff; border-radius:14px; overflow:hidden; box-shadow:0 6px 20px rgba(0,0,0,0.07); }
+  th, td { padding:14px; text-align:left; }
+  th { background:#4e342e; color:#fff; font-size:14px; }
+  tr:nth-child(even) { background:#fdfaf8; }
+  tr:hover { background:#f3edea; }
 
-  .main {
-    flex: 1;
-  }
+  .no-appointments { margin:16px 0; color:#6d4c41; font-style:italic; }
 
-  .main h1 {
-    margin-bottom: 18px;
-    font-size: 26px;
-    color: #4e342e;
-  }
-
-  /* Cards */
-  .cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 18px;
-    margin-bottom: 22px;
-  }
-
-  .card {
-    background: #fff;
-    padding: 20px;
-    border-radius: 14px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
-    text-align: center;
-    transition: 0.2s;
-  }
-
-  .card:hover {
-    transform: translateY(-3px);
-  }
-
-  .card h3 {
-    font-size: 15px;
-    color: #7b5e57;
-    margin-bottom: 10px;
-  }
-
-  .card p {
-    font-size: 22px;
-    color: #4e342e;
-    font-weight: 700;
-  }
-
-  /* Filtros */
-  .filters {
-    display: flex;
-    gap: 14px;
-    align-items: center;
-    margin-bottom: 16px;
-    flex-wrap: wrap;
-  }
-
-  .filters label {
-    font-weight: 600;
-    color: #4e342e;
-  }
-
-  select,
-  input[type="date"] {
-    padding: 10px 12px;
-    border-radius: 10px;
-    border: 1px solid #c7b7ad;
-    background: #fff;
-  }
-
-  .filters button {
-    padding: 10px 14px;
-    border-radius: 10px;
-    border: none;
-    background: #a1887f; 
-    cursor: pointer;
-    font-weight: 600;
-    color: #fff;
-    transition: 0.2s;
-  }
-
-  .filters button:hover {
-    background: #8d6e63;
-  }
-
-  /* Tabela */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    background: #fff;
-    border-radius: 14px;
-    overflow: hidden;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
-  }
-
-  th,
-  td {
-    padding: 14px;
-    text-align: left;
-  }
-
-  th {
-    background: #4e342e;
-    color: #fff;
-    font-size: 14px;
-  }
-
-  tr:nth-child(even) {
-    background: #fdfaf8;
-  }
-
-  tr:hover {
-    background: #f3edea;
-  }
-
-  /* Nenhum agendamento */
-  .no-appointments {
-    margin: 16px 0;
-    color: #6d4c41;
-    font-style: italic;
-  }
-
-  /* Painel gerente */
-  #gerentePanel {
-    margin-top: 20px;
-    display: none;
-    background: #fff;
-    padding: 20px;
-    border-radius: 14px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
-  }
-
-  #ganhosBarbeiros {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    list-style: none;
-    padding: 0;
-    margin-top: 12px;
-  }
-
-  #ganhosBarbeiros li {
-    background: #4e342e;
-    color: #fff;
-    padding: 10px 14px;
-    border-radius: 8px;
-    font-weight: 600;
-  }
+  #gerentePanel { margin-top:20px; display:none; background:#fff; padding:20px; border-radius:14px; box-shadow:0 6px 20px rgba(0,0,0,0.07); }
+  #ganhosBarbeiros { display:flex; gap:10px; flex-wrap:wrap; list-style:none; padding:0; margin-top:12px; }
+  #ganhosBarbeiros li { background:#4e342e; color:#fff; padding:10px 14px; border-radius:8px; font-weight:600; }
 </style>
-
 </head>
 <body>
 
-  <!-- PAINEL -->
-  <div id="painelContainer">
-    <aside class="sidebar">
-      <h2>💈 Barber</h2>
-      <a href="#">📅 Agenda</a>
-      <a href="#">📊 Relatórios</a>
-      <a href="#">✉️ Mensagens</a>
-      <a href="#">⚙️ Configurações</a>
-    </aside>
+<div id="painelContainer">
+  <aside class="sidebar">
+    <h2>💈 Barber</h2>
+    <a href="#">📅 Agenda</a>
+    <a href="#">📊 Relatórios</a>
+    <a href="#">✉️ Mensagens</a>
+    <a href="#">⚙️ Configurações</a>
+  </aside>
 
-    <div class="main">
-      <h1>Painel do Barbeiro</h1>
+  <div class="main">
+    <h1>Painel do Barbeiro</h1>
 
-      <div class="cards">
-        <div class="card"><h3>Ganhos</h3><p id="cardGanhos">R$ 0,00</p></div>
-        <div class="card"><h3>Clientes</h3><p id="cardClientes">0</p></div>
-        <div class="card"><h3>Agendamentos</h3><p id="cardAgendamentos">0</p></div>
-        <div class="card"><h3>Avaliação</h3><p id="cardAvaliacao">⭐ 8,5</p></div>
-      </div>
+    <div class="cards">
+      <div class="card"><h3>Ganhos</h3><p id="cardGanhos">R$ 0,00</p></div>
+      <div class="card"><h3>Clientes</h3><p id="cardClientes">0</p></div>
+      <div class="card"><h3>Agendamentos</h3><p id="cardAgendamentos">0</p></div>
+      <div class="card"><h3>Avaliação</h3><p id="cardAvaliacao">⭐ 8,5</p></div>
+    </div>
 
-      <div class="filters">
-        <label for="barbeiroSelect">Barbeiro:</label>
-        <select id="barbeiroSelect">
-          <option value="">-- Todos --</option>
-          <option value="Lucas Dias">Lucas Dias</option>
-          <option value="Isaias Barreto">Isaias Barreto</option>
-          <option value="Isaias Santana">Isaias Santana</option>
-        </select>
+    <div class="filters">
+      <label for="barbeiroSelect">Barbeiro:</label>
+      <select id="barbeiroSelect">
+        <option value="">-- Todos --</option>
+        <option value="Lucas Dias">Lucas Dias</option>
+        <option value="Isaias Barreto">Isaias Barreto</option>
+        <option value="Isaias Santana">Isaias Santana</option>
+      </select>
 
-        <label for="dateSelect">Data:</label>
-        <input type="date" id="dateSelect" />
+      <label for="dateSelect">Data:</label>
+      <input type="date" id="dateSelect" />
 
-        <button id="clearFilters">Limpar filtros</button>
-      </div>
+      <button id="clearFilters">Limpar filtros</button>
+    </div>
 
-      <table id="agendaTable">
-        <thead>
-          <tr><th>Dia</th><th>Horário</th><th>Cliente</th><th>Serviço</th><th>Barbeiro</th><th>Ações</th></tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+    <table id="agendaTable">
+      <thead>
+        <tr><th>Dia</th><th>Horário</th><th>Cliente</th><th>Serviço</th><th>Barbeiro</th><th>Ações</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
 
-      <div id="noAppointments" class="no-appointments">Selecione um barbeiro ou uma data para ver os agendamentos.</div>
+    <div id="noAppointments" class="no-appointments">Selecione um barbeiro ou uma data para ver os agendamentos.</div>
 
-      <div id="gerentePanel">
-        <h2>📈 Dashboard do Gerente</h2>
-        <p>Aqui você verá vendas e desempenho dos barbeiros:</p>
-        <ul id="ganhosBarbeiros"></ul>
-      </div>
+    <div id="gerentePanel">
+      <h2>📈 Dashboard do Gerente</h2>
+      <p>Aqui você verá vendas e desempenho dos barbeiros:</p>
+      <ul id="ganhosBarbeiros"></ul>
     </div>
   </div>
+</div>
 
 <script>
-  // --- CONFIG ---
-  const API_URL = "https://soulfade.onrender.com/api"; 
+const API_URL = "https://soulfade.onrender.com/api"; 
 
-  const barbeiroSelect = document.getElementById("barbeiroSelect");
-  const dateSelect = document.getElementById("dateSelect");
-  const tableBody = document.querySelector("#agendaTable tbody");
-  const noAppointments = document.getElementById("noAppointments");
+const barbeiroSelect = document.getElementById("barbeiroSelect");
+const dateSelect = document.getElementById("dateSelect");
+const tableBody = document.querySelector("#agendaTable tbody");
+const noAppointments = document.getElementById("noAppointments");
+const gerentePanel = document.getElementById("gerentePanel");
+const ganhosBarbeirosList = document.getElementById("ganhosBarbeiros");
+const cardGanhos = document.getElementById("cardGanhos");
+const cardClientes = document.getElementById("cardClientes");
+const cardAgendamentos = document.getElementById("cardAgendamentos");
 
-  const gerentePanel = document.getElementById("gerentePanel");
-  const ganhosBarbeirosList = document.getElementById("ganhosBarbeiros");
+// --- Funções ---
+async function carregarAgendamentos(barbeiro, dia) {
+  try {
+    let url = `${API_URL}/agendamentos`;
+    const params = new URLSearchParams();
+    if (barbeiro) params.set("barbeiro", barbeiro);
+    if (dia) params.set("dia", dia);
+    if (params.toString()) url += "?" + params.toString();
 
-  // cards
-  const cardGanhos = document.getElementById("cardGanhos");
-  const cardClientes = document.getElementById("cardClientes");
-  const cardAgendamentos = document.getElementById("cardAgendamentos");
+    const res = await fetch(url);
+    const agendamentos = await res.json();
+    tableBody.innerHTML = "";
 
-  // --- FUNÇÕES PRINCIPAIS ---
-  async function carregarAgendamentos(barbeiro, dia) {
-    try {
-      let url = `${API_URL}/agendamentos`;
-      const params = new URLSearchParams();
-      if (barbeiro) params.set("barbeiro", barbeiro);
-      if (dia) params.set("dia", dia);
-      if (params.toString()) url += "?" + params.toString();
-
-      const res = await fetch(url);
-      if (!res.ok) throw new Error("Erro na API");
-      const agendamentos = await res.json();
-
-      tableBody.innerHTML = "";
-
-      if (!agendamentos || agendamentos.length === 0) {
-        noAppointments.textContent = "Nenhum agendamento encontrado.";
-        noAppointments.style.display = "block";
-        return;
-      }
-
-      noAppointments.style.display = "none";
-
-      agendamentos.forEach(a => {
-        const diaStr = (a.dia || "").split("T")[0];
-        const diaFmt = diaStr ? new Date(diaStr).toLocaleDateString("pt-BR") : (a.dia || "");
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${diaFmt}</td>
-          <td>${a.horario || ""}</td>
-          <td>${a.nome || ""}</td>
-          <td>${a.servico || ""}</td>
-          <td>${a.barbeiro || ""}</td>
-          <td>
-            <button class="editBtn" data-id="${a.id}">Editar</button>
-            <button class="delBtn" data-id="${a.id}">Excluir</button>
-          </td>
-        `;
-        tableBody.appendChild(tr);
-      });
-
-    } catch (err) {
-      console.error(err);
-      tableBody.innerHTML = "";
-      noAppointments.textContent = "Erro ao carregar agendamentos.";
+    if (!agendamentos.length) {
+      noAppointments.textContent = "Nenhum agendamento encontrado.";
       noAppointments.style.display = "block";
+      return;
     }
+    noAppointments.style.display = "none";
+
+    agendamentos.forEach(a => {
+      const diaFmt = new Date(a.dia).toLocaleDateString("pt-BR");
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${diaFmt}</td>
+        <td>${a.horario}</td>
+        <td>${a.nome}</td>
+        <td>${a.servico}</td>
+        <td>${a.barbeiro}</td>
+        <td>
+          <button class="editBtn" data-id="${a.id}">Editar</button>
+          <button class="delBtn" data-id="${a.id}">Excluir</button>
+        </td>
+      `;
+      tableBody.appendChild(tr);
+    });
+
+    ativarBotoes();
+  } catch(err) {
+    console.error(err);
+    tableBody.innerHTML = "";
+    noAppointments.textContent = "Erro ao carregar agendamentos.";
+    noAppointments.style.display = "block";
   }
+}
 
-  async function carregarGanhosGerente() {
-    try {
-      const res = await fetch(`${API_URL}/ganhos`);
-      if (!res.ok) throw new Error("Erro ganhos");
-      const ganhos = await res.json();
-      ganhosBarbeirosList.innerHTML = "";
-      for (let b in ganhos) {
-        const li = document.createElement("li");
-        li.textContent = `${b}: R$ ${Number(ganhos[b]).toFixed(2)}`;
-        ganhosBarbeirosList.appendChild(li);
-      }
-      gerentePanel.style.display = "block";
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  async function atualizarCards(barbeiro, dia) {
-    try {
-      let url = `${API_URL}/agendamentos`;
-      const params = new URLSearchParams();
-      if (barbeiro) params.set("barbeiro", barbeiro);
-      if (dia) params.set("dia", dia);
-      if (params.toString()) url += "?" + params.toString();
-
-      const r = await fetch(url);
-      const agend = await r.json();
-
-      const totalAgend = agend.length;
-      const clientesUnicos = new Set(agend.map(a => (a.nome||"").trim())).size;
-
-      const rg = await fetch(`${API_URL}/ganhos`);
-      const ganhosObj = await rg.json();
-      let ganhosValor = 0;
-      if (barbeiro) ganhosValor = Number(ganhosObj[barbeiro] || 0);
-      else ganhosValor = Object.values(ganhosObj).reduce((s, v) => s + Number(v || 0), 0);
-
-      cardGanhos.textContent = `R$ ${ganhosValor.toFixed(2)}`;
-      cardClientes.textContent = clientesUnicos;
-      cardAgendamentos.textContent = totalAgend;
-
-    } catch (err) {
-      console.error("Erro atualizarCards:", err);
-    }
-  }
-
-  // filtros
-  barbeiroSelect.addEventListener("change", () => {
-    carregarAgendamentos(barbeiroSelect.value, dateSelect.value);
-    atualizarCards(barbeiroSelect.value, dateSelect.value);
-    carregarGanhosGerente();
+function ativarBotoes() {
+  document.querySelectorAll(".delBtn").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const id = btn.dataset.id;
+      if (!confirm("Deseja realmente excluir este agendamento?")) return;
+      try {
+        await fetch(`${API_URL}/agendamentos/${id}`, { method: "DELETE" });
+        carregarAgendamentos(barbeiroSelect.value, dateSelect.value);
+        atualizarCards(barbeiroSelect.value, dateSelect.value);
+        carregarGanhosGerente();
+      } catch(e){ console.error(e); }
+    });
   });
 
-  dateSelect.addEventListener("change", () => {
-    carregarAgendamentos(barbeiroSelect.value, dateSelect.value);
-    atualizarCards(barbeiroSelect.value, dateSelect.value);
+  document.querySelectorAll(".editBtn").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const id = btn.dataset.id;
+      const novoDia = prompt("Digite a nova data (AAAA-MM-DD):");
+      const novoHorario = prompt("Digite o novo horário (HH:MM):");
+      const barbeiroAtual = barbeiroSelect.value || prompt("Digite o barbeiro:");
+      if(!novoDia || !novoHorario || !barbeiroAtual) return alert("Campos obrigatórios");
+      try {
+        await fetch(`${API_URL}/agendamentos/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type":"application/json" },
+          body: JSON.stringify({ dia:novoDia, horario:novoHorario, barbeiro:barbeiroAtual })
+        });
+        carregarAgendamentos(barbeiroSelect.value, dateSelect.value);
+        atualizarCards(barbeiroSelect.value, dateSelect.value);
+        carregarGanhosGerente();
+      } catch(e){ console.error(e); }
+    });
   });
+}
 
-  document.getElementById("clearFilters").addEventListener("click", () => {
-    barbeiroSelect.value = "";
-    dateSelect.value = "";
-    carregarAgendamentos("", "");
-    atualizarCards("", "");
-    carregarGanhosGerente();
-  });
+async function carregarGanhosGerente() {
+  try {
+    const res = await fetch(`${API_URL}/ganhos`);
+    const ganhos = await res.json();
+    ganhosBarbeirosList.innerHTML = "";
+    for(let b in ganhos){
+      const li = document.createElement("li");
+      li.textContent = `${b}: R$ ${Number(ganhos[b]).toFixed(2)}`;
+      ganhosBarbeirosList.appendChild(li);
+    }
+    gerentePanel.style.display = "block";
+  } catch(err){ console.error(err); }
+}
 
-  // inicia painel direto
-  carregarAgendamentos("", "");
-  atualizarCards("", "");
+async function atualizarCards(barbeiro, dia){
+  try{
+    let url = `${API_URL}/agendamentos`;
+    const params = new URLSearchParams();
+    if(barbeiro) params.set("barbeiro", barbeiro);
+    if(dia) params.set("dia", dia);
+    if(params.toString()) url += "?" + params.toString();
+
+    const r = await fetch(url);
+    const agend = await r.json();
+    const totalAgend = agend.length;
+    const clientesUnicos = new Set(agend.map(a => (a.nome||"").trim())).size;
+
+    const rg = await fetch(`${API_URL}/ganhos`);
+    const ganhosObj = await rg.json();
+    let ganhosValor = 0;
+    if(barbeiro) ganhosValor = Number(ganhosObj[barbeiro]||0);
+    else ganhosValor = Object.values(ganhosObj).reduce((s,v)=>s+Number(v||0),0);
+
+    cardGanhos.textContent = `R$ ${ganhosValor.toFixed(2)}`;
+    cardClientes.textContent = clientesUnicos;
+    cardAgendamentos.textContent = totalAgend;
+  } catch(e){ console.error(e); }
+}
+
+// --- Eventos ---
+barbeiroSelect.addEventListener("change", ()=> {
+  carregarAgendamentos(barbeiroSelect.value,dateSelect.value);
+  atualizarCards(barbeiroSelect.value,dateSelect.value);
   carregarGanhosGerente();
+});
+
+dateSelect.addEventListener("change", ()=> {
+  carregarAgendamentos(barbeiroSelect.value,dateSelect.value);
+  atualizarCards(barbeiroSelect.value,dateSelect.value);
+});
+
+document.getElementById("clearFilters").addEventListener("click", ()=>{
+  barbeiroSelect.value = "";
+  dateSelect.value = "";
+  carregarAgendamentos("","");
+  atualizarCards("","");
+  carregarGanhosGerente();
+});
+
+// --- Inicializa ---
+carregarAgendamentos("","");
+atualizarCards("","");
+carregarGanhosGerente();
 </script>
 </body>
 </html>
