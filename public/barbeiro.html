@@ -6,48 +6,207 @@
 <title>Painel do Barbeiro</title>
 <link rel="icon" type="image/png" href="favicon-removebg-preview.png" />
 <style>
-  *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
-  body{background:#f4f6f9;min-height:100vh;display:flex;align-items:flex-start;padding:30px}
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+  }
 
-  /* layout painel */
-  #painelContainer{width:100%;max-width:1400px;margin:0 auto;display:flex;gap:20px}
-  .sidebar{width:240px;background:#2c2c54;color:#fff;border-radius:16px;padding:22px;flex-shrink:0;box-shadow:0 6px 16px rgba(0,0,0,0.15)}
-  .sidebar h2{margin-bottom:28px;text-align:center;font-size:22px;color:#fff}
-  .sidebar a{display:block;color:#ddd;text-decoration:none;padding:12px 14px;border-radius:10px;margin:8px 0;transition:.2s}
-  .sidebar a:hover{background:#40407a;color:#fff}
+  body {
+    background: #f4f1ee;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    padding: 30px;
+  }
 
-  .main{flex:1}
+  #painelContainer {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    gap: 20px;
+  }
 
-  /* título */
-  .main h1{margin-bottom:18px;font-size:26px;color:#2c2c54}
+  /* Sidebar */
+  .sidebar {
+    width: 240px;
+    background: #4e342e; 
+    color: #fff;
+    border-radius: 16px;
+    padding: 22px;
+    flex-shrink: 0;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  }
 
-  /* cards */
-  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;margin-bottom:22px}
-  .card{background:#fff;padding:20px;border-radius:14px;box-shadow:0 6px 20px rgba(0,0,0,0.07);text-align:center;transition:.2s}
-  .card:hover{transform:translateY(-3px)}
-  .card h3{font-size:15px;color:#777;margin-bottom:10px}
-  .card p{font-size:22px;color:#2c2c54;font-weight:700}
+  .sidebar h2 {
+    margin-bottom: 28px;
+    text-align: center;
+    font-size: 22px;
+    color: #fff;
+  }
 
-  /* filtros e tabela */
-  .filters{display:flex;gap:14px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
-  .filters label{font-weight:600;color:#444}
-  select,input[type="date"]{padding:10px 12px;border-radius:10px;border:1px solid #ddd;background:#fff}
-  .filters button{padding:10px 14px;border-radius:10px;border:none;background:#ddd;cursor:pointer;font-weight:600}
-  .filters button:hover{background:#ccc}
+  .sidebar a {
+    display: block;
+    color: #f8e9e4;
+    text-decoration: none;
+    padding: 12px 14px;
+    border-radius: 10px;
+    margin: 8px 0;
+    transition: 0.2s;
+  }
 
-  table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,0.07)}
-  th,td{padding:14px;text-align:left}
-  th{background:#2c2c54;color:#fff;font-size:14px}
-  tr:nth-child(even){background:#fbfbfb}
-  tr:hover{background:#f1f1f1}
+  .sidebar a:hover {
+    background: #6d4c41; 
+    color: #fff;
+  }
 
-  .no-appointments{margin:16px 0;color:#666;font-style:italic}
+  .main {
+    flex: 1;
+  }
 
-  /* painel gerente */
-  #gerentePanel{margin-top:20px;display:none;background:#fff;padding:20px;border-radius:14px;box-shadow:0 6px 20px rgba(0,0,0,0.07)}
-  #ganhosBarbeiros{display:flex;gap:10px;flex-wrap:wrap;list-style:none;padding:0;margin-top:12px}
-  #ganhosBarbeiros li{background:#2c2c54;color:#fff;padding:10px 14px;border-radius:8px;font-weight:600}
+  .main h1 {
+    margin-bottom: 18px;
+    font-size: 26px;
+    color: #4e342e;
+  }
+
+  /* Cards */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 18px;
+    margin-bottom: 22px;
+  }
+
+  .card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+    text-align: center;
+    transition: 0.2s;
+  }
+
+  .card:hover {
+    transform: translateY(-3px);
+  }
+
+  .card h3 {
+    font-size: 15px;
+    color: #7b5e57;
+    margin-bottom: 10px;
+  }
+
+  .card p {
+    font-size: 22px;
+    color: #4e342e;
+    font-weight: 700;
+  }
+
+  /* Filtros */
+  .filters {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .filters label {
+    font-weight: 600;
+    color: #4e342e;
+  }
+
+  select,
+  input[type="date"] {
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid #c7b7ad;
+    background: #fff;
+  }
+
+  .filters button {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: none;
+    background: #a1887f; 
+    cursor: pointer;
+    font-weight: 600;
+    color: #fff;
+    transition: 0.2s;
+  }
+
+  .filters button:hover {
+    background: #8d6e63;
+  }
+
+  /* Tabela */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+  }
+
+  th,
+  td {
+    padding: 14px;
+    text-align: left;
+  }
+
+  th {
+    background: #4e342e;
+    color: #fff;
+    font-size: 14px;
+  }
+
+  tr:nth-child(even) {
+    background: #fdfaf8;
+  }
+
+  tr:hover {
+    background: #f3edea;
+  }
+
+  /* Nenhum agendamento */
+  .no-appointments {
+    margin: 16px 0;
+    color: #6d4c41;
+    font-style: italic;
+  }
+
+  /* Painel gerente */
+  #gerentePanel {
+    margin-top: 20px;
+    display: none;
+    background: #fff;
+    padding: 20px;
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+  }
+
+  #ganhosBarbeiros {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+    margin-top: 12px;
+  }
+
+  #ganhosBarbeiros li {
+    background: #4e342e;
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-weight: 600;
+  }
 </style>
+
 </head>
 <body>
 
