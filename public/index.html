@@ -513,21 +513,31 @@
 <script>
 document.getElementById("contactForm").addEventListener("submit", async function(e) {
     e.preventDefault(); 
-    
     const form = e.target;
+
+    
+    if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+    }
+
     const data = new FormData(form);
 
-    const response = await fetch(form.action, {
-        method: form.method,
-        body: data,
-        headers: { 'Accept': 'application/json' }
-    });
+    try {
+        const response = await fetch(form.action, {
+            method: form.method,
+            body: data,
+            headers: { 'Accept': 'application/json' }
+        });
 
-    if (response.ok) {
-        form.reset(); 
-        showToast("Obrigado! Sua mensagem foi enviada.");
-    } else {
-        showToast("Ops! Algo deu errado, tente novamente.");
+        if (response.ok) {
+            form.reset();
+            showToast("✅ Obrigado! Sua mensagem foi enviada.");
+        } else {
+            showToast("❌ Ops! Algo deu errado, tente novamente.");
+        }
+    } catch (error) {
+        showToast("❌ Erro de conexão, tente novamente.");
     }
 });
 
@@ -538,7 +548,7 @@ function showToast(message) {
 
     setTimeout(() => {
         toast.classList.remove("show");
-    }, 3000); 
+    }, 4000);
 }
 </script>
 
