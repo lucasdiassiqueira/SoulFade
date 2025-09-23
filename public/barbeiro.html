@@ -9,174 +9,141 @@
   * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
 
   body {
-    background: linear-gradient(135deg, #3e2723, #795548);
+    background: #f4f6f9;
     min-height: 100vh;
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 40px 20px;
+  }
+
+  /* MENU LATERAL */
+  .sidebar {
+    width: 220px;
+    background: #2c2c54;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+  }
+  .sidebar h2 {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .sidebar a {
+    text-decoration: none;
+    color: #ddd;
+    padding: 12px 16px;
+    border-radius: 8px;
+    display: block;
+    margin: 6px 0;
+    transition: 0.3s;
+  }
+  .sidebar a:hover {
+    background: #40407a;
+    color: #fff;
+  }
+
+  /* CONTEÚDO PRINCIPAL */
+  .main {
+    flex: 1;
+    padding: 30px;
+  }
+  .main h1 {
+    margin-bottom: 20px;
     color: #333;
   }
 
-  .container {
-    width: 100%;
-    max-width: 1000px;
-    background: rgba(255,255,255,0.9);
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    padding: 40px 30px;
-    backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
-  }
-
-  h1, h2 {
-    text-align: center;
-    margin-bottom: 30px;
-    color: #4e342e;
-    font-weight: 700;
-    letter-spacing: 1px;
-  }
-
-  /* LOGIN */
-  #loginContainer {
-    display: flex;
-    flex-direction: column;
+  /* CARDS */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 20px;
-    max-width: 400px;
-    margin: 50px auto;
+    margin-bottom: 30px;
   }
-
-  input[type="email"], input[type="password"], input[type="date"], select {
-    width: 100%;
-    padding: 14px;
+  .card {
+    background: #fff;
+    padding: 20px;
     border-radius: 12px;
-    border: 1px solid #ddd;
-    font-size: 15px;
-    background: #f9f9f9;
-    transition: all 0.3s;
-  }
-  input:focus, select:focus {
-    outline: none;
-    border-color: #795548;
-    box-shadow: 0 0 8px rgba(121,85,72,0.3);
-  }
-
-  button {
-    padding: 14px;
-    border-radius: 12px;
-    border: none;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    background: linear-gradient(135deg, #6d4c41, #3e2723);
-    color: #fff;
-    transition: all 0.3s;
-  }
-  button:hover { transform: translateY(-2px); }
-
-  .message {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     text-align: center;
-    font-size: 14px;
-    padding: 10px;
-    border-radius: 8px;
-    display: none;
-    font-weight: 500;
   }
-  .success { background: #d4edda; color: #155724; }
-  .error { background: #f8d7da; color: #721c24; }
-
-  .forgot a {
-    font-size: 14px;
-    text-decoration: none;
-    color: #795548;
-    cursor: pointer;
-    display: block;
-    text-align: right;
-    transition: color 0.3s;
-  }
-  .forgot a:hover { color: #3e2723; }
-
-  #painelContainer { display: none; }
+  .card h3 { margin-bottom: 10px; color: #666; }
+  .card p { font-size: 22px; font-weight: bold; color: #2c2c54; }
 
   /* TABELA */
   table {
     width: 100%;
-    border-collapse: separate;
-    border-spacing: 0 10px;
-    font-size: 15px;
-  }
-  th, td { text-align: left; padding: 14px 16px; }
-  th {
-    background: #6d4c41;
-    color: #fff;
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-  }
-  tr {
+    border-collapse: collapse;
     background: #fff;
     border-radius: 12px;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  tr:hover {
-    transform: translateY(-2px);
+    overflow: hidden;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
   }
-  .no-appointments {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 15px;
-    color: #6c757d;
-    font-style: italic;
+  th, td {
+    padding: 14px;
+    text-align: left;
   }
+  th {
+    background: #2c2c54;
+    color: #fff;
+  }
+  tr:nth-child(even) { background: #f8f8f8; }
 
   /* DASHBOARD GERENTE */
   #gerentePanel {
-    display:none;
-    margin-top:30px;
-    padding:20px;
-    background: rgba(255,255,255,0.9);
-    border-radius:16px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-    margin-left: 40px;
-    padding-left: 30px;
+    margin-top: 30px;
+    display: none;
   }
-
   #ganhosBarbeiros {
     display: flex;
-    gap: 15px;
     flex-wrap: wrap;
-    justify-content: center;
-    padding: 0;
+    gap: 15px;
     list-style: none;
+    padding: 0;
   }
   #ganhosBarbeiros li {
-    background: linear-gradient(135deg,#795548,#3e2723);
+    background: #2c2c54;
     color: #fff;
-    padding: 16px 20px;
-    border-radius: 12px;
-    font-weight: 600;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    min-width: 180px;
-    text-align: center;
+    padding: 14px 18px;
+    border-radius: 10px;
+    font-weight: bold;
   }
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
-<div id="loginContainer" class="container">
-  <h2>Login Soul Fade</h2>
-  <input id="email" type="email" placeholder="Usuário">
-  <input id="password" type="password" placeholder="Senha">
-  <button id="loginBtn">Entrar</button>
-  <div class="message" id="loginMessage"></div>
-  <div class="forgot"><a id="forgotLink">Esqueceu a senha?</a></div>
+<!-- MENU LATERAL -->
+<div class="sidebar">
+  <h2>Barber</h2>
+  <a href="#">📅 Agenda</a>
+  <a href="#">📊 Relatórios</a>
+  <a href="#">✉️ Mensagens</a>
+  <a href="#">⚙️ Configurações</a>
 </div>
 
-<!-- PAINEL -->
-<div id="painelContainer" class="container">
+<!-- CONTEÚDO PRINCIPAL -->
+<div class="main">
   <h1>Painel do Barbeiro</h1>
 
+  <!-- CARDS -->
+  <div class="cards">
+    <div class="card">
+      <h3>Ganhos</h3>
+      <p>R$ 628</p>
+    </div>
+    <div class="card">
+      <h3>Clientes</h3>
+      <p>243</p>
+    </div>
+    <div class="card">
+      <h3>Agendamentos</h3>
+      <p>56</p>
+    </div>
+    <div class="card">
+      <h3>Avaliação</h3>
+      <p>⭐ 8,5</p>
+    </div>
+  </div>
+
+  <!-- FILTROS -->
   <label for="barbeiroSelect">Selecione o Barbeiro:</label>
   <select id="barbeiroSelect">
     <option value="">-- Escolha um barbeiro --</option>
@@ -188,6 +155,7 @@
   <label for="dateSelect">Selecione a Data:</label>
   <input type="date" id="dateSelect">
 
+  <!-- TABELA DE AGENDAMENTOS -->
   <table id="agendaTable">
     <thead>
       <tr>
@@ -202,16 +170,12 @@
     <tbody></tbody>
   </table>
 
-  <div class="no-appointments" id="noAppointments">Selecione um barbeiro e uma data para ver os agendamentos.</div>
+  <!-- DASHBOARD GERENTE -->
+  <div id="gerentePanel">
+    <h2>Dashboard do Gerente</h2>
+    <ul id="ganhosBarbeiros"></ul>
+  </div>
 </div>
-
-<!-- PAINEL DO GERENTE -->
-<div id="gerentePanel" style="display:none; margin-top:30px; padding:20px; background:#f1f1f1; border-radius:12px;">
-  <h2>Dashboard do Gerente</h2>
-  <p>Aqui você verá vendas e desempenho dos barbeiros:</p>
-  <ul id="ganhosBarbeiros"></ul>
-</div>
-
 
 <script>
   const users = [
