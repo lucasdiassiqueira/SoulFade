@@ -42,6 +42,60 @@
   #gerentePanel { margin-top:20px; display:none; background:#fff; padding:20px; border-radius:14px; box-shadow:0 6px 20px rgba(0,0,0,0.07); }
   #ganhosBarbeiros { display:flex; gap:10px; flex-wrap:wrap; list-style:none; padding:0; margin-top:12px; }
   #ganhosBarbeiros li { background:#4e342e; color:#fff; padding:10px 14px; border-radius:8px; font-weight:600; }
+
+  /* Botões estilizados */
+.editBtn, .delBtn {
+  padding:6px 10px;
+  margin:0 2px;
+  border:none;
+  border-radius:6px;
+  font-size:13px;
+  cursor:pointer;
+  color:#fff;
+  transition:0.2s;
+}
+.editBtn { background:#ffb74d; }
+.editBtn:hover { background:#ffa726; }
+.delBtn { background:#e57373; }
+.delBtn:hover { background:#ef5350; }
+
+/* Modal */
+.modal {
+  position: fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background:rgba(0,0,0,0.5);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  visibility:hidden;
+  opacity:0;
+  transition:0.3s;
+  z-index:100;
+}
+.modal.active { visibility:visible; opacity:1; }
+
+.modal-content {
+  background:#fff;
+  padding:20px;
+  border-radius:12px;
+  width:320px;
+  max-width:90%;
+  text-align:center;
+  box-shadow:0 6px 20px rgba(0,0,0,0.2);
+}
+.modal-content h3 { margin-bottom:16px; color:#4e342e; }
+.modal-content input, .modal-content select {
+  width:100%; padding:8px 10px; margin:6px 0; border-radius:8px; border:1px solid #c7b7ad;
+}
+.modal-content button {
+  padding:8px 14px; border:none; border-radius:8px;
+  margin:8px 4px;
+  cursor:pointer; font-weight:600;
+}
+.modal-content .saveBtn { background:#4caf50; color:#fff; }
+.modal-content .cancelBtn { background:#e57373; color:#fff; }
+
 </style>
 </head>
 <body>
@@ -97,6 +151,27 @@
   </div>
 </div>
 
+<!-- Modal de Edição -->
+<div id="editModal" class="modal">
+  <div class="modal-content">
+    <h3>Editar Agendamento</h3>
+    <label>Data:</label>
+    <input type="date" id="editDia" />
+    <label>Horário:</label>
+    <input type="time" id="editHorario" />
+    <label>Barbeiro:</label>
+    <select id="editBarbeiro">
+      <option value="Lucas Dias">Lucas Dias</option>
+      <option value="Isaias Barreto">Isaias Barreto</option>
+      <option value="Isaias Santana">Isaias Santana</option>
+    </select>
+    <div>
+      <button class="saveBtn">Salvar</button>
+      <button class="cancelBtn">Cancelar</button>
+    </div>
+  </div>
+</div>
+
 <script>
 const API_URL = "https://soulfade.onrender.com/api"; 
 
@@ -109,6 +184,13 @@ const ganhosBarbeirosList = document.getElementById("ganhosBarbeiros");
 const cardGanhos = document.getElementById("cardGanhos");
 const cardClientes = document.getElementById("cardClientes");
 const cardAgendamentos = document.getElementById("cardAgendamentos");
+
+// Modal e inputs
+const editModal = document.getElementById("editModal");
+const editDia = document.getElementById("editDia");
+const editHorario = document.getElementById("editHorario");
+const editBarbeiro = document.getElementById("editBarbeiro");
+let editId = null;
 
 // --- Funções ---
 async function carregarAgendamentos(barbeiro, dia) {
@@ -157,6 +239,7 @@ async function carregarAgendamentos(barbeiro, dia) {
 }
 
 function ativarBotoes() {
+  // Excluir
   document.querySelectorAll(".delBtn").forEach(btn => {
     btn.addEventListener("click", async () => {
       const id = btn.dataset.id;
@@ -170,26 +253,43 @@ function ativarBotoes() {
     });
   });
 
+  // Editar
   document.querySelectorAll(".editBtn").forEach(btn => {
-    btn.addEventListener("click", async () => {
-      const id = btn.dataset.id;
-      const novoDia = prompt("Digite a nova data (AAAA-MM-DD):");
-      const novoHorario = prompt("Digite o novo horário (HH:MM):");
-      const barbeiroAtual = barbeiroSelect.value || prompt("Digite o barbeiro:");
-      if(!novoDia || !novoHorario || !barbeiroAtual) return alert("Campos obrigatórios");
-      try {
-        await fetch(`${API_URL}/agendamentos/${id}`, {
-          method: "PUT",
-          headers: { "Content-Type":"application/json" },
-          body: JSON.stringify({ dia:novoDia, horario:novoHorario, barbeiro:barbeiroAtual })
-        });
-        carregarAgendamentos(barbeiroSelect.value, dateSelect.value);
-        atualizarCards(barbeiroSelect.value, dateSelect.value);
-        carregarGanhosGerente();
-      } catch(e){ console.error(e); }
+    btn.addEventListener("click", () => {
+      editId = btn.dataset.id;
+      const tr = btn.closest("tr");
+      editDia.value = new Date(tr.children[0].textContent.split('/').reverse().join('-')).toISOString().split('T')[0];
+      editHorario.value = tr.children[1].textContent;
+      editBarbeiro.value = tr.children[4].textContent;
+      editModal.classList.add("active");
     });
   });
 }
+
+// Salvar edição
+editModal.querySelector(".saveBtn").addEventListener("click", async () => {
+  if(!editDia.value || !editHorario.value || !editBarbeiro.value) return alert("Preencha todos os campos!");
+  try{
+    await fetch(`${API_URL}/agendamentos/${editId}`, {
+      method:"PUT",
+      headers:{ "Content-Type":"application/json" },
+      body:JSON.stringify({
+        dia: editDia.value,
+        horario: editHorario.value,
+        barbeiro: editBarbeiro.value
+      })
+    });
+    editModal.classList.remove("active");
+    carregarAgendamentos(barbeiroSelect.value, dateSelect.value);
+    atualizarCards(barbeiroSelect.value, dateSelect.value);
+    carregarGanhosGerente();
+  }catch(e){ console.error(e); }
+});
+
+// Cancelar edição
+editModal.querySelector(".cancelBtn").addEventListener("click", () => {
+  editModal.classList.remove("active");
+});
 
 async function carregarGanhosGerente() {
   try {
@@ -245,7 +345,7 @@ dateSelect.addEventListener("change", ()=> {
 document.getElementById("clearFilters").addEventListener("click", ()=>{
   barbeiroSelect.value = "";
   dateSelect.value = "";
-  carregarAgendamentos("","");
+  carregarAgendamentos("","");  
   atualizarCards("","");
   carregarGanhosGerente();
 });
