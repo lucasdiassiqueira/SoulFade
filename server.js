@@ -33,14 +33,16 @@ app.post("/api/login", async (req, res) => {
     const { usuario, senha } = req.body;
     if (!usuario || !senha) return res.status(400).json({ error: "Informe usuário e senha" });
 
-    if (senha === "lucasmanager") return res.json({ ok: true, barbeiro: "lucas", tipo: "gerente" });
+    if (senha === "lucasmanager") 
+      return res.json({ ok: true, barbeiro: "lucas", tipo: "gerente" });
 
     const result = await pool.query(
       "SELECT * FROM barbeiros WHERE usuario = $1 AND senha = $2",
       [usuario, senha]
     );
 
-    if (result.rows.length === 0) return res.status(401).json({ error: "Usuário ou senha inválidos" });
+    if (result.rows.length === 0) 
+      return res.status(401).json({ error: "Usuário ou senha inválidos" });
 
     const barbeiro = result.rows[0];
     res.json({ ok: true, barbeiro: barbeiro.usuario, tipo: barbeiro.tipo });
@@ -58,8 +60,14 @@ app.get("/api/agendamentos", async (req, res) => {
     const params = [];
     const conditions = [];
 
-    if (barbeiro) { params.push(barbeiro); conditions.push(`barbeiro = $${params.length}`); }
-    if (dia) { params.push(dia); conditions.push(`dia = $${params.length}`); }
+    if (barbeiro) { 
+      params.push(barbeiro); 
+      conditions.push(`barbeiro = $${params.length}`); 
+    }
+    if (dia) { 
+      params.push(dia); 
+      conditions.push(`dia = $${params.length}`); 
+    }
 
     if (conditions.length) query += " WHERE " + conditions.join(" AND ");
     query += " ORDER BY dia, horario";
@@ -83,7 +91,8 @@ app.post("/api/agendamentos", async (req, res) => {
       "SELECT * FROM agendamentos WHERE barbeiro=$1 AND dia=$2 AND horario=$3",
       [barbeiro, dia, horario]
     );
-    if (existe.rows.length) return res.status(400).json({ error: "Horário já ocupado" });
+    if (existe.rows.length) 
+      return res.status(400).json({ error: "Horário já ocupado" });
 
     const result = await pool.query(
       `INSERT INTO agendamentos (nome, servico, barbeiro, dia, horario)
@@ -103,19 +112,22 @@ app.put("/api/agendamentos/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { dia, horario, barbeiro } = req.body;
-    if (!dia || !horario || !barbeiro) return res.status(400).json({ error: "Informe barbeiro, dia e horário" });
+    if (!dia || !horario || !barbeiro) 
+      return res.status(400).json({ error: "Informe barbeiro, dia e horário" });
 
     const conflito = await pool.query(
       "SELECT * FROM agendamentos WHERE barbeiro=$1 AND dia=$2 AND horario=$3 AND id<>$4",
       [barbeiro, dia, horario, id]
     );
-    if (conflito.rows.length) return res.status(400).json({ error: "Horário já ocupado" });
+    if (conflito.rows.length) 
+      return res.status(400).json({ error: "Horário já ocupado" });
 
     const result = await pool.query(
       "UPDATE agendamentos SET dia=$1, horario=$2, barbeiro=$3 WHERE id=$4 RETURNING *",
       [dia, horario, barbeiro, id]
     );
-    if (result.rows.length === 0) return res.status(404).json({ error: "Agendamento não encontrado" });
+    if (result.rows.length === 0) 
+      return res.status(404).json({ error: "Agendamento não encontrado" });
 
     res.json(result.rows[0]);
   } catch (err) {
@@ -132,7 +144,8 @@ app.delete("/api/agendamentos/:id", async (req, res) => {
       "DELETE FROM agendamentos WHERE id=$1 RETURNING *",
       [id]
     );
-    if (!result.rows.length) return res.status(404).json({ error: "Agendamento não encontrado" });
+    if (!result.rows.length) 
+      return res.status(404).json({ error: "Agendamento não encontrado" });
 
     res.json({ ok: true, msg: "Agendamento excluído" });
   } catch (err) {
@@ -141,8 +154,15 @@ app.delete("/api/agendamentos/:id", async (req, res) => {
   }
 });
 
-// Ganhos
-const valoresServico = { "Corte Simples":50, "Corte + Barba":80, "Barba":30, "Corte Especial":100 };
+// ------------------- SERVIÇOS E RELATÓRIO ------------------- //
+const valoresServico = { 
+  "Corte Simples": 50, 
+  "Corte + Barba": 80, 
+  "Barba": 30, 
+  "Corte Especial": 100 
+};
+
+// Ganhos (só comissões resumidas)
 app.get("/api/ganhos", async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM agendamentos");
@@ -158,8 +178,48 @@ app.get("/api/ganhos", async (req, res) => {
   }
 });
 
-// Fallback frontend
-app.get("*", (req, res) => res.sendFile(path.join(__dirname, "public", "index.html")));
+// Relatório de Comissões (detalhado)
+app.get("/api/relatorio", async (req, res) => {
+  try {
+    const result = await pool.query("SELECT * FROM agendamentos ORDER BY barbeiro, dia, horario");
+
+    const relatorio = {};
+
+    result.rows.forEach(a => {
+      const valor = valoresServico[a.servico] || 50;
+      if (!relatorio[a.barbeiro]) {
+        relatorio[a.barbeiro] = {
+          barbeiro: a.barbeiro,
+          totalServicos: 0,
+          totalBruto: 0,
+          comissao: 0,
+          servicos: []
+        };
+      }
+
+      relatorio[a.barbeiro].totalServicos++;
+      relatorio[a.barbeiro].totalBruto += valor;
+      relatorio[a.barbeiro].comissao += valor * 0.2;
+      relatorio[a.barbeiro].servicos.push({
+        cliente: a.nome,
+        servico: a.servico,
+        valor,
+        dia: a.dia,
+        horario: a.horario
+      });
+    });
+
+    res.json(Object.values(relatorio));
+  } catch (err) {
+    console.error("Erro ao gerar relatório:", err);
+    res.status(500).json({ error: "Erro no servidor" });
+  }
+});
+
+// ------------------- FRONTEND ------------------- //
+app.get("*", (req, res) => 
+  res.sendFile(path.join(__dirname, "public", "index.html"))
+);
 
 // Inicialização
 const PORT = process.env.PORT || 3000;

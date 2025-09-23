@@ -6,101 +6,137 @@
 <title>Painel do Barbeiro</title>
 <link rel="icon" type="image/png" href="favicon-removebg-preview.png" />
 <style>
+  /* ===== RESET & BASE ===== */
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; }
-  body { background:#f4f1ee; min-height:100vh; display:flex; align-items:flex-start; padding:30px; }
+  body { background:#f4f1ee; min-height:100vh; display:flex; align-items:flex-start; padding:30px; color:#4e342e; }
 
+  /* ===== LAYOUT PRINCIPAL ===== */
   #painelContainer { width:100%; max-width:1400px; margin:0 auto; display:flex; gap:20px; }
 
-  .sidebar { width:240px; background:#4e342e; color:#fff; border-radius:16px; padding:22px; flex-shrink:0; box-shadow:0 6px 16px rgba(0,0,0,0.15);}
+  /* ===== SIDEBAR ===== */
+  .sidebar {
+    width:240px; background:#4e342e; color:#fff;
+    border-radius:16px; padding:22px; flex-shrink:0;
+    box-shadow:0 6px 16px rgba(0,0,0,0.15);
+    display:flex; flex-direction:column; align-items:center;
+  }
   .sidebar h2 { margin-bottom:28px; text-align:center; font-size:22px; }
-  .sidebar a { display:block; color:#f8e9e4; text-decoration:none; padding:12px 14px; border-radius:10px; margin:8px 0; transition:0.2s; }
+  .sidebar a {
+    display:block; width:100%; text-align:left;
+    color:#f8e9e4; text-decoration:none;
+    padding:12px 14px; border-radius:10px; margin:6px 0;
+    transition:0.2s;
+  }
   .sidebar a:hover { background:#6d4c41; }
 
+  /* ===== MAIN ===== */
   .main { flex:1; }
-  .main h1 { margin-bottom:18px; font-size:26px; color:#4e342e; }
+  .main h1 { margin-bottom:18px; font-size:28px; font-weight:700; }
 
-  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:18px; margin-bottom:22px; }
-  .card { background:#fff; padding:20px; border-radius:14px; box-shadow:0 6px 20px rgba(0,0,0,0.07); text-align:center; transition:0.2s; }
+  /* ===== CARDS ===== */
+  .cards {
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:18px; margin-bottom:26px;
+  }
+  .card {
+    background:#fff; padding:22px;
+    border-radius:14px; box-shadow:0 6px 20px rgba(0,0,0,0.07);
+    text-align:center; transition:0.2s;
+  }
   .card:hover { transform:translateY(-3px); }
-  .card h3 { font-size:15px; color:#7b5e57; margin-bottom:10px; }
-  .card p { font-size:22px; color:#4e342e; font-weight:700; }
+  .card h3 { font-size:16px; color:#7b5e57; margin-bottom:10px; font-weight:600; }
+  .card p { font-size:24px; font-weight:700; color:#4e342e; }
 
-  .filters { display:flex; gap:14px; align-items:center; margin-bottom:16px; flex-wrap:wrap; }
-  .filters label { font-weight:600; color:#4e342e; }
-  select, input[type="date"] { padding:10px 12px; border-radius:10px; border:1px solid #c7b7ad; background:#fff; }
-  .filters button { padding:10px 14px; border-radius:10px; border:none; background:#a1887f; cursor:pointer; font-weight:600; color:#fff; transition:0.2s; }
+  /* ===== FILTROS ===== */
+  .filters {
+    display:flex; gap:14px; align-items:center;
+    margin-bottom:20px; flex-wrap:wrap;
+    background:#fff; padding:14px 18px; border-radius:12px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.05);
+  }
+  .filters label { font-weight:600; }
+  select, input[type="date"] {
+    padding:10px 12px; border-radius:10px;
+    border:1px solid #c7b7ad; background:#fff;
+  }
+  .filters button {
+    padding:10px 16px; border-radius:10px; border:none;
+    background:#a1887f; cursor:pointer;
+    font-weight:600; color:#fff; transition:0.2s;
+  }
   .filters button:hover { background:#8d6e63; }
 
-  table { width:100%; border-collapse:collapse; background:#fff; border-radius:14px; overflow:hidden; box-shadow:0 6px 20px rgba(0,0,0,0.07); }
+  /* ===== TABELA ===== */
+  table {
+    width:100%; border-collapse:collapse; background:#fff;
+    border-radius:14px; overflow:hidden;
+    box-shadow:0 6px 20px rgba(0,0,0,0.07); margin-bottom:20px;
+  }
   th, td { padding:14px; text-align:left; }
   th { background:#4e342e; color:#fff; font-size:14px; }
   tr:nth-child(even) { background:#fdfaf8; }
   tr:hover { background:#f3edea; }
 
-  .no-appointments { margin:16px 0; color:#6d4c41; font-style:italic; }
+  .no-appointments { margin:16px 0; font-style:italic; color:#6d4c41; }
 
-  #gerentePanel { margin-top:20px; display:none; background:#fff; padding:20px; border-radius:14px; box-shadow:0 6px 20px rgba(0,0,0,0.07); }
-  #ganhosBarbeiros { display:flex; gap:10px; flex-wrap:wrap; list-style:none; padding:0; margin-top:12px; }
-  #ganhosBarbeiros li { background:#4e342e; color:#fff; padding:10px 14px; border-radius:8px; font-weight:600; }
+  /* ===== DASHBOARD GERENTE ===== */
+  #gerentePanel {
+    margin-top:20px; display:none;
+    background:#fff; padding:20px; border-radius:14px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.07);
+  }
+  #gerentePanel h2 { margin-bottom:10px; }
+  #ganhosBarbeiros {
+    display:flex; gap:10px; flex-wrap:wrap;
+    list-style:none; padding:0; margin-top:12px;
+  }
+  #ganhosBarbeiros li {
+    background:#4e342e; color:#fff;
+    padding:10px 14px; border-radius:8px; font-weight:600;
+  }
 
-  /* Botões estilizados */
-.editBtn, .delBtn {
-  padding:6px 10px;
-  margin:0 2px;
-  border:none;
-  border-radius:6px;
-  font-size:13px;
-  cursor:pointer;
-  color:#fff;
-  transition:0.2s;
-}
-.editBtn { background:#ffb74d; }
-.editBtn:hover { background:#ffa726; }
-.delBtn { background:#e57373; }
-.delBtn:hover { background:#ef5350; }
+  /* ===== BOTÕES TABELA ===== */
+  .editBtn, .delBtn {
+    padding:6px 10px; margin:0 2px; border:none;
+    border-radius:6px; font-size:13px; cursor:pointer; color:#fff;
+    transition:0.2s;
+  }
+  .editBtn { background:#ffb74d; }
+  .editBtn:hover { background:#ffa726; }
+  .delBtn { background:#e57373; }
+  .delBtn:hover { background:#ef5350; }
 
-/* Modal */
-.modal {
-  position: fixed;
-  top:0; left:0;
-  width:100%; height:100%;
-  background:rgba(0,0,0,0.5);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  visibility:hidden;
-  opacity:0;
-  transition:0.3s;
-  z-index:100;
-}
-.modal.active { visibility:visible; opacity:1; }
-
-.modal-content {
-  background:#fff;
-  padding:20px;
-  border-radius:12px;
-  width:320px;
-  max-width:90%;
-  text-align:center;
-  box-shadow:0 6px 20px rgba(0,0,0,0.2);
-}
-.modal-content h3 { margin-bottom:16px; color:#4e342e; }
-.modal-content input, .modal-content select {
-  width:100%; padding:8px 10px; margin:6px 0; border-radius:8px; border:1px solid #c7b7ad;
-}
-.modal-content button {
-  padding:8px 14px; border:none; border-radius:8px;
-  margin:8px 4px;
-  cursor:pointer; font-weight:600;
-}
-.modal-content .saveBtn { background:#4caf50; color:#fff; }
-.modal-content .cancelBtn { background:#e57373; color:#fff; }
-
+  /* ===== MODAL ===== */
+  .modal {
+    position: fixed; top:0; left:0;
+    width:100%; height:100%;
+    background:rgba(0,0,0,0.5);
+    display:flex; justify-content:center; align-items:center;
+    visibility:hidden; opacity:0; transition:0.3s; z-index:100;
+  }
+  .modal.active { visibility:visible; opacity:1; }
+  .modal-content {
+    background:#fff; padding:20px; border-radius:12px;
+    width:340px; max-width:90%; text-align:center;
+    box-shadow:0 6px 20px rgba(0,0,0,0.2);
+  }
+  .modal-content h3 { margin-bottom:16px; }
+  .modal-content input, .modal-content select {
+    width:100%; padding:8px 10px; margin:6px 0;
+    border-radius:8px; border:1px solid #c7b7ad;
+  }
+  .modal-content button {
+    padding:8px 14px; border:none; border-radius:8px;
+    margin:8px 4px; cursor:pointer; font-weight:600;
+  }
+  .modal-content .saveBtn { background:#4caf50; color:#fff; }
+  .modal-content .cancelBtn { background:#e57373; color:#fff; }
 </style>
 </head>
 <body>
 
 <div id="painelContainer">
+  <!-- Sidebar -->
   <aside class="sidebar">
     <h2>💈 Barber</h2>
     <a href="#">📅 Agenda</a>
@@ -109,9 +145,11 @@
     <a href="#">⚙️ Configurações</a>
   </aside>
 
+  <!-- Main -->
   <div class="main">
     <h1>Painel do Barbeiro</h1>
 
+    <!-- Cards -->
     <div class="cards">
       <div class="card"><h3>Ganhos</h3><p id="cardGanhos">R$ 0,00</p></div>
       <div class="card"><h3>Clientes</h3><p id="cardClientes">0</p></div>
@@ -119,6 +157,7 @@
       <div class="card"><h3>Avaliação</h3><p id="cardAvaliacao">⭐ 8,5</p></div>
     </div>
 
+    <!-- Filtros -->
     <div class="filters">
       <label for="barbeiroSelect">Barbeiro:</label>
       <select id="barbeiroSelect">
@@ -134,6 +173,7 @@
       <button id="clearFilters">Limpar filtros</button>
     </div>
 
+    <!-- Tabela -->
     <table id="agendaTable">
       <thead>
         <tr><th>Dia</th><th>Horário</th><th>Cliente</th><th>Serviço</th><th>Barbeiro</th><th>Ações</th></tr>
@@ -143,6 +183,7 @@
 
     <div id="noAppointments" class="no-appointments">Selecione um barbeiro ou uma data para ver os agendamentos.</div>
 
+    <!-- Painel Gerente -->
     <div id="gerentePanel">
       <h2>📈 Dashboard do Gerente</h2>
       <p>Aqui você verá vendas e desempenho dos barbeiros:</p>
@@ -151,7 +192,7 @@
   </div>
 </div>
 
-<!-- Modal de Edição -->
+<!-- Modal -->
 <div id="editModal" class="modal">
   <div class="modal-content">
     <h3>Editar Agendamento</h3>
@@ -192,7 +233,7 @@ const editHorario = document.getElementById("editHorario");
 const editBarbeiro = document.getElementById("editBarbeiro");
 let editId = null;
 
-// --- Funções ---
+// === FUNÇÕES PRINCIPAIS ===
 async function carregarAgendamentos(barbeiro, dia) {
   try {
     let url = `${API_URL}/agendamentos`;
@@ -330,7 +371,7 @@ async function atualizarCards(barbeiro, dia){
   } catch(e){ console.error(e); }
 }
 
-// --- Eventos ---
+// === EVENTOS ===
 barbeiroSelect.addEventListener("change", ()=> {
   carregarAgendamentos(barbeiroSelect.value,dateSelect.value);
   atualizarCards(barbeiroSelect.value,dateSelect.value);
@@ -350,10 +391,8 @@ document.getElementById("clearFilters").addEventListener("click", ()=>{
   carregarGanhosGerente();
 });
 
-// --- Inicializa ---
-carregarAgendamentos("","");
-atualizarCards("","");
-carregarGanhosGerente();
+// === INICIALIZA ===
+carregarAgendamentos("",""); atualizarCards("",""); carregarGanhosGerente();
 </script>
 </body>
 </html>
