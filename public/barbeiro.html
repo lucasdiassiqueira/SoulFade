@@ -9,65 +9,52 @@
   *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
   body{background:#f4f6f9;min-height:100vh;display:flex;align-items:flex-start;padding:30px}
 
-  /* login container */
-  .centered{width:100%;max-width:420px;margin:40px auto;background:rgba(255,255,255,0.95);border-radius:12px;padding:28px;box-shadow:0 10px 30px rgba(0,0,0,0.08)}
-  h2{text-align:center;margin-bottom:16px;color:#2c2c54}
-  .form-group{margin-bottom:12px}
-  input[type="text"],input[type="password"]{width:100%;padding:12px;border-radius:10px;border:1px solid #ddd;background:#fafafa}
-  button{padding:12px;border-radius:10px;border:none;background:linear-gradient(135deg,#6d4c41,#3e2723);color:#fff;cursor:pointer;font-weight:600}
-  .message{display:none;padding:10px;border-radius:8px;margin-top:10px}
-  .error{background:#f8d7da;color:#721c24}
-  .success{background:#d4edda;color:#155724}
+  /* layout painel */
+  #painelContainer{width:100%;max-width:1400px;margin:0 auto;display:flex;gap:20px}
+  .sidebar{width:240px;background:#2c2c54;color:#fff;border-radius:16px;padding:22px;flex-shrink:0;box-shadow:0 6px 16px rgba(0,0,0,0.15)}
+  .sidebar h2{margin-bottom:28px;text-align:center;font-size:22px;color:#fff}
+  .sidebar a{display:block;color:#ddd;text-decoration:none;padding:12px 14px;border-radius:10px;margin:8px 0;transition:.2s}
+  .sidebar a:hover{background:#40407a;color:#fff}
 
-  /* painel layout */
-  #painelContainer{display:none;width:100%;max-width:1200px;margin:0 auto;display:flex;gap:20px}
-  .sidebar{width:220px;background:#2c2c54;color:#fff;border-radius:12px;padding:18px;flex-shrink:0}
-  .sidebar h2{margin-bottom:22px;text-align:center}
-  .sidebar a{display:block;color:#ddd;text-decoration:none;padding:10px;border-radius:8px;margin:6px 0}
   .main{flex:1}
 
+  /* título */
+  .main h1{margin-bottom:18px;font-size:26px;color:#2c2c54}
+
   /* cards */
-  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:18px}
-  .card{background:#fff;padding:16px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.06);text-align:center}
-  .card h3{font-size:14px;color:#666;margin-bottom:10px}
-  .card p{font-size:20px;color:#2c2c54;font-weight:700}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;margin-bottom:22px}
+  .card{background:#fff;padding:20px;border-radius:14px;box-shadow:0 6px 20px rgba(0,0,0,0.07);text-align:center;transition:.2s}
+  .card:hover{transform:translateY(-3px)}
+  .card h3{font-size:15px;color:#777;margin-bottom:10px}
+  .card p{font-size:22px;color:#2c2c54;font-weight:700}
 
   /* filtros e tabela */
-  .filters{display:flex;gap:12px;align-items:center;margin-bottom:12px}
-  select,input[type="date"]{padding:10px;border-radius:10px;border:1px solid #ddd;background:#fff}
-  table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
-  th,td{padding:12px;text-align:left}
-  th{background:#2c2c54;color:#fff}
-  tr:nth-child(even){background:#fbfbfb}
+  .filters{display:flex;gap:14px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
+  .filters label{font-weight:600;color:#444}
+  select,input[type="date"]{padding:10px 12px;border-radius:10px;border:1px solid #ddd;background:#fff}
+  .filters button{padding:10px 14px;border-radius:10px;border:none;background:#ddd;cursor:pointer;font-weight:600}
+  .filters button:hover{background:#ccc}
 
-  .no-appointments{margin:14px 0;color:#666;font-style:italic}
-  #gerentePanel{margin-top:18px;display:none}
-  #ganhosBarbeiros{display:flex;gap:10px;flex-wrap:wrap;list-style:none;padding:0}
-  #ganhosBarbeiros li{background:#2c2c54;color:#fff;padding:10px;border-radius:8px;font-weight:600}
+  table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,0.07)}
+  th,td{padding:14px;text-align:left}
+  th{background:#2c2c54;color:#fff;font-size:14px}
+  tr:nth-child(even){background:#fbfbfb}
+  tr:hover{background:#f1f1f1}
+
+  .no-appointments{margin:16px 0;color:#666;font-style:italic}
+
+  /* painel gerente */
+  #gerentePanel{margin-top:20px;display:none;background:#fff;padding:20px;border-radius:14px;box-shadow:0 6px 20px rgba(0,0,0,0.07)}
+  #ganhosBarbeiros{display:flex;gap:10px;flex-wrap:wrap;list-style:none;padding:0;margin-top:12px}
+  #ganhosBarbeiros li{background:#2c2c54;color:#fff;padding:10px 14px;border-radius:8px;font-weight:600}
 </style>
 </head>
 <body>
 
-  <!-- LOGIN -->
-  <div id="loginContainer" class="centered">
-    <h2>Login Soul Fade</h2>
-    <div class="form-group">
-      <input id="email" type="text" placeholder="Usuário (ex: lucasmanager)" />
-    </div>
-    <div class="form-group">
-      <input id="password" type="password" placeholder="Senha" />
-    </div>
-    <div style="display:flex;gap:10px;justify-content:space-between;align-items:center">
-      <button id="loginBtn">Entrar</button>
-      <a id="forgotLink" href="#" style="color:#795548;text-decoration:none;font-size:14px">Esqueceu a senha?</a>
-    </div>
-    <div id="loginMessage" class="message"></div>
-  </div>
-
   <!-- PAINEL -->
   <div id="painelContainer">
     <aside class="sidebar">
-      <h2>Barber</h2>
+      <h2>💈 Barber</h2>
       <a href="#">📅 Agenda</a>
       <a href="#">📊 Relatórios</a>
       <a href="#">✉️ Mensagens</a>
@@ -75,7 +62,7 @@
     </aside>
 
     <div class="main">
-      <h1 style="margin-bottom:12px">Painel do Barbeiro</h1>
+      <h1>Painel do Barbeiro</h1>
 
       <div class="cards">
         <div class="card"><h3>Ganhos</h3><p id="cardGanhos">R$ 0,00</p></div>
@@ -96,7 +83,7 @@
         <label for="dateSelect">Data:</label>
         <input type="date" id="dateSelect" />
 
-        <button id="clearFilters" style="margin-left:auto;padding:10px;border-radius:8px;border:none;background:#ddd;cursor:pointer">Limpar filtros</button>
+        <button id="clearFilters">Limpar filtros</button>
       </div>
 
       <table id="agendaTable">
@@ -109,7 +96,7 @@
       <div id="noAppointments" class="no-appointments">Selecione um barbeiro ou uma data para ver os agendamentos.</div>
 
       <div id="gerentePanel">
-        <h2>Dashboard do Gerente</h2>
+        <h2>📈 Dashboard do Gerente</h2>
         <p>Aqui você verá vendas e desempenho dos barbeiros:</p>
         <ul id="ganhosBarbeiros"></ul>
       </div>
@@ -118,21 +105,7 @@
 
 <script>
   // --- CONFIG ---
-  const API_URL = "https://soulfade.onrender.com/api"; // mantém o seu
-  const users = [
-    { email: "lucasmanager", password: "lucas2710", name: "Lucas Dias" },
-    { email: "isaias1234", password: "isaias1234", name: "Isaias Barreto" },
-    { email: "isaiasbarber", password: "isaias1708", name: "Isaias Santana" }
-  ];
-
-  // --- ELEMENTS ---
-  const loginContainer = document.getElementById("loginContainer");
-  const painelContainer = document.getElementById("painelContainer");
-  const loginBtn = document.getElementById("loginBtn");
-  const emailInput = document.getElementById("email");
-  const passwordInput = document.getElementById("password");
-  const loginMessage = document.getElementById("loginMessage");
-  const forgotLink = document.getElementById("forgotLink");
+  const API_URL = "https://soulfade.onrender.com/api"; 
 
   const barbeiroSelect = document.getElementById("barbeiroSelect");
   const dateSelect = document.getElementById("dateSelect");
@@ -147,45 +120,8 @@
   const cardClientes = document.getElementById("cardClientes");
   const cardAgendamentos = document.getElementById("cardAgendamentos");
 
-  // --- LOGIN (simples, local) ---
-  loginBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    const email = emailInput.value.trim();
-    const password = passwordInput.value.trim();
-    loginMessage.style.display = "none";
-
-    const user = users.find(u => u.email === email && u.password === password);
-    if (!user) {
-      loginMessage.textContent = "Usuário ou senha incorretos!";
-      loginMessage.className = "message error";
-      loginMessage.style.display = "block";
-      return;
-    }
-
-    // sucesso
-    loginContainer.style.display = "none";
-    painelContainer.style.display = "flex";
-    barbeiroSelect.value = user.name; // define o barbeiro logado no filtro
-    if (user.email === "lucasmanager") {
-      gerentePanel.style.display = "block";
-      carregarGanhosGerente(); // popula painel do gerente
-    } else {
-      gerentePanel.style.display = "none";
-    }
-
-    // carrega dados iniciais
-    carregarAgendamentos(user.name, dateSelect.value);
-    atualizarCards(user.name, dateSelect.value);
-  });
-
-  forgotLink.addEventListener("click", (e) => {
-    e.preventDefault();
-    window.open("https://wa.me/5541999016634?text=Ol%C3%A1,%20esqueci%20minha%20senha%20do%20painel", "_blank");
-  });
-
   // --- FUNÇÕES PRINCIPAIS ---
   async function carregarAgendamentos(barbeiro, dia) {
-    // monta URL com query params (usa a rota do server)
     try {
       let url = `${API_URL}/agendamentos`;
       const params = new URLSearchParams();
@@ -200,7 +136,7 @@
       tableBody.innerHTML = "";
 
       if (!agendamentos || agendamentos.length === 0) {
-        noAppointments.textContent = "Nenhum agendamento encontrado com esse filtro.";
+        noAppointments.textContent = "Nenhum agendamento encontrado.";
         noAppointments.style.display = "block";
         return;
       }
@@ -208,8 +144,7 @@
       noAppointments.style.display = "none";
 
       agendamentos.forEach(a => {
-        // garante valores padronizados
-        const diaStr = (a.dia || "").split("T")[0]; // pega YYYY-MM-DD caso venha ISO
+        const diaStr = (a.dia || "").split("T")[0];
         const diaFmt = diaStr ? new Date(diaStr).toLocaleDateString("pt-BR") : (a.dia || "");
         const tr = document.createElement("tr");
         tr.innerHTML = `
@@ -219,7 +154,7 @@
           <td>${a.servico || ""}</td>
           <td>${a.barbeiro || ""}</td>
           <td>
-            <button class="editBtn" data-id="${a.id}" data-barbeiro="${(a.barbeiro||'')}" data-dia="${diaStr}" data-horario="${a.horario||''}">Editar</button>
+            <button class="editBtn" data-id="${a.id}">Editar</button>
             <button class="delBtn" data-id="${a.id}">Excluir</button>
           </td>
         `;
@@ -229,60 +164,11 @@
     } catch (err) {
       console.error(err);
       tableBody.innerHTML = "";
-      noAppointments.textContent = "Erro ao carregar agendamentos. Veja o console.";
+      noAppointments.textContent = "Erro ao carregar agendamentos.";
       noAppointments.style.display = "block";
     }
   }
 
-  // delegação para editar/excluir
-  tableBody.addEventListener("click", async (e) => {
-    const target = e.target;
-    if (target.classList.contains("delBtn")) {
-      const id = target.dataset.id;
-      if (!confirm("Tem certeza que deseja excluir este agendamento?")) return;
-      try {
-        const res = await fetch(`${API_URL}/agendamentos/${id}`, { method: "DELETE" });
-        if (!res.ok) throw new Error("Erro ao deletar");
-        // recarrega
-        carregarAgendamentos(barbeiroSelect.value, dateSelect.value);
-        atualizarCards(barbeiroSelect.value, dateSelect.value);
-      } catch (err) {
-        console.error(err);
-        alert("Erro ao excluir. Veja console.");
-      }
-    }
-
-    if (target.classList.contains("editBtn")) {
-      const id = target.dataset.id;
-      const currentDia = target.dataset.dia || "";
-      const currentHorario = target.dataset.horario || "";
-      const barbeiro = target.dataset.barbeiro || barbeiroSelect.value || "";
-
-      const novoDia = prompt("Novo dia (AAAA-MM-DD):", currentDia);
-      if (!novoDia) return;
-      const novoHorario = prompt("Novo horário (HH:MM):", currentHorario);
-      if (!novoHorario) return;
-
-      try {
-        const res = await fetch(`${API_URL}/agendamentos/${id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ dia: novoDia, horario: novoHorario, barbeiro })
-        });
-        if (!res.ok) {
-          const err = await res.json().catch(()=>({error:'Erro'}));
-          throw new Error(err.error || "Erro ao editar");
-        }
-        carregarAgendamentos(barbeiroSelect.value, dateSelect.value);
-        atualizarCards(barbeiroSelect.value, dateSelect.value);
-      } catch (err) {
-        console.error(err);
-        alert("Erro ao editar. Veja console.");
-      }
-    }
-  });
-
-  // carrega painel do gerente (ganhos por barbeiro)
   async function carregarGanhosGerente() {
     try {
       const res = await fetch(`${API_URL}/ganhos`);
@@ -294,15 +180,14 @@
         li.textContent = `${b}: R$ ${Number(ganhos[b]).toFixed(2)}`;
         ganhosBarbeirosList.appendChild(li);
       }
+      gerentePanel.style.display = "block";
     } catch (err) {
       console.error(err);
     }
   }
 
-  // atualiza os cards com dados reais
   async function atualizarCards(barbeiro, dia) {
     try {
-      // busca agendamentos filtrados para contar clientes/agendamentos
       let url = `${API_URL}/agendamentos`;
       const params = new URLSearchParams();
       if (barbeiro) params.set("barbeiro", barbeiro);
@@ -315,7 +200,6 @@
       const totalAgend = agend.length;
       const clientesUnicos = new Set(agend.map(a => (a.nome||"").trim())).size;
 
-      // ganhos (rota do server já calcula com base nos serviços)
       const rg = await fetch(`${API_URL}/ganhos`);
       const ganhosObj = await rg.json();
       let ganhosValor = 0;
@@ -331,14 +215,11 @@
     }
   }
 
-  // listeners de filtros
+  // filtros
   barbeiroSelect.addEventListener("change", () => {
     carregarAgendamentos(barbeiroSelect.value, dateSelect.value);
     atualizarCards(barbeiroSelect.value, dateSelect.value);
-    if (loginContainer.style.display === "none" && users[0].email === "lucasmanager") {
-      // se for gerente, recarrega painel de ganhos
-      carregarGanhosGerente();
-    }
+    carregarGanhosGerente();
   });
 
   dateSelect.addEventListener("change", () => {
@@ -351,14 +232,13 @@
     dateSelect.value = "";
     carregarAgendamentos("", "");
     atualizarCards("", "");
+    carregarGanhosGerente();
   });
 
-  // Se precisar testar sem login (útil dev): descomente as linhas abaixo
-  // loginContainer.style.display = 'none';
-  // painelContainer.style.display = 'flex';
-  // carregarAgendamentos('', '');
-  // atualizarCards('', '');
-
+  // inicia painel direto
+  carregarAgendamentos("", "");
+  atualizarCards("", "");
+  carregarGanhosGerente();
 </script>
 </body>
 </html>
