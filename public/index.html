@@ -414,71 +414,134 @@
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="contact">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Entre em Contato</h2>
-                <p class="section-subtitle">Publi? Franquia? Fale Conosco!</p>
+<section id="contact" class="contact">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Entre em Contato</h2>
+            <p class="section-subtitle">Publi? Franquia? Fale Conosco!</p>
+        </div>
+        <div class="contact-content">
+            <div class="contact-info">
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="info-text">
+                        <h3>Endereço</h3>
+                        <p>Rua Deputado Antônio Baby, 139<br>Batel, Curitiba - PR</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <div class="info-text">
+                        <h3>Telefone</h3>
+                        <p>(41) 99901-6634</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="info-text">
+                        <h3>Horário</h3>
+                        <p>Seg - Sex: 9h às 18h<br>Sáb: 8h às 17h</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="info-text">
+                        <h3>Email</h3>
+                        <p>contato@soulfade.com</p>
+                    </div>
+                </div>
             </div>
-            <div class="contact-content">
-                <div class="contact-info">
-                    <div class="info-item">
-                        <div class="info-icon">
-                            <i class="fas fa-map-marker-alt"></i>
-                        </div>
-                        <div class="info-text">
-                            <h3>Endereço</h3>
-                            <p>Rua Deputado Antônio Baby, 139<br>Batel, Curitiba - PR</p>
-                        </div>
+            <div class="contact-form">
+                <!-- Formspree integrado -->
+                <form id="contactForm" action="https://formspree.io/f/xvgwpjnw" method="POST">
+                    <div class="form-group">
+                        <input type="text" id="name" name="name" placeholder="Seu nome" required>
                     </div>
-                    <div class="info-item">
-                        <div class="info-icon">
-                            <i class="fas fa-phone"></i>
-                        </div>
-                        <div class="info-text">
-                            <h3>Telefone</h3>
-                            <p>(41) 99901-6634</p>
-                        </div>
+                    <div class="form-group">
+                        <input type="email" id="email" name="email" placeholder="Seu email" required>
                     </div>
-                    <div class="info-item">
-                        <div class="info-icon">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        <div class="info-text">
-                            <h3>Horário</h3>
-                            <p>Seg - Sex: 9h às 18h<br>Sáb: 8h às 17h</p>
-                        </div>
+                    <div class="form-group">
+                        <input type="tel" id="phone" name="phone" placeholder="Seu telefone" required>
                     </div>
-                    <div class="info-item">
-                        <div class="info-icon">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <div class="info-text">
-                            <h3>Email</h3>
-                            <p>contato@soulfade.com</p>
-                        </div>
+                    <div class="form-group">
+                        <textarea id="message" name="message" placeholder="Sugestões" rows="4" required></textarea>
                     </div>
-                </div>
-                <div class="contact-form">
-                    <form id="contactForm">
-                        <div class="form-group">
-                            <input type="text" id="name" name="name" placeholder="Seu nome" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="email" id="email" name="email" placeholder="Seu email" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="tel" id="phone" name="phone" placeholder="Seu telefone" required>
-                        </div>
-                        <div class="form-group">
-                            <textarea id="message" name="message" placeholder="Sugestões" rows="4"></textarea>
-                        </div>
-                        <button type="submit" class="enviar-btn">Enviar Mensagem</button>
-                    </form>
-                </div>
+
+                    <button type="submit" class="enviar-btn">Enviar Mensagem</button>
+                </form>
             </div>
         </div>
-    </section>
+    </div>
+</section>
+
+<!-- Toast -->
+<div id="toast" class="toast">Mensagem enviada com sucesso!</div>
+
+<style>
+.toast {
+  visibility: hidden;
+  min-width: 250px;
+  background-color: #4caf50;
+  color: white;
+  text-align: center;
+  border-radius: 8px;
+  padding: 12px;
+  position: fixed;
+  z-index: 9999;
+  left: 50%;
+  bottom: 30px;
+  transform: translateX(-50%);
+  font-size: 16px;
+  opacity: 0;
+  transition: opacity 0.5s, bottom 0.5s;
+}
+.toast.show {
+  visibility: visible;
+  opacity: 1;
+  bottom: 50px;
+}
+</style>
+
+<script>
+document.getElementById("contactForm").addEventListener("submit", async function(e) {
+    e.preventDefault(); 
+    
+    const form = e.target;
+    const data = new FormData(form);
+
+    const response = await fetch(form.action, {
+        method: form.method,
+        body: data,
+        headers: { 'Accept': 'application/json' }
+    });
+
+    if (response.ok) {
+        form.reset(); 
+        showToast("Obrigado! Sua mensagem foi enviada.");
+    } else {
+        showToast("Ops! Algo deu errado, tente novamente.");
+    }
+});
+
+function showToast(message) {
+    const toast = document.getElementById("toast");
+    toast.textContent = message;
+    toast.classList.add("show");
+
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 3000); 
+}
+</script>
+
 
     <!-- Footer -->
     <footer class="footer">
