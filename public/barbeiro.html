@@ -254,21 +254,23 @@ async function carregarAgendamentos(barbeiro, dia) {
     noAppointments.style.display = "none";
 
     agendamentos.forEach(a => {
-      const diaFmt = new Date(a.dia).toLocaleDateString("pt-BR");
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${diaFmt}</td>
-        <td>${a.horario}</td>
-        <td>${a.nome}</td>
-        <td>${a.servico}</td>
-        <td>${a.barbeiro}</td>
-        <td>
-          <button class="editBtn" data-id="${a.id}">Editar</button>
-          <button class="delBtn" data-id="${a.id}">Excluir</button>
-        </td>
-      `;
-      tableBody.appendChild(tr);
-    });
+  const diaFmt = a.dia.split("T")[0].split("-").reverse().join("/"); 
+  
+  const tr = document.createElement("tr");
+  tr.innerHTML = `
+    <td>${diaFmt}</td>
+    <td>${a.horario}</td>
+    <td>${a.nome}</td>
+    <td>${a.servico}</td>
+    <td>${a.barbeiro}</td>
+    <td>
+      <button class="editBtn" data-id="${a.id}">Editar</button>
+      <button class="delBtn" data-id="${a.id}">Excluir</button>
+    </td>
+  `;
+  tableBody.appendChild(tr);
+});
+
 
     ativarBotoes();
   } catch(err) {
