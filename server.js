@@ -159,18 +159,25 @@ const valoresServico = {
   "Corte Simples": 50, 
   "Corte + Barba": 80, 
   "Barba": 30, 
-  "Corte Especial": 100 
+  "Corte Especial": 100,
+  "Sobrancelha": 20,
+  "Platinado": 120
 };
 
-// Ganhos (só comissões resumidas)
+// Ganhos (comissões por barbeiro)
 app.get("/api/ganhos", async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM agendamentos");
-    const ganhos = {};
+    const ganhos = { total: 0 };
+
     result.rows.forEach(a => {
       const valor = valoresServico[a.servico] || 50;
-      ganhos[a.barbeiro] = (ganhos[a.barbeiro] || 0) + valor * 0.2;
+      const comissao = valor * 0.5; // 50% de comissão (ajuste se quiser)
+
+      ganhos[a.barbeiro] = (ganhos[a.barbeiro] || 0) + comissao;
+      ganhos.total += valor;
     });
+
     res.json(ganhos);
   } catch (err) {
     console.error("Erro ao buscar ganhos:", err);
@@ -178,15 +185,16 @@ app.get("/api/ganhos", async (req, res) => {
   }
 });
 
-// Relatório de Comissões (detalhado)
+// Relatório detalhado
 app.get("/api/relatorio", async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM agendamentos ORDER BY barbeiro, dia, horario");
-
     const relatorio = {};
 
     result.rows.forEach(a => {
       const valor = valoresServico[a.servico] || 50;
+      const comissao = valor * 0.5;
+
       if (!relatorio[a.barbeiro]) {
         relatorio[a.barbeiro] = {
           barbeiro: a.barbeiro,
@@ -199,11 +207,12 @@ app.get("/api/relatorio", async (req, res) => {
 
       relatorio[a.barbeiro].totalServicos++;
       relatorio[a.barbeiro].totalBruto += valor;
-      relatorio[a.barbeiro].comissao += valor * 0.2;
+      relatorio[a.barbeiro].comissao += comissao;
       relatorio[a.barbeiro].servicos.push({
         cliente: a.nome,
         servico: a.servico,
         valor,
+        comissao,
         dia: a.dia,
         horario: a.horario
       });
