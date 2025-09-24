@@ -156,13 +156,15 @@ app.delete("/api/agendamentos/:id", async (req, res) => {
 
 // ------------------- SERVIÇOS E RELATÓRIO ------------------- //
 const valoresServico = { 
-  "Corte Simples": 50, 
-  "Corte + Barba": 80, 
-  "Barba": 30, 
-  "Corte Especial": 100,
-  "Sobrancelha": 20,
-  "Platinado": 120
+  "Corte Tradicional": 45,
+  "Social e Degradê": 45,
+  "Locs": 310,
+  "Barba Completa": 30,
+  "Tratamento Capilar": 150,
+  "Trança": 150,
+  "Pacote Premium": 230
 };
+
 
 // Ganhos (comissões por barbeiro)
 app.get("/api/ganhos", async (req, res) => {
