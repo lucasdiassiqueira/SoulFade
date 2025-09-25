@@ -174,7 +174,7 @@ app.get("/api/ganhos", async (req, res) => {
 
     result.rows.forEach(a => {
       const valor = valoresServico[a.servico] || 50;
-      const comissao = valor * 0.5; // 50% de comissão (ajuste se quiser)
+      const comissao = valor * 0.3; // 50% de comissão (ajuste se quiser)
 
       ganhos[a.barbeiro] = (ganhos[a.barbeiro] || 0) + comissao;
       ganhos.total += valor;
