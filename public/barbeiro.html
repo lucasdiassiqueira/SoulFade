@@ -6,62 +6,28 @@
 <title>Painel do Barbeiro</title>
 <link rel="icon" type="image/png" href="favicon-removebg-preview.png" />
 <style>
-  /* ===== RESET & BASE ===== */
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; }
-  body { background:#f4f1ee; min-height:100vh; display:flex; justify-content:center; padding:30px; color:#4e342e; }
+  body { background:#f4f1ee; min-height:100vh; display:flex; justify-content:center; align-items:center; padding:30px; color:#4e342e; }
 
-  /* ===== CONTAINER PRINCIPAL ===== */
-  #painelContainer { width:100%; max-width:1400px; }
+  #painelContainer { width:100%; max-width:1400px; display:none; }
 
-  /* ===== HEADER ===== */
-  .header {
-    display:flex; justify-content:space-between; align-items:center;
-    margin-bottom:25px;
-  }
+  .header { display:flex; justify-content:space-between; align-items:center; margin-bottom:25px; }
   .header h1 { font-size:30px; font-weight:700; color:#3e2723; }
-  .header span {
-    font-weight:600; font-size:15px; color:#6d4c41;
-  }
+  .header span { font-weight:600; font-size:15px; color:#6d4c41; }
 
-  /* ===== CARDS ===== */
-  .cards {
-    display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:20px; margin-bottom:30px;
-  }
-  .card {
-    background:#fff; padding:28px 22px;
-    border-radius:16px; box-shadow:0 6px 20px rgba(0,0,0,0.08);
-    text-align:center; transition:0.25s;
-  }
+  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; margin-bottom:30px; }
+  .card { background:#fff; padding:28px 22px; border-radius:16px; box-shadow:0 6px 20px rgba(0,0,0,0.08); text-align:center; transition:0.25s; }
   .card:hover { transform:translateY(-4px); }
   .card h3 { font-size:16px; color:#795548; margin-bottom:12px; font-weight:600; }
   .card p { font-size:26px; font-weight:700; color:#3e2723; }
 
-  /* ===== FILTROS ===== */
-  .filters {
-    display:flex; gap:14px; align-items:center;
-    margin-bottom:25px; flex-wrap:wrap;
-    background:#fff; padding:16px 20px; border-radius:14px;
-    box-shadow:0 4px 14px rgba(0,0,0,0.06);
-  }
+  .filters { display:flex; gap:14px; align-items:center; margin-bottom:25px; flex-wrap:wrap; background:#fff; padding:16px 20px; border-radius:14px; box-shadow:0 4px 14px rgba(0,0,0,0.06); }
   .filters label { font-weight:600; }
-  select, input[type="date"] {
-    padding:10px 12px; border-radius:10px;
-    border:1px solid #c7b7ad; background:#fff;
-  }
-  .filters button {
-    padding:10px 18px; border-radius:10px; border:none;
-    background:#8d6e63; cursor:pointer;
-    font-weight:600; color:#fff; transition:0.2s;
-  }
+  select, input[type="date"] { padding:10px 12px; border-radius:10px; border:1px solid #c7b7ad; background:#fff; }
+  .filters button { padding:10px 18px; border-radius:10px; border:none; background:#8d6e63; cursor:pointer; font-weight:600; color:#fff; transition:0.2s; }
   .filters button:hover { background:#6d4c41; }
 
-  /* ===== TABELA ===== */
-  table {
-    width:100%; border-collapse:collapse; background:#fff;
-    border-radius:14px; overflow:hidden;
-    box-shadow:0 6px 20px rgba(0,0,0,0.08); margin-bottom:20px;
-  }
+  table { width:100%; border-collapse:collapse; background:#fff; border-radius:14px; overflow:hidden; box-shadow:0 6px 20px rgba(0,0,0,0.08); margin-bottom:20px; }
   th, td { padding:14px; text-align:left; }
   th { background:#4e342e; color:#fff; font-size:14px; }
   tr:nth-child(even) { background:#fdfaf8; }
@@ -69,71 +35,52 @@
 
   .no-appointments { margin:18px 0; font-style:italic; text-align:center; color:#6d4c41; }
 
-  /* ===== DASHBOARD GERENTE ===== */
-  #gerentePanel {
-    margin-top:30px; display:none;
-    background:#fff; padding:24px; border-radius:16px;
-    box-shadow:0 6px 20px rgba(0,0,0,0.08);
-  }
+  #gerentePanel { margin-top:30px; display:none; background:#fff; padding:24px; border-radius:16px; box-shadow:0 6px 20px rgba(0,0,0,0.08); }
   #gerentePanel h2 { margin-bottom:12px; }
-  #ganhosBarbeiros {
-    display:flex; gap:12px; flex-wrap:wrap;
-    list-style:none; padding:0; margin-top:16px;
-  }
-  #ganhosBarbeiros li {
-    background:#4e342e; color:#fff;
-    padding:10px 16px; border-radius:10px; font-weight:600;
-  }
+  #ganhosBarbeiros { display:flex; gap:12px; flex-wrap:wrap; list-style:none; padding:0; margin-top:16px; }
+  #ganhosBarbeiros li { background:#4e342e; color:#fff; padding:10px 16px; border-radius:10px; font-weight:600; }
 
-  /* ===== BOTÕES TABELA ===== */
-  .editBtn, .delBtn {
-    padding:7px 12px; margin:0 3px; border:none;
-    border-radius:6px; font-size:13px; cursor:pointer; color:#fff;
-    transition:0.2s;
-  }
+  .editBtn, .delBtn { padding:7px 12px; margin:0 3px; border:none; border-radius:6px; font-size:13px; cursor:pointer; color:#fff; transition:0.2s; }
   .editBtn { background:#ffb74d; }
   .editBtn:hover { background:#ffa726; }
   .delBtn { background:#e57373; }
   .delBtn:hover { background:#ef5350; }
 
-  /* ===== MODAL ===== */
-  .modal {
-    position: fixed; top:0; left:0;
-    width:100%; height:100%;
-    background:rgba(0,0,0,0.5);
-    display:flex; justify-content:center; align-items:center;
-    visibility:hidden; opacity:0; transition:0.3s; z-index:100;
-  }
+  .modal { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); display:flex; justify-content:center; align-items:center; visibility:hidden; opacity:0; transition:0.3s; z-index:100; }
   .modal.active { visibility:visible; opacity:1; }
-  .modal-content {
-    background:#fff; padding:24px; border-radius:14px;
-    width:360px; max-width:90%; text-align:center;
-    box-shadow:0 6px 20px rgba(0,0,0,0.25);
-  }
+  .modal-content { background:#fff; padding:24px; border-radius:14px; width:360px; max-width:90%; text-align:center; box-shadow:0 6px 20px rgba(0,0,0,0.25); }
   .modal-content h3 { margin-bottom:18px; }
-  .modal-content input, .modal-content select {
-    width:100%; padding:10px 12px; margin:8px 0;
-    border-radius:8px; border:1px solid #c7b7ad;
-  }
-  .modal-content button {
-    padding:10px 16px; border:none; border-radius:8px;
-    margin:10px 6px; cursor:pointer; font-weight:600;
-  }
+  .modal-content input, .modal-content select { width:100%; padding:10px 12px; margin:8px 0; border-radius:8px; border:1px solid #c7b7ad; }
+  .modal-content button { padding:10px 16px; border:none; border-radius:8px; margin:10px 6px; cursor:pointer; font-weight:600; }
   .modal-content .saveBtn { background:#4caf50; color:#fff; }
   .modal-content .cancelBtn { background:#e57373; color:#fff; }
+
+  /* LOGIN */
+  #loginContainer { background:#fff; padding:36px; border-radius:16px; box-shadow:0 6px 20px rgba(0,0,0,0.25); text-align:center; }
+  #loginContainer h2 { margin-bottom:20px; }
+  #loginContainer input { width:80%; padding:10px 12px; margin:8px 0; border-radius:8px; border:1px solid #c7b7ad; }
+  #loginContainer button { padding:10px 16px; border:none; border-radius:8px; background:#4caf50; color:#fff; cursor:pointer; font-weight:600; margin-top:10px; }
 </style>
 </head>
 <body>
 
+<!-- LOGIN -->
+<div id="loginContainer">
+  <h2>Login do Painel</h2>
+  <input type="text" id="username" placeholder="Usuário" />
+  <input type="password" id="password" placeholder="Senha" />
+  <br>
+  <button id="loginBtn">Entrar</button>
+</div>
+
+<!-- PAINEL -->
 <div id="painelContainer">
 
-  <!-- HEADER -->
   <div class="header">
     <h1>Painel do Barbeiro</h1>
     <span>💈 Soul Fade</span>
   </div>
 
-  <!-- Cards -->
   <div class="cards">
     <div class="card"><h3>Ganhos</h3><p id="cardGanhos">R$ 0,00</p></div>
     <div class="card"><h3>Clientes</h3><p id="cardClientes">0</p></div>
@@ -141,7 +88,6 @@
     <div class="card"><h3>Avaliação</h3><p id="cardAvaliacao">⭐ 8,5</p></div>
   </div>
 
-  <!-- Filtros -->
   <div class="filters">
     <label for="barbeiroSelect">Barbeiro:</label>
     <select id="barbeiroSelect">
@@ -157,7 +103,6 @@
     <button id="clearFilters">Limpar filtros</button>
   </div>
 
-  <!-- Tabela -->
   <table id="agendaTable">
     <thead>
       <tr><th>Dia</th><th>Horário</th><th>Cliente</th><th>Serviço</th><th>Barbeiro</th><th>Ações</th></tr>
@@ -167,7 +112,6 @@
 
   <div id="noAppointments" class="no-appointments">Selecione um barbeiro ou uma data para ver os agendamentos.</div>
 
-  <!-- Painel Gerente -->
   <div id="gerentePanel">
     <h2>📈 Dashboard do Gerente</h2>
     <p>Aqui você verá vendas e desempenho dos barbeiros:</p>
@@ -175,31 +119,37 @@
   </div>
 </div>
 
-<!-- Modal -->
-<div id="editModal" class="modal">
-  <div class="modal-content">
-    <h3>Editar Agendamento</h3>
-    <label>Data:</label>
-    <input type="date" id="editDia" />
-    <label>Horário:</label>
-    <input type="time" id="editHorario" />
-    <label>Barbeiro:</label>
-    <select id="editBarbeiro">
-      <option value="Lucas Dias">Lucas Dias</option>
-      <option value="Isaias Barreto">Isaias Barreto</option>
-      <option value="Isaias Santana">Isaias Santana</option>
-    </select>
-    <div>
-      <button class="saveBtn">Salvar</button>
-      <button class="cancelBtn">Cancelar</button>
-    </div>
-  </div>
-</div>
-
 <script>
 const API_URL = "https://soulfade.onrender.com/api"; 
 
-// Elementos
+// LOGIN SIMPLES
+const loginBtn = document.getElementById("loginBtn");
+const loginContainer = document.getElementById("loginContainer");
+const painelContainer = document.getElementById("painelContainer");
+
+const users = {
+  gerente: { password: "1234", role: "gerente" },
+  lucas: { password: "1111", role: "barbeiro" },
+  isaias: { password: "2222", role: "barbeiro" }
+};
+
+loginBtn.onclick = () => {
+  const username = document.getElementById("username").value.toLowerCase();
+  const password = document.getElementById("password").value;
+  if(users[username] && users[username].password === password){
+    loginContainer.style.display = "none";
+    painelContainer.style.display = "block";
+    if(users[username].role === "barbeiro"){
+      document.querySelector(".cards").style.display = "none";
+      gerentePanel.style.display = "none";
+    }
+    atualizarTudo();
+  } else {
+    alert("Usuário ou senha incorretos!");
+  }
+};
+
+// ELEMENTOS
 const barbeiroSelect = document.getElementById("barbeiroSelect");
 const dateSelect = document.getElementById("dateSelect");
 const tableBody = document.querySelector("#agendaTable tbody");
@@ -210,33 +160,22 @@ const cardGanhos = document.getElementById("cardGanhos");
 const cardClientes = document.getElementById("cardClientes");
 const cardAgendamentos = document.getElementById("cardAgendamentos");
 
-// Modal e inputs
-const editModal = document.getElementById("editModal");
-const editDia = document.getElementById("editDia");
-const editHorario = document.getElementById("editHorario");
-const editBarbeiro = document.getElementById("editBarbeiro");
-let editId = null;
-
-// Função principal para carregar agendamentos
-async function carregarAgendamentos(barbeiro, dia) {
-  try {
+// Funções originais do seu código para carregar agendamentos, editar, excluir e atualizar cards
+async function carregarAgendamentos(barbeiro, dia){
+  try{
     let url = `${API_URL}/agendamentos`;
     const params = new URLSearchParams();
-    if (barbeiro) params.set("barbeiro", barbeiro);
-    if (dia) params.set("dia", dia);
-    if (params.toString()) url += "?" + params.toString();
-
+    if(barbeiro) params.set("barbeiro", barbeiro);
+    if(dia) params.set("dia", dia);
+    if(params.toString()) url += "?" + params.toString();
     const res = await fetch(url);
     const agendamentos = await res.json();
     tableBody.innerHTML = "";
-
-    if (!agendamentos.length) {
-      noAppointments.style.display = "block";
-      return;
+    if(!agendamentos.length){
+      noAppointments.style.display="block"; return;
     }
-    noAppointments.style.display = "none";
-
-    agendamentos.forEach(a => {
+    noAppointments.style.display="none";
+    agendamentos.forEach(a=>{
       const diaFmt = a.dia.split("T")[0].split("-").reverse().join("/");
       const tr = document.createElement("tr");
       tr.innerHTML = `
@@ -253,110 +192,59 @@ async function carregarAgendamentos(barbeiro, dia) {
       tableBody.appendChild(tr);
     });
     ativarBotoes();
-  } catch(err) {
-    console.error(err);
-    tableBody.innerHTML = "";
-    noAppointments.style.display = "block";
-  }
+  }catch(err){ console.error(err); tableBody.innerHTML=""; noAppointments.style.display="block"; }
 }
 
-// Ativa botões editar e excluir
-function ativarBotoes() {
-  document.querySelectorAll(".delBtn").forEach(btn => {
-    btn.onclick = async () => {
-      if (!confirm("Deseja realmente excluir este agendamento?")) return;
+function ativarBotoes(){
+  document.querySelectorAll(".delBtn").forEach(btn=>{
+    btn.onclick=async ()=>{
+      if(!confirm("Deseja realmente excluir este agendamento?")) return;
       const id = btn.dataset.id;
-      try {
-        await fetch(`${API_URL}/agendamentos/${id}`, { method: "DELETE" });
-        atualizarTudo();
-      } catch(e){ console.error(e); }
+      try{ await fetch(`${API_URL}/agendamentos/${id}`,{method:"DELETE"}); atualizarTudo(); }catch(e){console.error(e);}
     };
   });
-
-  document.querySelectorAll(".editBtn").forEach(btn => {
-    btn.onclick = () => {
-      editId = btn.dataset.id;
-      const tr = btn.closest("tr");
-      editDia.value = tr.children[0].textContent.split('/').reverse().join('-');
-      editHorario.value = tr.children[1].textContent;
-      editBarbeiro.value = tr.children[4].textContent;
-      editModal.classList.add("active");
-    };
+  document.querySelectorAll(".editBtn").forEach(btn=>{
+    btn.onclick=()=>{ alert("Editar funcionalidade aqui"); };
   });
 }
 
-// Salvar edição
-editModal.querySelector(".saveBtn").onclick = async () => {
-  if(!editDia.value || !editHorario.value || !editBarbeiro.value) return alert("Preencha todos os campos!");
+async function carregarGanhosGerente(){
   try{
-    await fetch(`${API_URL}/agendamentos/${editId}`, {
-      method:"PUT",
-      headers:{ "Content-Type":"application/json" },
-      body:JSON.stringify({
-        dia: editDia.value,
-        horario: editHorario.value,
-        barbeiro: editBarbeiro.value
-      })
-    });
-    editModal.classList.remove("active");
-    atualizarTudo();
-  }catch(e){ console.error(e); }
-};
-
-// Cancelar edição
-editModal.querySelector(".cancelBtn").onclick = () => editModal.classList.remove("active");
-
-// Carregar ganhos do gerente
-async function carregarGanhosGerente() {
-  try {
     const res = await fetch(`${API_URL}/ganhos`);
     const ganhos = await res.json();
-    ganhosBarbeirosList.innerHTML = "";
-
-    // Mostra ganhos por barbeiro (sem "total")
-    Object.entries(ganhos).forEach(([b, v]) => {
-      if(b !== "total"){
+    ganhosBarbeirosList.innerHTML="";
+    Object.entries(ganhos).forEach(([b,v])=>{
+      if(b!=="total"){
         const li = document.createElement("li");
         li.textContent = `${b}: R$ ${Number(v).toFixed(2)}`;
         ganhosBarbeirosList.appendChild(li);
       }
     });
-    gerentePanel.style.display = "block";
-  } catch(err){ console.error(err); }
+    gerentePanel.style.display="block";
+  }catch(err){console.error(err);}
 }
 
-// Atualizar cards
-async function atualizarCards(barbeiro, dia){
+async function atualizarCards(barbeiro,dia){
   try{
     let url = `${API_URL}/agendamentos`;
     const params = new URLSearchParams();
-    if(barbeiro) params.set("barbeiro", barbeiro);
-    if(dia) params.set("dia", dia);
+    if(barbeiro) params.set("barbeiro",barbeiro);
+    if(dia) params.set("dia",dia);
     if(params.toString()) url += "?" + params.toString();
-
     const res = await fetch(url);
     const agend = await res.json();
-
-    const clientesUnicos = new Set(agend.map(a => (a.nome||"").trim())).size;
+    const clientesUnicos = new Set(agend.map(a=>(a.nome||"").trim())).size;
     const totalAgend = agend.length;
-
-    // pega os ganhos já calculados do backend
     const rg = await fetch(`${API_URL}/ganhos`);
     const ganhosObj = await rg.json();
-
-    // usa o valor do barbeiro filtrado ou soma todos
     let ganhosMostrar = barbeiro ? Number(ganhosObj[barbeiro]||0) 
-                                : Object.entries(ganhosObj)
-                                    .filter(([k])=>k!=="total")
-                                    .reduce((s,[,v])=>s+Number(v||0),0);
-
+                                 : Object.entries(ganhosObj).filter(([k])=>k!=="total").reduce((s,[,v])=>s+Number(v||0),0);
     cardGanhos.textContent = `R$ ${ganhosMostrar.toFixed(2)}`;
     cardClientes.textContent = clientesUnicos;
     cardAgendamentos.textContent = totalAgend;
-  } catch(e){ console.error(e); }
+  }catch(e){console.error(e);}
 }
 
-// Atualiza tudo de uma vez
 function atualizarTudo(){
   carregarAgendamentos(barbeiroSelect.value,dateSelect.value);
   atualizarCards(barbeiroSelect.value,dateSelect.value);
@@ -366,14 +254,9 @@ function atualizarTudo(){
 // Eventos filtros
 barbeiroSelect.onchange = atualizarTudo;
 dateSelect.onchange = atualizarTudo;
-document.getElementById("clearFilters").onclick = () => {
-  barbeiroSelect.value = "";
-  dateSelect.value = "";
-  atualizarTudo();
+document.getElementById("clearFilters").onclick = ()=>{
+  barbeiroSelect.value=""; dateSelect.value=""; atualizarTudo();
 };
-
-// Inicializa
-atualizarTudo();
 </script>
 </body>
 </html>

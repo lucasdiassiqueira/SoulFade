@@ -195,7 +195,7 @@ app.get("/api/relatorio", async (req, res) => {
 
     result.rows.forEach(a => {
       const valor = valoresServico[a.servico] || 50;
-      const comissao = valor * 0.5;
+      const comissao = valor * 0.3;
 
       if (!relatorio[a.barbeiro]) {
         relatorio[a.barbeiro] = {
