@@ -123,6 +123,7 @@
 const API_URL = "https://soulfade.onrender.com/api"; 
 
 // LOGIN SIMPLES
+// LOGIN SIMPLES
 const loginBtn = document.getElementById("loginBtn");
 const loginContainer = document.getElementById("loginContainer");
 const painelContainer = document.getElementById("painelContainer");
@@ -133,34 +134,28 @@ const users = {
   isaias: { password: "2222", role: "barbeiro" }
 };
 
+let usuarioLogado = null; // Variável global
+
 loginBtn.onclick = () => {
   const username = document.getElementById("username").value.toLowerCase();
   const password = document.getElementById("password").value;
   if(users[username] && users[username].password === password){
+    usuarioLogado = users[username]; // salva o usuário logado
     loginContainer.style.display = "none";
     painelContainer.style.display = "block";
-    if(users[username].role === "barbeiro"){
+
+    if(usuarioLogado.role === "barbeiro"){
       document.querySelector(".cards").style.display = "none";
       gerentePanel.style.display = "none";
     }
-    atualizarTudo();
+
+    atualizarTudo(); // atualiza tudo conforme usuário logado
   } else {
     alert("Usuário ou senha incorretos!");
   }
 };
 
-// ELEMENTOS
-const barbeiroSelect = document.getElementById("barbeiroSelect");
-const dateSelect = document.getElementById("dateSelect");
-const tableBody = document.querySelector("#agendaTable tbody");
-const noAppointments = document.getElementById("noAppointments");
-const gerentePanel = document.getElementById("gerentePanel");
-const ganhosBarbeirosList = document.getElementById("ganhosBarbeiros");
-const cardGanhos = document.getElementById("cardGanhos");
-const cardClientes = document.getElementById("cardClientes");
-const cardAgendamentos = document.getElementById("cardAgendamentos");
-
-// Funções originais do seu código para carregar agendamentos, editar, excluir e atualizar cards
+// FUNÇÕES ORIGINAIS
 async function carregarAgendamentos(barbeiro, dia){
   try{
     let url = `${API_URL}/agendamentos`;
@@ -208,7 +203,9 @@ function ativarBotoes(){
   });
 }
 
+// FUNÇÃO DE GANHOS DO GERENTE (só para gerente)
 async function carregarGanhosGerente(){
+  if(!usuarioLogado || usuarioLogado.role !== "gerente") return; // bloqueia para barbeiros
   try{
     const res = await fetch(`${API_URL}/ganhos`);
     const ganhos = await res.json();
@@ -248,7 +245,7 @@ async function atualizarCards(barbeiro,dia){
 function atualizarTudo(){
   carregarAgendamentos(barbeiroSelect.value,dateSelect.value);
   atualizarCards(barbeiroSelect.value,dateSelect.value);
-  carregarGanhosGerente();
+  carregarGanhosGerente(); // só será chamado se for gerente
 }
 
 // Eventos filtros
