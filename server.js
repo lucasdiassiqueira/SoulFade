@@ -159,7 +159,6 @@ app.get("/api/ganhos", async (req, res) => {
   try {
     const result = await pool.query("SELECT servico, barbeiro FROM agendamentos");
 
-    // tabela com valores fixos de serviços
     const precos = {
       "Corte Tradicional": 45,
       "Social e Degradê": 45,
@@ -170,24 +169,36 @@ app.get("/api/ganhos", async (req, res) => {
       "Pacote Premium": 230
     };
 
-    const ganhos = {};
-    let total = 0;
+    const ganhos = {};     // valores líquidos (70%)
+    const comissoes = {};  // valores da barbearia (30%)
+    let totalGanhos = 0;
+    let totalComissoes = 0;
 
     result.rows.forEach(a => {
       const preco = precos[a.servico] || 0;
-      const ganhoBarbeiro = preco * 0.7; // 70% pro barbeiro
+      const ganhoBarbeiro = preco * 0.7;
+      const comissao = preco * 0.3;
+
+      // ganhos barbeiro
       ganhos[a.barbeiro] = (ganhos[a.barbeiro] || 0) + ganhoBarbeiro;
-      total += ganhoBarbeiro;
+      totalGanhos += ganhoBarbeiro;
+
+      // comissão barbeiro
+      comissoes[a.barbeiro] = (comissoes[a.barbeiro] || 0) + comissao;
+      totalComissoes += comissao;
     });
 
-    ganhos.total = total;
-    res.json(ganhos);
+    res.json({
+      ganhos,
+      comissoes,
+      totalGanhos,
+      totalComissoes
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Erro ao calcular ganhos" });
   }
 });
-
 
 // Relatório detalhado
 app.get("/api/relatorio", async (req, res) => {
