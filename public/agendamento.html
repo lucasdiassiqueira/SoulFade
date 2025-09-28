@@ -73,38 +73,54 @@
     /* ===== Cards Barbeiro ===== */
     .barbeiros {
       display: flex;
-      gap: 20px;
+      gap: 15px;
       justify-content: center;
       margin-top: 10px;
     }
 
     .barbeiro-card {
       flex: 1;
-      text-align: center;
-      padding: 12px;
-      background: #f1f1f1;
+      max-width: 150px;
+      height: 180px;
       border-radius: 12px;
+      overflow: hidden;
       cursor: pointer;
       transition: 0.3s;
       border: 2px solid transparent;
+      display: flex;
+      flex-direction: column;
     }
 
     .barbeiro-card img {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      margin-bottom: 8px;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
+      display: block;
+    }
+
+    .barbeiro-card p {
+      margin: 0;
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      font-size: 14px;
+      font-weight: bold;
+      text-align: center;
+      padding: 6px;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
     }
 
     .barbeiro-card:hover {
-      background: #eee;
+      transform: scale(1.05);
     }
 
     .barbeiro-card.active {
       border-color: #654321;
-      background: #fff5eb;
-      font-weight: bold;
+    }
+
+    .barbeiro-card {
+      position: relative;
     }
 
     .days {
@@ -158,7 +174,8 @@
     @media (max-width: 600px) {
       .day { flex: 1 1 45%; }
       .hour { flex: 1 1 45%; }
-      .barbeiros { flex-direction: column; }
+      .barbeiros { flex-direction: column; align-items: center; }
+      .barbeiro-card { max-width: 100%; }
     }
   </style>
 </head>
@@ -180,19 +197,18 @@
         <label>Selecione o Barbeiro</label>
         <div class="barbeiros">
           <div class="barbeiro-card" data-nome="Lucas Dias">
-            <img src="lucas.png" alt="Lucas Dias">
+            <img src="lucas.jpg" alt="Lucas Dias">
             <p>Lucas Dias</p>
           </div>
           <div class="barbeiro-card" data-nome="Isaias Barreto">
-            <img src="isaias2.png" alt="Isaias Barreto">
+            <img src="barreto.jpg" alt="Isaias Barreto">
             <p>Isaias Barreto</p>
           </div>
           <div class="barbeiro-card" data-nome="Isaias Santana">
-            <img src="isaias.png" alt="Isaias Santana">
+            <img src="santana.jpg" alt="Isaias Santana">
             <p>Isaias Santana</p>
           </div>
         </div>
-        <!-- input hidden que substitui o select -->
         <input type="hidden" id="barbeiro" name="barbeiro" required>
       </div>
 
@@ -217,7 +233,6 @@
   const servico = urlParams.get("servico");
   if (servico) document.getElementById("servico").value = servico;
 
-  // ===== Seleção de barbeiro =====
   const barbeiroCards = document.querySelectorAll(".barbeiro-card");
   const barbeiroInput = document.getElementById("barbeiro");
 
@@ -227,7 +242,6 @@
       card.classList.add("active");
       barbeiroInput.value = card.dataset.nome;
 
-      // resetar seleção de dia/horário
       selectedDay = null;
       selectedHour = null;
       hoursContainer.style.display = "none";
@@ -235,7 +249,6 @@
     });
   });
 
-  // ===== Dias =====
   const diasSemana = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
   const daysContainer = document.getElementById("days");
 
@@ -258,7 +271,6 @@
   }
   gerarSemana();
 
-  // ===== Horários =====
   function gerarHorarios() {
     const horarios = [];
     for (let h = 9; h <= 18; h++) horarios.push(h.toString().padStart(2, "0") + ":00");
@@ -319,7 +331,6 @@
     }
   });
 
-  // ===== Confirmar =====
   document.getElementById('btn-confirmar').addEventListener('click', async () => {
     const nome = document.getElementById('nome').value;
     const servicoVal = document.getElementById('servico').value;
