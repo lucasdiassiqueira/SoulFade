@@ -169,10 +169,10 @@
 
   <!-- Painel Gerente -->
   <div id="gerentePanel">
-    <h2>📈 Dashboard do Gerente</h2>
-    <p>Aqui você verá vendas e desempenho dos barbeiros:</p>
-    <ul id="ganhosBarbeiros"></ul>
-  </div>
+  <h2>📈 Dashboard do Gerente</h2>
+  <p>Aqui você verá vendas e desempenho dos barbeiros:</p>
+  <ul id="ganhosBarbeiros"></ul>
+</div>
 </div>
 
 <!-- Modal -->
@@ -266,10 +266,8 @@ function ativarBotoes() {
     btn.onclick = async () => {
       if (!confirm("Deseja realmente excluir este agendamento?")) return;
       const id = btn.dataset.id;
-      try {
-        await fetch(`${API_URL}/agendamentos/${id}`, { method: "DELETE" });
-        atualizarTudo();
-      } catch(e){ console.error(e); }
+      try { await fetch(`${API_URL}/agendamentos/${id}`, { method: "DELETE" }); atualizarTudo(); }
+      catch(e){ console.error(e); }
     };
   });
 
@@ -313,10 +311,10 @@ async function carregarGanhosGerente() {
     const dados = await res.json();
     ganhosBarbeirosList.innerHTML = "";
 
-    // mostra só ganhos de cada barbeiro
-    Object.entries(dados.ganhos).forEach(([b, v]) => {
+    // mostra ganhos e comissão de cada barbeiro
+    Object.keys(dados.ganhos).forEach(b => {
       const li = document.createElement("li");
-      li.textContent = `${b}: R$ ${Number(v).toFixed(2)}`;
+      li.textContent = `${b}: Ganhos R$ ${Number(dados.ganhos[b]).toFixed(2)}, Comissão R$ ${Number(dados.comissoes[b]).toFixed(2)}`;
       ganhosBarbeirosList.appendChild(li);
     });
     gerentePanel.style.display = "block";
@@ -338,11 +336,9 @@ async function atualizarCards(barbeiro, dia) {
     const clientesUnicos = new Set(agend.map(a => (a.nome || "").trim())).size;
     const totalAgend = agend.length;
 
-    // pega os ganhos já calculados do backend
     const rg = await fetch(`${API_URL}/ganhos`);
     const dados = await rg.json();
 
-    // usa o valor do barbeiro filtrado ou soma todos
     let ganhosMostrar = barbeiro
       ? Number(dados.ganhos[barbeiro] || 0)
       : Object.values(dados.ganhos).reduce((s, v) => s + Number(v || 0), 0);
@@ -353,8 +349,7 @@ async function atualizarCards(barbeiro, dia) {
   } catch (e) { console.error(e); }
 }
 
-
-// Atualiza tudo de uma vez
+// Atualiza tudo
 function atualizarTudo(){
   carregarAgendamentos(barbeiroSelect.value,dateSelect.value);
   atualizarCards(barbeiroSelect.value,dateSelect.value);
