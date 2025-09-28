@@ -305,21 +305,23 @@ editModal.querySelector(".saveBtn").onclick = async () => {
 editModal.querySelector(".cancelBtn").onclick = () => editModal.classList.remove("active");
 
 // Carregar ganhos do gerente
+// Carregar ganhos do gerente (ajustado só para comissão)
 async function carregarGanhosGerente() {
   try {
     const res = await fetch(`${API_URL}/ganhos`);
     const dados = await res.json();
     ganhosBarbeirosList.innerHTML = "";
 
-    // mostra ganhos e comissão de cada barbeiro
-    Object.keys(dados.ganhos).forEach(b => {
+    // mostra só a comissão de cada barbeiro
+    Object.entries(dados.comissoes).forEach(([b, v]) => {
       const li = document.createElement("li");
-      li.textContent = `${b}: Ganhos R$ ${Number(dados.ganhos[b]).toFixed(2)}, Comissão R$ ${Number(dados.comissoes[b]).toFixed(2)}`;
+      li.textContent = `${b}: R$ ${Number(v).toFixed(2)}`;
       ganhosBarbeirosList.appendChild(li);
     });
     gerentePanel.style.display = "block";
   } catch (err) { console.error(err); }
 }
+
 
 // Atualizar cards
 async function atualizarCards(barbeiro, dia) {
