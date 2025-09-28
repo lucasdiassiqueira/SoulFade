@@ -39,7 +39,7 @@
       color: #444;
     }
 
-    input, select {
+    input {
       width: 100%;
       padding: 12px;
       border-radius: 10px;
@@ -49,7 +49,7 @@
       transition: 0.3s;
     }
 
-    input:focus, select:focus {
+    input:focus {
       border-color: #654321;
       background: #fff;
       outline: none;
@@ -69,6 +69,43 @@
     }
 
     button:hover { background: #815830; }
+
+    /* ===== Cards Barbeiro ===== */
+    .barbeiros {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    .barbeiro-card {
+      flex: 1;
+      text-align: center;
+      padding: 12px;
+      background: #f1f1f1;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.3s;
+      border: 2px solid transparent;
+    }
+
+    .barbeiro-card img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin-bottom: 8px;
+      object-fit: cover;
+    }
+
+    .barbeiro-card:hover {
+      background: #eee;
+    }
+
+    .barbeiro-card.active {
+      border-color: #654321;
+      background: #fff5eb;
+      font-weight: bold;
+    }
 
     .days {
       display: flex;
@@ -121,6 +158,7 @@
     @media (max-width: 600px) {
       .day { flex: 1 1 45%; }
       .hour { flex: 1 1 45%; }
+      .barbeiros { flex-direction: column; }
     }
   </style>
 </head>
@@ -139,13 +177,23 @@
       </div>
 
       <div class="form-group">
-        <label for="barbeiro">Selecione o Barbeiro</label>
-        <select id="barbeiro" name="barbeiro" required>
-          <option value="">Selecione</option>
-          <option value="Lucas Dias">Lucas Dias</option>
-          <option value="Isaias Barreto">Isaias Barreto</option>
-          <option value="Isaias Santana">Isaias Santana</option>
-        </select>
+        <label>Selecione o Barbeiro</label>
+        <div class="barbeiros">
+          <div class="barbeiro-card" data-nome="Lucas Dias">
+            <img src="lucas.jpg" alt="Lucas Dias">
+            <p>Lucas Dias</p>
+          </div>
+          <div class="barbeiro-card" data-nome="Isaias Barreto">
+            <img src="barreto.jpg" alt="Isaias Barreto">
+            <p>Isaias Barreto</p>
+          </div>
+          <div class="barbeiro-card" data-nome="Isaias Santana">
+            <img src="santana.jpg" alt="Isaias Santana">
+            <p>Isaias Santana</p>
+          </div>
+        </div>
+        <!-- input hidden que substitui o select -->
+        <input type="hidden" id="barbeiro" name="barbeiro" required>
       </div>
 
       <div class="form-group">
@@ -169,6 +217,25 @@
   const servico = urlParams.get("servico");
   if (servico) document.getElementById("servico").value = servico;
 
+  // ===== Seleção de barbeiro =====
+  const barbeiroCards = document.querySelectorAll(".barbeiro-card");
+  const barbeiroInput = document.getElementById("barbeiro");
+
+  barbeiroCards.forEach(card => {
+    card.addEventListener("click", () => {
+      barbeiroCards.forEach(c => c.classList.remove("active"));
+      card.classList.add("active");
+      barbeiroInput.value = card.dataset.nome;
+
+      // resetar seleção de dia/horário
+      selectedDay = null;
+      selectedHour = null;
+      hoursContainer.style.display = "none";
+      document.querySelectorAll(".day").forEach(d => d.classList.remove("active"));
+    });
+  });
+
+  // ===== Dias =====
   const diasSemana = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
   const daysContainer = document.getElementById("days");
 
@@ -191,6 +258,7 @@
   }
   gerarSemana();
 
+  // ===== Horários =====
   function gerarHorarios() {
     const horarios = [];
     for (let h = 9; h <= 18; h++) horarios.push(h.toString().padStart(2, "0") + ":00");
@@ -218,7 +286,7 @@
       e.target.classList.add("active");
       selectedDay = e.target.dataset.date;
 
-      const barbeiroSelecionado = document.getElementById("barbeiro").value;
+      const barbeiroSelecionado = barbeiroInput.value;
       if (!barbeiroSelecionado) {
         alert("Escolha um barbeiro antes de selecionar o dia.");
         return;
@@ -251,17 +319,11 @@
     }
   });
 
-  document.getElementById("barbeiro").addEventListener("change", () => {
-    selectedDay = null;
-    selectedHour = null;
-    hoursContainer.style.display = "none";
-    document.querySelectorAll(".day").forEach(d => d.classList.remove("active"));
-  });
-
+  // ===== Confirmar =====
   document.getElementById('btn-confirmar').addEventListener('click', async () => {
     const nome = document.getElementById('nome').value;
     const servicoVal = document.getElementById('servico').value;
-    const barbeiro = document.getElementById('barbeiro').value;
+    const barbeiro = barbeiroInput.value;
 
     if (!nome || !servicoVal || !barbeiro || !selectedDay || !selectedHour) {
       alert("Preencha todos os campos e escolha dia/horário.");
@@ -279,8 +341,9 @@
       const data = await res.json();
       if (res.ok) {
         alert("Agendamento confirmado!");
-        // Limpar seleção e formulário
         document.getElementById('nome').value = "";
+        barbeiroInput.value = "";
+        barbeiroCards.forEach(c => c.classList.remove("active"));
         selectedDay = null;
         selectedHour = null;
         hoursContainer.style.display = "none";
@@ -294,6 +357,5 @@
     }
   });
 </script>
-
 </body>
 </html>
