@@ -310,51 +310,49 @@ editModal.querySelector(".cancelBtn").onclick = () => editModal.classList.remove
 async function carregarGanhosGerente() {
   try {
     const res = await fetch(`${API_URL}/ganhos`);
-    const ganhos = await res.json();
+    const dados = await res.json();
     ganhosBarbeirosList.innerHTML = "";
 
-    // Mostra ganhos por barbeiro (sem "total")
-    Object.entries(ganhos).forEach(([b, v]) => {
-      if(b !== "total"){
-        const li = document.createElement("li");
-        li.textContent = `${b}: R$ ${Number(v).toFixed(2)}`;
-        ganhosBarbeirosList.appendChild(li);
-      }
+    // mostra só ganhos de cada barbeiro
+    Object.entries(dados.ganhos).forEach(([b, v]) => {
+      const li = document.createElement("li");
+      li.textContent = `${b}: R$ ${Number(v).toFixed(2)}`;
+      ganhosBarbeirosList.appendChild(li);
     });
     gerentePanel.style.display = "block";
-  } catch(err){ console.error(err); }
+  } catch (err) { console.error(err); }
 }
 
 // Atualizar cards
-async function atualizarCards(barbeiro, dia){
-  try{
+async function atualizarCards(barbeiro, dia) {
+  try {
     let url = `${API_URL}/agendamentos`;
     const params = new URLSearchParams();
-    if(barbeiro) params.set("barbeiro", barbeiro);
-    if(dia) params.set("dia", dia);
-    if(params.toString()) url += "?" + params.toString();
+    if (barbeiro) params.set("barbeiro", barbeiro);
+    if (dia) params.set("dia", dia);
+    if (params.toString()) url += "?" + params.toString();
 
     const res = await fetch(url);
     const agend = await res.json();
 
-    const clientesUnicos = new Set(agend.map(a => (a.nome||"").trim())).size;
+    const clientesUnicos = new Set(agend.map(a => (a.nome || "").trim())).size;
     const totalAgend = agend.length;
 
     // pega os ganhos já calculados do backend
     const rg = await fetch(`${API_URL}/ganhos`);
-    const ganhosObj = await rg.json();
+    const dados = await rg.json();
 
     // usa o valor do barbeiro filtrado ou soma todos
-    let ganhosMostrar = barbeiro ? Number(ganhosObj[barbeiro]||0) 
-                                : Object.entries(ganhosObj)
-                                    .filter(([k])=>k!=="total")
-                                    .reduce((s,[,v])=>s+Number(v||0),0);
+    let ganhosMostrar = barbeiro
+      ? Number(dados.ganhos[barbeiro] || 0)
+      : Object.values(dados.ganhos).reduce((s, v) => s + Number(v || 0), 0);
 
     cardGanhos.textContent = `R$ ${ganhosMostrar.toFixed(2)}`;
     cardClientes.textContent = clientesUnicos;
     cardAgendamentos.textContent = totalAgend;
-  } catch(e){ console.error(e); }
+  } catch (e) { console.error(e); }
 }
+
 
 // Atualiza tudo de uma vez
 function atualizarTudo(){
