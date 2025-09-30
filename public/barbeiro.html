@@ -9,6 +9,25 @@
   /* ===== RESET & BASE ===== */
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; }
   body { background:#f4f1ee; min-height:100vh; display:flex; justify-content:center; padding:30px; color:#4e342e; }
+  
+  /* LOGIN */
+  #loginContainer {
+    background:#fff; padding:40px; border-radius:16px;
+    box-shadow:0 8px 30px rgba(0,0,0,0.15);
+    width:360px; max-width:90%; text-align:center;
+  }
+  #loginContainer h2 { color:#4e342e; margin-bottom:24px; }
+  #loginContainer select, #loginContainer input {
+    width:100%; padding:12px; margin:10px 0; border-radius:10px; border:1px solid #c7b7ad;
+  }
+  #loginContainer button {
+    width:100%; padding:12px; margin-top:16px; border:none;
+    border-radius:10px; background:#8d6e63; color:#fff; font-weight:600; cursor:pointer; transition:0.2s;
+  }
+  #loginContainer button:hover { background:#6d4c41; }
+  #loginContainer .whatsappBtn { background:#25D366; margin-top:12px; }
+  #loginContainer .whatsappBtn:hover { background:#1ebe57; }
+  #loginError { color:red; margin-top:10px; display:none; }
 
   /* ===== CONTAINER PRINCIPAL ===== */
   #painelContainer { width:100%; max-width:1400px; }
@@ -124,6 +143,21 @@
 </style>
 </head>
 <body>
+
+  <!-- LOGIN -->
+<div id="loginContainer">
+  <h2>Login do Barbeiro</h2>
+  <select id="usuarioSelect">
+    <option value="">Selecione o usuário</option>
+    <option value="Lucas Dias">Lucas Dias</option>
+    <option value="Isaias Barreto">Isaias Barreto</option>
+    <option value="Isaias Santana">Isaias Santana</option>
+  </select>
+  <input type="password" id="senhaInput" placeholder="Senha" />
+  <button id="loginBtn">Entrar</button>
+  <button class="whatsappBtn" onclick="window.open('https://wa.me/5541999016634','_blank')">Problemas? WhatsApp</button>
+  <p id="loginError">Usuário ou senha incorretos!</p>
+</div>
 
 <div id="painelContainer">
 
@@ -242,6 +276,38 @@
 </div>
 
 <script>
+
+  const usuarios = {
+    "Lucas Dias": "1234",
+    "Isaias Barreto": "abcd",
+    "Isaias Santana": "4321"
+  };
+
+  const loginContainer = document.getElementById("loginContainer");
+  const painelContainer = document.getElementById("painelContainer");
+  const loginBtn = document.getElementById("loginBtn");
+  const usuarioSelect = document.getElementById("usuarioSelect");
+  const senhaInput = document.getElementById("senhaInput");
+  const loginError = document.getElementById("loginError");
+
+  loginBtn.onclick = () => {
+    const usuario = usuarioSelect.value;
+    const senha = senhaInput.value.trim();
+    if(usuarios[usuario] && usuarios[usuario] === senha){
+      loginContainer.style.display = "none";
+      painelContainer.style.display = "block";
+      // Inicializa painel após login
+      atualizarTudo();
+    } else {
+      loginError.style.display = "block";
+    }
+  };
+
+  senhaInput.addEventListener("keypress", e => {
+    if(e.key === "Enter") loginBtn.click();
+  });
+
+  
 const API_URL = "https://soulfade.onrender.com/api"; 
 
 // Elementos
