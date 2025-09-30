@@ -142,20 +142,21 @@
   </div>
 
   <!-- Filtros -->
-  <div class="filters">
-    <label for="barbeiroSelect">Barbeiro:</label>
-    <select id="barbeiroSelect">
-      <option value="">-- Todos --</option>
-      <option value="Lucas Dias">Lucas Dias</option>
-      <option value="Isaias Barreto">Isaias Barreto</option>
-      <option value="Isaias Santana">Isaias Santana</option>
-    </select>
+<div class="filters">
+  <label for="barbeiroSelect">Barbeiro:</label>
+  <select id="barbeiroSelect">
+    <option value="">-- Todos --</option>
+    <option value="Lucas Dias">Lucas Dias</option>
+    <option value="Isaias Barreto">Isaias Barreto</option>
+    <option value="Isaias Santana">Isaias Santana</option>
+  </select>
 
-    <label for="dateSelect">Data:</label>
-    <input type="date" id="dateSelect" />
+  <label for="dateSelect">Data:</label>
+  <input type="date" id="dateSelect" />
 
-    <button id="clearFilters">Limpar filtros</button>
-  </div>
+  <button id="clearFilters">Limpar filtros</button>
+  <button id="novoAgendamentoBtn">➕ Novo Agendamento</button>
+</div>
 
   <!-- Tabela -->
   <table id="agendaTable">
@@ -192,6 +193,31 @@
     <div>
       <button class="saveBtn">Salvar</button>
       <button class="cancelBtn">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Novo Agendamento -->
+<div id="novoModal" class="modal">
+  <div class="modal-content">
+    <h3>Novo Agendamento</h3>
+    <label>Data:</label>
+    <input type="date" id="novoDia" />
+    <label>Horário:</label>
+    <input type="time" id="novoHorario" />
+    <label>Cliente:</label>
+    <input type="text" id="novoCliente" placeholder="Nome do cliente" />
+    <label>Serviço:</label>
+    <input type="text" id="novoServico" placeholder="Ex: Corte Tradicional" />
+    <label>Barbeiro:</label>
+    <select id="novoBarbeiro">
+      <option value="Lucas Dias">Lucas Dias</option>
+      <option value="Isaias Barreto">Isaias Barreto</option>
+      <option value="Isaias Santana">Isaias Santana</option>
+    </select>
+    <div>
+      <button class="saveBtn" id="salvarNovo">Salvar</button>
+      <button class="cancelBtn" id="cancelarNovo">Cancelar</button>
     </div>
   </div>
 </div>
@@ -366,6 +392,56 @@ document.getElementById("clearFilters").onclick = () => {
   dateSelect.value = "";
   atualizarTudo();
 };
+
+
+
+// Elementos do novo agendamento
+const novoModal = document.getElementById("novoModal");
+const novoBtn = document.getElementById("novoAgendamentoBtn");
+const novoDia = document.getElementById("novoDia");
+const novoHorario = document.getElementById("novoHorario");
+const novoCliente = document.getElementById("novoCliente");
+const novoServico = document.getElementById("novoServico");
+const novoBarbeiro = document.getElementById("novoBarbeiro");
+
+// Abrir modal de novo agendamento
+novoBtn.onclick = () => {
+  novoDia.value = "";
+  novoHorario.value = "";
+  novoCliente.value = "";
+  novoServico.value = "";
+  novoBarbeiro.value = "";
+  novoModal.classList.add("active");
+};
+
+// Cancelar novo
+document.getElementById("cancelarNovo").onclick = () => {
+  novoModal.classList.remove("active");
+};
+
+// Salvar novo agendamento
+document.getElementById("salvarNovo").onclick = async () => {
+  if(!novoDia.value || !novoHorario.value || !novoCliente.value || !novoServico.value || !novoBarbeiro.value){
+    return alert("Preencha todos os campos!");
+  }
+
+  try{
+    await fetch(`${API_URL}/agendamentos`, {
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body:JSON.stringify({
+        dia: novoDia.value,
+        horario: novoHorario.value,
+        nome: novoCliente.value,
+        servico: novoServico.value,
+        barbeiro: novoBarbeiro.value
+      })
+    });
+    novoModal.classList.remove("active");
+    atualizarTudo();
+  }catch(e){ console.error(e); }
+};
+
 
 // Inicializa
 atualizarTudo();
