@@ -263,6 +263,32 @@ const editBarbeiro = document.getElementById("editBarbeiro");
 let editId = null;
 
 // Função principal para carregar agendamentos
+// Função para remover agendamentos de meses passados
+async function limparAgendamentosAntigos() {
+  try {
+    const res = await fetch(`${API_URL}/agendamentos`);
+    const agendamentos = await res.json();
+
+    const hoje = new Date();
+    const mesAtual = hoje.getMonth();   // 0-11
+    const anoAtual = hoje.getFullYear();
+
+    for (const a of agendamentos) {
+      const data = new Date(a.dia);
+      const mesAg = data.getMonth();
+      const anoAg = data.getFullYear();
+
+      // se for de mês anterior ao atual → excluir
+      if (anoAg < anoAtual || (anoAg === anoAtual && mesAg < mesAtual)) {
+        await fetch(`${API_URL}/agendamentos/${a.id}`, { method: "DELETE" });
+      }
+    }
+  } catch (err) {
+    console.error("Erro ao limpar agendamentos antigos:", err);
+  }
+}
+
+// Função principal para carregar agendamentos
 async function carregarAgendamentos(barbeiro, dia) {
   try {
     let url = `${API_URL}/agendamentos`;
@@ -272,7 +298,17 @@ async function carregarAgendamentos(barbeiro, dia) {
     if (params.toString()) url += "?" + params.toString();
 
     const res = await fetch(url);
-    const agendamentos = await res.json();
+    let agendamentos = await res.json();
+
+    // 🔥 Filtro: só mantém os do mês atual
+    const hoje = new Date();
+    const mesAtual = hoje.getMonth();
+    const anoAtual = hoje.getFullYear();
+    agendamentos = agendamentos.filter(a => {
+      const data = new Date(a.dia);
+      return data.getMonth() === mesAtual && data.getFullYear() === anoAtual;
+    });
+
     tableBody.innerHTML = "";
 
     if (!agendamentos.length) {
@@ -304,6 +340,13 @@ async function carregarAgendamentos(barbeiro, dia) {
     noAppointments.style.display = "block";
   }
 }
+
+// Inicializa (limpa e depois carrega)
+(async () => {
+  await limparAgendamentosAntigos();
+  atualizarTudo();
+})();
+
 
 // Ativa botões editar e excluir
 function ativarBotoes() {
@@ -411,7 +454,6 @@ document.getElementById("clearFilters").onclick = () => {
   dateSelect.value = "";
   atualizarTudo();
 };
-
 
 
 // Elementos do novo agendamento
