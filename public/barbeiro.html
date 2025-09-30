@@ -197,24 +197,43 @@
   </div>
 </div>
 
-<!-- Modal Novo Agendamento -->
 <div id="novoModal" class="modal">
   <div class="modal-content">
     <h3>Novo Agendamento</h3>
-    <label>Data:</label>
-    <input type="date" id="novoDia" />
-    <label>Horário:</label>
-    <input type="time" id="novoHorario" />
-    <label>Cliente:</label>
-    <input type="text" id="novoCliente" placeholder="Nome do cliente" />
-    <label>Serviço:</label>
-    <input type="text" id="novoServico" placeholder="Ex: Corte Tradicional" />
+
+    <!-- Escolha primeiro o barbeiro -->
     <label>Barbeiro:</label>
     <select id="novoBarbeiro">
       <option value="Lucas Dias">Lucas Dias</option>
       <option value="Isaias Barreto">Isaias Barreto</option>
       <option value="Isaias Santana">Isaias Santana</option>
     </select>
+
+    <!-- Depois a data -->
+    <label>Data:</label>
+    <input type="date" id="novoDia" />
+
+    <!-- Horários fixos de 1h (09h até 18h) -->
+    <label>Horário:</label>
+    <select id="novoHorario">
+      <option value="09:00">09:00</option>
+      <option value="10:00">10:00</option>
+      <option value="11:00">11:00</option>
+      <option value="12:00">12:00</option>
+      <option value="13:00">13:00</option>
+      <option value="14:00">14:00</option>
+      <option value="15:00">15:00</option>
+      <option value="16:00">16:00</option>
+      <option value="17:00">17:00</option>
+      <option value="18:00">18:00</option>
+    </select>
+
+    <label>Cliente:</label>
+    <input type="text" id="novoCliente" placeholder="Nome do cliente" />
+
+    <label>Serviço:</label>
+    <input type="text" id="novoServico" placeholder="Ex: Corte Tradicional" />
+
     <div>
       <button class="saveBtn" id="salvarNovo">Salvar</button>
       <button class="cancelBtn" id="cancelarNovo">Cancelar</button>
