@@ -180,6 +180,24 @@ body {
   color: #e7820d;
 }
 
+.nav-profile a {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: #311f0c; 
+  color: #fff;
+  font-weight: 500;
+  transition: background 0.3s, transform 0.3s;
+}
+
+.nav-profile a:hover {
+  background: #5a3314; 
+  transform: scale(1.05);
+}
+
+
 /* Hamburger */
 .hamburger {
   display: none;
