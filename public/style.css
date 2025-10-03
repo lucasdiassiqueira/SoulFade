@@ -190,6 +190,7 @@ body {
   color: #fff;
   font-weight: 500;
   transition: background 0.3s, transform 0.3s;
+  text-decoration: none;
 }
 
 .nav-profile a:hover {

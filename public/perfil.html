@@ -58,24 +58,48 @@
     display: block;
   }
 
-  .profile-pic {
-    width: 110px;
-    height: 110px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 20px;
-    border: 4px solid #a9714f;
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-  }
+  .profile-wrapper {
+  position: relative;
+  width: 110px;
+  height: 110px;
+  margin: 0 auto 20px auto;
+  cursor: pointer;
+}
 
-  .profile-pic:hover {
-    transform: scale(1.1);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-  }
+.profile-pic {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #a9714f;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-wrapper:hover .profile-pic {
+  transform: scale(1.1);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.edit-icon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: #a9714f;
+  color: #fff;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  border: 2px solid #fff8f2;
+  transition: background 0.3s ease;
+}
+
+.edit-icon:hover {
+  background: #8b5e3c;
+}
 
   input[type="file"] { display: none; }
 
@@ -148,17 +172,21 @@
   </div>
 
   <div class="tab-content active" id="profile">
-    <label for="profileUpload">
-      <img src="https://via.placeholder.com/100" alt="Foto de Perfil" class="profile-pic" id="profilePic">
-    </label>
-    <input type="file" id="profileUpload" accept="image/*">
+    <label for="profileUpload" class="profile-label">
+  <div class="profile-wrapper">
+    <img src="https://via.placeholder.com/100" alt="Foto de Perfil" class="profile-pic" id="profilePic">
+    <div class="edit-icon">
+      <i class="fas fa-pencil-alt"></i>
+    </div>
+  </div>
+</label>
+<input type="file" id="profileUpload" accept="image/*">
+
 
     <input type="text" id="userName" placeholder="Nome do usuário">
     <input type="email" id="userEmail" placeholder="Email">
     <textarea id="userBio" placeholder="Sobre você..."></textarea>
 
-    <label for="themeColor">Cor do tema:</label>
-    <input type="color" id="themeColor" value="#a9714f">
 
     <button class="save-btn" onclick="saveUser()">Salvar</button>
   </div>
