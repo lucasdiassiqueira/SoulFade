@@ -33,9 +33,20 @@
         <li><a href="#contact" class="nav-link">Contato</a></li>
         <li class="nav-profile">
          <a href="perfil.html">
-          <i class="fas fa-user-circle"></i> Perfil
+          <img id="navProfilePic" src="https://via.placeholder.com/30" alt="Perfil" style="width:30px; height:30px; border-radius:50%; object-fit:cover;">
+          Perfil
          </a>
         </li>
+
+<script>
+  
+  window.addEventListener('DOMContentLoaded', () => {
+    const savedUser = JSON.parse(localStorage.getItem('userProfile'));
+    if(savedUser && savedUser.foto){
+      document.getElementById('navProfilePic').src = savedUser.foto;
+    }
+  });
+</script>
       </ul>
 
       <!-- Menu mobile -->

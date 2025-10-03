@@ -209,6 +209,7 @@
   </div>
 </div>
 
+<!-- Mantive seu HTML e CSS praticamente igual -->
 <script>
   // Troca de abas
   const tabs = document.querySelectorAll('.tab');
@@ -223,10 +224,28 @@
     });
   });
 
-  // Upload de foto
   const profileUpload = document.getElementById('profileUpload');
   const profilePic = document.getElementById('profilePic');
 
+  // Carregar dados salvos ao abrir a página
+  window.addEventListener('DOMContentLoaded', () => {
+    const savedUser = JSON.parse(localStorage.getItem('userProfile'));
+    if(savedUser){
+      document.getElementById('userName').value = savedUser.nome || '';
+      document.getElementById('userEmail').value = savedUser.email || '';
+      document.getElementById('userBio').value = savedUser.bio || '';
+      profilePic.src = savedUser.foto || 'https://via.placeholder.com/100';
+    }
+
+    const savedSettings = JSON.parse(localStorage.getItem('userSettings'));
+    if(savedSettings){
+      document.getElementById('notifEmail').checked = savedSettings.emailNotif;
+      document.getElementById('notifApp').checked = savedSettings.appNotif;
+      document.getElementById('visibility').value = savedSettings.visibilidade;
+    }
+  });
+
+  // Upload de foto
   profileUpload.addEventListener('change', function() {
     const file = this.files[0];
     if(file){
@@ -244,10 +263,9 @@
       nome: document.getElementById('userName').value,
       email: document.getElementById('userEmail').value,
       bio: document.getElementById('userBio').value,
-      foto: profilePic.src,
-      corTema: document.getElementById('themeColor').value
+      foto: profilePic.src
     };
-    console.log("Perfil salvo:", user);
+    localStorage.setItem('userProfile', JSON.stringify(user));
     alert("Perfil salvo com sucesso!");
   }
 
@@ -258,7 +276,7 @@
       appNotif: document.getElementById('notifApp').checked,
       visibilidade: document.getElementById('visibility').value
     };
-    console.log("Configurações salvas:", settings);
+    localStorage.setItem('userSettings', JSON.stringify(settings));
     alert("Configurações salvas com sucesso!");
   }
 </script>
