@@ -39,14 +39,23 @@
 </li>
 
 <script>
-  
-  window.addEventListener('DOMContentLoaded', () => {
-    const savedUser = JSON.parse(localStorage.getItem('userProfile'));
-    if(savedUser && savedUser.foto){
-      document.getElementById('navProfilePic').src = savedUser.foto;
-    }
-  });
+window.addEventListener('DOMContentLoaded', () => {
+  const savedUser = JSON.parse(localStorage.getItem('userProfile'));
+  const navProfilePic = document.getElementById('navProfilePic');
+  const profileIcon = document.getElementById('profileIcon'); // o <i class="fas fa-user" id="profileIcon"></i>
+
+  if(savedUser && savedUser.foto){
+    navProfilePic.src = savedUser.foto;       // coloca a foto
+    navProfilePic.style.display = 'block';    // mostra a imagem
+    profileIcon.style.display = 'none';       // esconde o ícone
+  } else {
+    navProfilePic.style.display = 'none';     // esconde a imagem se não houver
+    profileIcon.style.display = 'block';      // mostra o ícone padrão
+  }
+});
+
 </script>
+
       </ul>
 
       <!-- Menu mobile -->
