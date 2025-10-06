@@ -119,6 +119,7 @@ app.post("/api/agendamentos", async (req, res) => {
 
     res.status(201).json(result.rows[0]);
   } catch (err) {
+    
     console.error("Erro ao criar agendamento:", err);
     res.status(500).json({ error: "Erro no servidor" });
   }

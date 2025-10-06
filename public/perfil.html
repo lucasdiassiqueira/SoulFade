@@ -6,59 +6,51 @@
 <title>Perfil</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" href="favicon-removebg-preview.png" />
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
 <style>
-  /* Reset básico */
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-  body {
-    font-family: 'Roboto', sans-serif;
-    background: #f5f0eb;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-  }
+body {
+  font-family: 'Roboto', sans-serif;
+  background: #f5f0eb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
 
-  .dashboard {
-    background: #fff8f2;
-    width: 420px;
-    border-radius: 20px;
-    box-shadow: 0 12px 35px rgba(0,0,0,0.15);
-    overflow: hidden;
-    transition: all 0.3s ease;
-  }
+.dashboard {
+  background: #fff8f2;
+  width: 420px;
+  border-radius: 20px;
+  box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
 
-  .tabs {
-    display: flex;
-    background: #a9714f;
-    border-bottom: 2px solid #8b5e3c;
-  }
+.tabs {
+  display: flex;
+  background: #a9714f;
+  border-bottom: 2px solid #8b5e3c;
+}
 
-  .tab {
-    flex: 1;
-    text-align: center;
-    padding: 14px 0;
-    color: #fff;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 14px 0;
+  color: #fff;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
 
-  .tab.active {
-    background: #8b5e3c;
-  }
+.tab.active { background: #8b5e3c; }
 
-  .tab-content {
-    padding: 25px;
-    display: none;
-  }
+.tab-content { padding: 25px; display: none; }
+.tab-content.active { display: block; }
 
-  .tab-content.active {
-    display: block;
-  }
-
-  .profile-wrapper {
+.profile-wrapper {
   position: relative;
   width: 110px;
   height: 110px;
@@ -97,70 +89,52 @@
   transition: background 0.3s ease;
 }
 
-.edit-icon:hover {
-  background: #8b5e3c;
+.edit-icon:hover { background: #8b5e3c; }
+
+input[type="file"] { display: none; }
+
+input[type="text"], input[type="email"], textarea, select {
+  width: 100%;
+  padding: 12px 14px;
+  margin: 10px 0;
+  border-radius: 10px;
+  border: 1px solid #d1bfa7;
+  font-size: 15px;
+  background: #fff5f0;
+  color: #4b3a2b;
 }
 
-  input[type="file"] { display: none; }
+textarea { resize: none; height: 90px; }
 
-  input[type="text"], input[type="email"], textarea, select {
-    width: 100%;
-    padding: 12px 14px;
-    margin: 10px 0;
-    border-radius: 10px;
-    border: 1px solid #d1bfa7;
-    font-size: 15px;
-    background: #fff5f0;
-    color: #4b3a2b;
-  }
+label { display: block; margin-top: 15px; font-weight: 500; color: #5a422b; font-size: 14px; }
 
-  textarea { resize: none; height: 90px; }
+.save-btn {
+  background: #a9714f;
+  color: #fff;
+  padding: 14px 0;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 20px;
+  transition: background 0.3s ease, transform 0.2s ease;
+  font-weight: 500;
+}
 
-  label { 
-    display: block; 
-    margin-top: 15px; 
-    font-weight: 500; 
-    color: #5a422b; 
-    font-size: 14px;
-  }
+.save-btn:hover { background: #8b5e3c; transform: translateY(-2px); }
 
-  .save-btn {
-    background: #a9714f;
-    color: #fff;
-    padding: 14px 0;
-    border: none;
-    border-radius: 12px;
-    font-size: 16px;
-    cursor: pointer;
-    width: 100%;
-    margin-top: 20px;
-    transition: background 0.3s ease, transform 0.2s ease;
-    font-weight: 500;
-  }
+input[type="checkbox"] { accent-color: #a9714f; margin-right: 8px; }
 
-  .save-btn:hover { 
-    background: #8b5e3c; 
-    transform: translateY(-2px);
-  }
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: #fff5f0 url('data:image/svg+xml;utf8,<svg fill="%238b5e3c" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 12px center;
+  background-size: 16px;
+  padding-right: 36px;
+}
 
-  /* Estilo dos checkboxes e selects */
-  input[type="checkbox"] {
-    accent-color: #a9714f;
-    margin-right: 8px;
-  }
-
-  select {
-    appearance: none;
-    -webkit-appearance: none;
-    background: #fff5f0 url('data:image/svg+xml;utf8,<svg fill="%238b5e3c" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 12px center;
-    background-size: 16px;
-    padding-right: 36px;
-  }
-
-  /* Responsividade */
-  @media(max-width: 480px){
-    .dashboard { width: 90%; }
-  }
+@media(max-width: 480px){ .dashboard { width: 90%; } }
 </style>
 </head>
 <body>
@@ -173,31 +147,23 @@
 
   <div class="tab-content active" id="profile">
     <label for="profileUpload" class="profile-label">
-  <div class="profile-wrapper">
-    <img src="https://via.placeholder.com/100" alt="Foto de Perfil" class="profile-pic" id="profilePic">
-    <div class="edit-icon">
-      <i class="fas fa-pencil-alt"></i>
-    </div>
-  </div>
-</label>
-<input type="file" id="profileUpload" accept="image/*">
-
+      <div class="profile-wrapper">
+        <img src="https://via.placeholder.com/100" alt="Foto de Perfil" class="profile-pic" id="profilePic">
+        <div class="edit-icon"><i class="fas fa-pencil-alt"></i></div>
+      </div>
+    </label>
+    <input type="file" id="profileUpload" accept="image/*">
 
     <input type="text" id="userName" placeholder="Nome do usuário">
     <input type="email" id="userEmail" placeholder="Email">
     <textarea id="userBio" placeholder="Sobre você..."></textarea>
 
-
     <button class="save-btn" onclick="saveUser()">Salvar</button>
   </div>
 
   <div class="tab-content" id="settings">
-    <label>
-      <input type="checkbox" id="notifEmail"> Receber notificações por email
-    </label>
-    <label>
-      <input type="checkbox" id="notifApp"> Receber notificações no app
-    </label>
+    <label><input type="checkbox" id="notifEmail"> Receber notificações por email</label>
+    <label><input type="checkbox" id="notifApp"> Receber notificações no app</label>
     <label for="visibility">Visibilidade do perfil:</label>
     <select id="visibility">
       <option value="public">Público</option>
@@ -209,77 +175,72 @@
   </div>
 </div>
 
-<!-- Mantive seu HTML e CSS praticamente igual -->
 <script>
-  // Troca de abas
-  const tabs = document.querySelectorAll('.tab');
-  const contents = document.querySelectorAll('.tab-content');
+const tabs = document.querySelectorAll('.tab');
+const contents = document.querySelectorAll('.tab-content');
 
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'));
-      contents.forEach(c => c.classList.remove('active'));
-      tab.classList.add('active');
-      document.getElementById(tab.dataset.tab).classList.add('active');
-    });
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    tabs.forEach(t => t.classList.remove('active'));
+    contents.forEach(c => c.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.tab).classList.add('active');
   });
+});
 
-  const profileUpload = document.getElementById('profileUpload');
-  const profilePic = document.getElementById('profilePic');
+const profilePic = document.getElementById('profilePic');
+const profileUpload = document.getElementById('profileUpload');
 
-  // Carregar dados salvos ao abrir a página
-  window.addEventListener('DOMContentLoaded', () => {
-    const savedUser = JSON.parse(localStorage.getItem('userProfile'));
-    if(savedUser){
-      document.getElementById('userName').value = savedUser.nome || '';
-      document.getElementById('userEmail').value = savedUser.email || '';
-      document.getElementById('userBio').value = savedUser.bio || '';
-      profilePic.src = savedUser.foto || 'https://via.placeholder.com/100';
-    }
-
-    const savedSettings = JSON.parse(localStorage.getItem('userSettings'));
-    if(savedSettings){
-      document.getElementById('notifEmail').checked = savedSettings.emailNotif;
-      document.getElementById('notifApp').checked = savedSettings.appNotif;
-      document.getElementById('visibility').value = savedSettings.visibilidade;
-    }
-  });
-
-  // Upload de foto
-  profileUpload.addEventListener('change', function() {
-    const file = this.files[0];
-    if(file){
-      const reader = new FileReader();
-      reader.onload = function(e){
-        profilePic.src = e.target.result;
-      }
-      reader.readAsDataURL(file);
-    }
-  });
-
-  // Salvar dados do perfil
-  function saveUser() {
-    const user = {
-      nome: document.getElementById('userName').value,
-      email: document.getElementById('userEmail').value,
-      bio: document.getElementById('userBio').value,
-      foto: profilePic.src
-    };
-    localStorage.setItem('userProfile', JSON.stringify(user));
-    alert("Perfil salvo com sucesso!");
+// Carregar dados salvos
+window.addEventListener('DOMContentLoaded', () => {
+  const savedUser = JSON.parse(localStorage.getItem('userProfile'));
+  if(savedUser){
+    document.getElementById('userName').value = savedUser.nome || '';
+    document.getElementById('userEmail').value = savedUser.email || '';
+    document.getElementById('userBio').value = savedUser.bio || '';
+    profilePic.src = savedUser.foto || 'https://via.placeholder.com/100';
   }
 
-  // Salvar configurações
-  function saveSettings() {
-    const settings = {
-      emailNotif: document.getElementById('notifEmail').checked,
-      appNotif: document.getElementById('notifApp').checked,
-      visibilidade: document.getElementById('visibility').value
-    };
-    localStorage.setItem('userSettings', JSON.stringify(settings));
-    alert("Configurações salvas com sucesso!");
+  const savedSettings = JSON.parse(localStorage.getItem('userSettings'));
+  if(savedSettings){
+    document.getElementById('notifEmail').checked = savedSettings.emailNotif;
+    document.getElementById('notifApp').checked = savedSettings.appNotif;
+    document.getElementById('visibility').value = savedSettings.visibilidade;
   }
+});
+
+// Upload da foto
+profileUpload.addEventListener('change', function() {
+  const file = this.files[0];
+  if(file){
+    const reader = new FileReader();
+    reader.onload = function(e){ profilePic.src = e.target.result; }
+    reader.readAsDataURL(file);
+  }
+});
+
+// Salvar dados do perfil
+function saveUser() {
+  const user = {
+    nome: document.getElementById('userName').value,
+    email: document.getElementById('userEmail').value,
+    bio: document.getElementById('userBio').value,
+    foto: profilePic.src
+  };
+  localStorage.setItem('userProfile', JSON.stringify(user));
+  alert("Perfil salvo com sucesso!");
+}
+
+// Salvar configurações
+function saveSettings() {
+  const settings = {
+    emailNotif: document.getElementById('notifEmail').checked,
+    appNotif: document.getElementById('notifApp').checked,
+    visibilidade: document.getElementById('visibility').value
+  };
+  localStorage.setItem('userSettings', JSON.stringify(settings));
+  alert("Configurações salvas com sucesso!");
+}
 </script>
-
 </body>
 </html>
