@@ -332,41 +332,39 @@
   });
 
   document.getElementById('btn-confirmar').addEventListener('click', async () => {
-    const nome = document.getElementById('nome').value;
-    const servicoVal = document.getElementById('servico').value;
-    const barbeiro = barbeiroInput.value;
+  const nome = document.getElementById('nome').value;
+  const servicoVal = document.getElementById('servico').value;
+  const barbeiro = barbeiroInput.value;
+  const dia = selectedDay;
+  const horario = selectedHour;
 
-    if (!nome || !servicoVal || !barbeiro || !selectedDay || !selectedHour) {
-      alert("Preencha todos os campos e escolha dia/horário.");
-      return;
+  if (!nome || !servicoVal || !barbeiro || !dia || !horario) {
+    alert("Preencha todos os campos e escolha dia/horário.");
+    return;
+  }
+
+  const agendamento = { nome, servico: servicoVal, barbeiro, dia, horario };
+
+  try {
+    const res = await fetch(`${API_URL}/agendamentos`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(agendamento)
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      // Agendamento confirmado com sucesso, redirecionando para a página de confirmação
+      window.location.href = `/confirmacao.html?id=${data.id}`; // Redireciona para a confirmação passando o ID do agendamento
+    } else {
+      alert(data.error || "Erro ao confirmar agendamento.");
     }
+  } catch (err) {
+    console.error(err);
+    alert("Erro ao confirmar agendamento.");
+  }
+});
 
-    const agendamento = { nome, servico: servicoVal, barbeiro, dia: selectedDay, horario: selectedHour };
-
-    try {
-      const res = await fetch(`${API_URL}/agendamentos`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(agendamento)
-      });
-      const data = await res.json();
-      if (res.ok) {
-        alert("Agendamento confirmado!");
-        document.getElementById('nome').value = "";
-        barbeiroInput.value = "";
-        barbeiroCards.forEach(c => c.classList.remove("active"));
-        selectedDay = null;
-        selectedHour = null;
-        hoursContainer.style.display = "none";
-        document.querySelectorAll(".day").forEach(d => d.classList.remove("active"));
-      } else {
-        alert(data.error || "Erro ao confirmar agendamento.");
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Erro ao confirmar agendamento.");
-    }
-  });
 </script>
 </body>
 </html>

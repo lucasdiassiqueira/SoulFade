@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Confirmação</title>
+  <title>Confirmação de Agendamento</title>
   <link rel="icon" type="image/png" href="favicon-removebg-preview.png">
   <style>
+    /* Seu estilo já está bem configurado, você pode mantê-lo assim */
     body {
       font-family: 'Segoe UI', Tahoma, sans-serif;
       background: #f4f4f4;
@@ -86,39 +87,69 @@
   </div>
 
   <script>
-    // Supondo que você tenha essas variáveis de agendamento
-    const nomeAgendamento = localStorage.getItem('nome');
-    const servicoAgendamento = localStorage.getItem('servico');
-    const barbeiroAgendamento = localStorage.getItem('barbeiro');
-    const dataAgendamento = localStorage.getItem('data');
-    const horarioAgendamento = localStorage.getItem('horario');
+    // Recupera o ID do agendamento da URL
+    document.addEventListener("DOMContentLoaded", async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const agendamentoId = urlParams.get('id');
 
-    document.getElementById('nome-agendamento').textContent = nomeAgendamento || 'Não informado';
-    document.getElementById('servico-agendamento').textContent = servicoAgendamento || 'Não informado';
-    document.getElementById('barbeiro-agendamento').textContent = barbeiroAgendamento || 'Não informado';
-    document.getElementById('data-agendamento').textContent = dataAgendamento || 'Não informado';
-    document.getElementById('horario-agendamento').textContent = horarioAgendamento || 'Não informado';
+      if (!agendamentoId) {
+        alert('Agendamento não encontrado.');
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_URL}/agendamentos/${agendamentoId}`);
+        const data = await res.json();
+
+        if (res.ok) {
+          // Preenche os campos com os dados do agendamento
+          document.getElementById('nome-agendamento').textContent = data.nome || 'Não informado';
+          document.getElementById('servico-agendamento').textContent = data.servico || 'Não informado';
+          document.getElementById('barbeiro-agendamento').textContent = data.barbeiro || 'Não informado';
+          document.getElementById('data-agendamento').textContent = data.dia || 'Não informado';
+          document.getElementById('horario-agendamento').textContent = data.horario || 'Não informado';
+        } else {
+          alert(data.error || "Erro ao carregar agendamento.");
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Erro ao carregar agendamento.");
+      }
+    });
 
     // Voltar para a tela inicial
     document.getElementById('btn-voltar').addEventListener('click', () => {
       window.location.href = '/'; // Redireciona para a página inicial
     });
 
-    // Salvar na agenda local (por exemplo, em um arquivo ou banco de dados)
-    document.getElementById('btn-salvar').addEventListener('click', () => {
-      const agendamento = {
-        nome: nomeAgendamento,
-        servico: servicoAgendamento,
-        barbeiro: barbeiroAgendamento,
-        data: dataAgendamento,
-        horario: horarioAgendamento
-      };
+    // Salvar na agenda local (se necessário)
+    document.getElementById('btn-salvar').addEventListener('click', async () => {
+      const nome = document.getElementById('nome-agendamento').textContent;
+      const servico = document.getElementById('servico-agendamento').textContent;
+      const barbeiro = document.getElementById('barbeiro-agendamento').textContent;
+      const data = document.getElementById('data-agendamento').textContent;
+      const horario = document.getElementById('horario-agendamento').textContent;
 
-      // Aqui você pode salvar o agendamento na agenda local
-      // Exemplo simples com localStorage (isso pode ser adaptado para backend ou outros métodos de armazenamento)
-      localStorage.setItem('agendamento', JSON.stringify(agendamento));
+      const agendamento = { nome, servico, barbeiro, data, horario };
 
-      alert("Agendamento salvo com sucesso!");
+      // Enviar para salvar no banco, caso necessário
+      try {
+        const res = await fetch(`${API_URL}/agendamentos/${agendamentoId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(agendamento)
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          alert("Agendamento salvo com sucesso!");
+        } else {
+          alert(data.error || "Erro ao salvar agendamento.");
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Erro ao salvar agendamento.");
+      }
     });
   </script>
 </body>
