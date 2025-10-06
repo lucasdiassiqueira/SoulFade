@@ -3,46 +3,66 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Confirmação</title>
+  <title>Confirmação do Agendamento</title>
   <link rel="icon" type="image/png" href="favicon-removebg-preview.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, sans-serif;
-      background: #654321;
+      background: linear-gradient(135deg, #8B5E3C, #4A2E15);
       color: #333;
       margin: 0;
       padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
     }
 
     .container {
       max-width: 600px;
-      margin: 60px auto;
       background: #fff;
       padding: 40px;
-      border-radius: 16px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      border-radius: 18px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
       text-align: center;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     h1 {
-      color: #222;
-      margin-bottom: 10px;
+      color: #4A2E15;
+      margin-bottom: 8px;
+    }
+
+    .check-icon {
+      font-size: 60px;
+      color: #4A2E15;
+      margin-bottom: 15px;
     }
 
     .detalhes {
-      margin-top: 30px;
+      margin-top: 25px;
       text-align: left;
       font-size: 17px;
       line-height: 1.7;
+      background: #f9f9f9;
+      border-radius: 12px;
+      padding: 20px;
     }
 
     .detalhes strong {
-      color: #654321;
+      color: #4A2E15;
     }
 
     .loading {
       font-size: 18px;
-      color: #654321;
+      color: #4A2E15;
       font-weight: bold;
     }
 
@@ -51,26 +71,43 @@
       font-weight: bold;
     }
 
+    .botoes {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 35px;
+    }
+
     button {
-      margin-top: 30px;
-      background: #654321;
+      background: #4A2E15;
       color: #fff;
       border: none;
       border-radius: 10px;
-      padding: 14px 22px;
+      padding: 14px 24px;
       font-size: 16px;
       cursor: pointer;
-      transition: 0.3s;
+      transition: all 0.3s;
     }
 
     button:hover {
-      background: #815830;
+      background: #6a4321;
+      transform: scale(1.05);
+    }
+
+    #addAgenda {
+      background: #007bff;
+    }
+
+    #addAgenda:hover {
+      background: #0056b3;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Agendamento Confirmado ✅</h1>
+    <i class="fa-solid fa-check-circle check-icon"></i>
+    <h1>Agendamento Confirmado!</h1>
     <p id="status" class="loading">Carregando informações...</p>
 
     <div id="info" class="detalhes" style="display:none;">
@@ -81,13 +118,17 @@
       <p><strong>Horário:</strong> <span id="horario"></span></p>
     </div>
 
-    <button onclick="window.location.href='index.html'">Voltar à Página Inicial</button>
+    <div class="botoes">
+      <button onclick="window.location.href='index.html'"><i class="fa-solid fa-house"></i> Voltar ao Início</button>
+      <button id="addAgenda"><i class="fa-solid fa-calendar-plus"></i> Adicionar ao Google Agenda</button>
+    </div>
   </div>
 
   <script>
     const API_URL = "/api";
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get("id");
+    let agendamentoData = null;
 
     async function carregarAgendamento() {
       if (!id) {
@@ -101,7 +142,6 @@
         if (!res.ok) throw new Error("Erro ao buscar agendamento");
         const agendamentos = await res.json();
 
-        // O backend atual retorna uma lista, então filtramos pelo id
         const agendamento = Array.isArray(agendamentos)
           ? agendamentos.find(a => a.id == id)
           : agendamentos;
@@ -118,6 +158,8 @@
         document.getElementById("dia").textContent = new Date(agendamento.dia).toLocaleDateString("pt-BR");
         document.getElementById("horario").textContent = agendamento.horario;
 
+        agendamentoData = agendamento;
+
         document.getElementById("status").style.display = "none";
         document.getElementById("info").style.display = "block";
 
@@ -127,6 +169,32 @@
         document.getElementById("status").classList.add("erro");
       }
     }
+
+    // Função para abrir o Google Agenda com os dados do agendamento
+    document.getElementById("addAgenda").addEventListener("click", function() {
+      if (!agendamentoData) return alert("Os dados ainda estão sendo carregados!");
+
+      const titulo = `${agendamentoData.servico} com ${agendamentoData.barbeiro}`;
+      const descricao = `Cliente: ${agendamentoData.nome}\nServiço: ${agendamentoData.servico}\nBarbeiro: ${agendamentoData.barbeiro}`;
+      const local = "Araucária - PR";
+
+      // Monta as datas (ajustando o formato para o Google Calendar)
+      const dia = new Date(agendamentoData.dia);
+      const [hora, minuto] = agendamentoData.horario.split(":");
+      dia.setHours(hora, minuto);
+
+      const inicio = new Date(dia);
+      const fim = new Date(dia);
+      fim.setHours(fim.getHours() + 1);
+
+      function formatarData(data) {
+        return data.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+      }
+
+      const link = `https://calendar.google.com/calendar/u/0/r/eventedit?text=${encodeURIComponent(titulo)}&dates=${formatarData(inicio)}/${formatarData(fim)}&details=${encodeURIComponent(descricao)}&location=${encodeURIComponent(local)}`;
+
+      window.open(link, "_blank");
+    });
 
     carregarAgendamento();
   </script>
