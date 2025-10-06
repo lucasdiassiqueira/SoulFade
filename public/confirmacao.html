@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confirmação</title>
+  <link rel="icon" type="image/png" href="favicon-removebg-preview.png">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: #f4f4f4;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 30px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #222;
+    }
+
+    .details {
+      margin-bottom: 20px;
+      font-size: 16px;
+      color: #444;
+    }
+
+    .details strong {
+      font-weight: bold;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      border: none;
+      font-size: 16px;
+      background: #654321;
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #815830;
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .button-container button {
+      width: 48%;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Confirmação de Agendamento</h1>
+
+    <div class="details">
+      <p><strong>Nome:</strong> <span id="nome-agendamento"></span></p>
+      <p><strong>Serviço:</strong> <span id="servico-agendamento"></span></p>
+      <p><strong>Barbeiro:</strong> <span id="barbeiro-agendamento"></span></p>
+      <p><strong>Data:</strong> <span id="data-agendamento"></span></p>
+      <p><strong>Horário:</strong> <span id="horario-agendamento"></span></p>
+    </div>
+
+    <div class="button-container">
+      <button id="btn-voltar">Voltar para Tela Inicial</button>
+      <button id="btn-salvar">Salvar na Agenda</button>
+    </div>
+  </div>
+
+  <script>
+    // Supondo que você tenha essas variáveis de agendamento
+    const nomeAgendamento = localStorage.getItem('nome');
+    const servicoAgendamento = localStorage.getItem('servico');
+    const barbeiroAgendamento = localStorage.getItem('barbeiro');
+    const dataAgendamento = localStorage.getItem('data');
+    const horarioAgendamento = localStorage.getItem('horario');
+
+    document.getElementById('nome-agendamento').textContent = nomeAgendamento || 'Não informado';
+    document.getElementById('servico-agendamento').textContent = servicoAgendamento || 'Não informado';
+    document.getElementById('barbeiro-agendamento').textContent = barbeiroAgendamento || 'Não informado';
+    document.getElementById('data-agendamento').textContent = dataAgendamento || 'Não informado';
+    document.getElementById('horario-agendamento').textContent = horarioAgendamento || 'Não informado';
+
+    // Voltar para a tela inicial
+    document.getElementById('btn-voltar').addEventListener('click', () => {
+      window.location.href = '/'; // Redireciona para a página inicial
+    });
+
+    // Salvar na agenda local (por exemplo, em um arquivo ou banco de dados)
+    document.getElementById('btn-salvar').addEventListener('click', () => {
+      const agendamento = {
+        nome: nomeAgendamento,
+        servico: servicoAgendamento,
+        barbeiro: barbeiroAgendamento,
+        data: dataAgendamento,
+        horario: horarioAgendamento
+      };
+
+      // Aqui você pode salvar o agendamento na agenda local
+      // Exemplo simples com localStorage (isso pode ser adaptado para backend ou outros métodos de armazenamento)
+      localStorage.setItem('agendamento', JSON.stringify(agendamento));
+
+      alert("Agendamento salvo com sucesso!");
+    });
+  </script>
+</body>
+</html>
