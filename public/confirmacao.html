@@ -3,154 +3,132 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Confirmação de Agendamento</title>
+  <title>Confirmação</title>
   <link rel="icon" type="image/png" href="favicon-removebg-preview.png">
   <style>
-    /* Seu estilo já está bem configurado, você pode mantê-lo assim */
     body {
       font-family: 'Segoe UI', Tahoma, sans-serif;
-      background: #f4f4f4;
+      background: #654321;
       color: #333;
       margin: 0;
       padding: 0;
     }
 
     .container {
-      max-width: 800px;
-      margin: 40px auto;
-      padding: 30px;
+      max-width: 600px;
+      margin: 60px auto;
       background: #fff;
+      padding: 40px;
       border-radius: 16px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      text-align: center;
     }
 
     h1 {
-      text-align: center;
-      margin-bottom: 30px;
       color: #222;
+      margin-bottom: 10px;
     }
 
-    .details {
-      margin-bottom: 20px;
-      font-size: 16px;
-      color: #444;
+    .detalhes {
+      margin-top: 30px;
+      text-align: left;
+      font-size: 17px;
+      line-height: 1.7;
     }
 
-    .details strong {
+    .detalhes strong {
+      color: #654321;
+    }
+
+    .loading {
+      font-size: 18px;
+      color: #654321;
+      font-weight: bold;
+    }
+
+    .erro {
+      color: red;
       font-weight: bold;
     }
 
     button {
-      width: 100%;
-      padding: 14px;
-      border-radius: 10px;
-      border: none;
-      font-size: 16px;
+      margin-top: 30px;
       background: #654321;
       color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 14px 22px;
+      font-size: 16px;
       cursor: pointer;
-      font-weight: bold;
       transition: 0.3s;
     }
 
     button:hover {
       background: #815830;
     }
-
-    .button-container {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 20px;
-    }
-
-    .button-container button {
-      width: 48%;
-    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Confirmação de Agendamento</h1>
+    <h1>Agendamento Confirmado ✅</h1>
+    <p id="status" class="loading">Carregando informações...</p>
 
-    <div class="details">
-      <p><strong>Nome:</strong> <span id="nome-agendamento"></span></p>
-      <p><strong>Serviço:</strong> <span id="servico-agendamento"></span></p>
-      <p><strong>Barbeiro:</strong> <span id="barbeiro-agendamento"></span></p>
-      <p><strong>Data:</strong> <span id="data-agendamento"></span></p>
-      <p><strong>Horário:</strong> <span id="horario-agendamento"></span></p>
+    <div id="info" class="detalhes" style="display:none;">
+      <p><strong>Cliente:</strong> <span id="nome"></span></p>
+      <p><strong>Serviço:</strong> <span id="servico"></span></p>
+      <p><strong>Barbeiro:</strong> <span id="barbeiro"></span></p>
+      <p><strong>Data:</strong> <span id="dia"></span></p>
+      <p><strong>Horário:</strong> <span id="horario"></span></p>
     </div>
 
-    <div class="button-container">
-      <button id="btn-voltar">Voltar para Tela Inicial</button>
-      <button id="btn-salvar">Salvar na Agenda</button>
-    </div>
+    <button onclick="window.location.href='index.html'">Voltar à Página Inicial</button>
   </div>
 
   <script>
-    // Recupera o ID do agendamento da URL
-    document.addEventListener("DOMContentLoaded", async () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const agendamentoId = urlParams.get('id');
+    const API_URL = "/api";
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get("id");
 
-      if (!agendamentoId) {
-        alert('Agendamento não encontrado.');
+    async function carregarAgendamento() {
+      if (!id) {
+        document.getElementById("status").textContent = "ID do agendamento não encontrado.";
+        document.getElementById("status").classList.add("erro");
         return;
       }
 
       try {
-        const res = await fetch(`${API_URL}/agendamentos/${agendamentoId}`);
-        const data = await res.json();
+        const res = await fetch(`${API_URL}/agendamentos/${id}`);
+        if (!res.ok) throw new Error("Erro ao buscar agendamento");
+        const agendamentos = await res.json();
 
-        if (res.ok) {
-          // Preenche os campos com os dados do agendamento
-          document.getElementById('nome-agendamento').textContent = data.nome || 'Não informado';
-          document.getElementById('servico-agendamento').textContent = data.servico || 'Não informado';
-          document.getElementById('barbeiro-agendamento').textContent = data.barbeiro || 'Não informado';
-          document.getElementById('data-agendamento').textContent = data.dia || 'Não informado';
-          document.getElementById('horario-agendamento').textContent = data.horario || 'Não informado';
-        } else {
-          alert(data.error || "Erro ao carregar agendamento.");
+        // O backend atual retorna uma lista, então filtramos pelo id
+        const agendamento = Array.isArray(agendamentos)
+          ? agendamentos.find(a => a.id == id)
+          : agendamentos;
+
+        if (!agendamento) {
+          document.getElementById("status").textContent = "Agendamento não encontrado.";
+          document.getElementById("status").classList.add("erro");
+          return;
         }
+
+        document.getElementById("nome").textContent = agendamento.nome;
+        document.getElementById("servico").textContent = agendamento.servico;
+        document.getElementById("barbeiro").textContent = agendamento.barbeiro;
+        document.getElementById("dia").textContent = new Date(agendamento.dia).toLocaleDateString("pt-BR");
+        document.getElementById("horario").textContent = agendamento.horario;
+
+        document.getElementById("status").style.display = "none";
+        document.getElementById("info").style.display = "block";
+
       } catch (err) {
         console.error(err);
-        alert("Erro ao carregar agendamento.");
+        document.getElementById("status").textContent = "Erro ao carregar dados.";
+        document.getElementById("status").classList.add("erro");
       }
-    });
+    }
 
-    // Voltar para a tela inicial
-    document.getElementById('btn-voltar').addEventListener('click', () => {
-      window.location.href = '/'; // Redireciona para a página inicial
-    });
-
-    // Salvar na agenda local (se necessário)
-    document.getElementById('btn-salvar').addEventListener('click', async () => {
-      const nome = document.getElementById('nome-agendamento').textContent;
-      const servico = document.getElementById('servico-agendamento').textContent;
-      const barbeiro = document.getElementById('barbeiro-agendamento').textContent;
-      const data = document.getElementById('data-agendamento').textContent;
-      const horario = document.getElementById('horario-agendamento').textContent;
-
-      const agendamento = { nome, servico, barbeiro, data, horario };
-
-      // Enviar para salvar no banco, caso necessário
-      try {
-        const res = await fetch(`${API_URL}/agendamentos/${agendamentoId}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(agendamento)
-        });
-
-        const data = await res.json();
-        if (res.ok) {
-          alert("Agendamento salvo com sucesso!");
-        } else {
-          alert(data.error || "Erro ao salvar agendamento.");
-        }
-      } catch (err) {
-        console.error(err);
-        alert("Erro ao salvar agendamento.");
-      }
-    });
+    carregarAgendamento();
   </script>
 </body>
 </html>
