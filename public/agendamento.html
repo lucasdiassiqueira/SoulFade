@@ -39,7 +39,7 @@
       color: #444;
     }
 
-    input {
+    input, select {
       width: 100%;
       padding: 12px;
       border-radius: 10px;
@@ -49,7 +49,7 @@
       transition: 0.3s;
     }
 
-    input:focus {
+    input:focus, select:focus {
       border-color: #654321;
       background: #fff;
       outline: none;
@@ -111,17 +111,9 @@
       width: 100%;
     }
 
-    .barbeiro-card:hover {
-      transform: scale(1.05);
-    }
-
-    .barbeiro-card.active {
-      border-color: #654321;
-    }
-
-    .barbeiro-card {
-      position: relative;
-    }
+    .barbeiro-card:hover { transform: scale(1.05); }
+    .barbeiro-card.active { border-color: #654321; }
+    .barbeiro-card { position: relative; }
 
     .days {
       display: flex;
@@ -220,6 +212,18 @@
       <div class="form-group">
         <label>Selecione o Horário</label>
         <div class="hours" id="hours"></div>
+      </div>
+
+      <!-- === NOVA SEÇÃO DE PAGAMENTO === -->
+      <div class="form-group">
+        <label for="forma_pagamento">Forma de Pagamento</label>
+        <select id="forma_pagamento" name="forma_pagamento" required>
+          <option value="">Selecione...</option>
+          <option value="Dinheiro">Dinheiro</option>
+          <option value="Cartão de Crédito">Cartão de Crédito</option>
+          <option value="Cartão de Débito">Cartão de Débito</option>
+          <option value="Pix">Pix</option>
+        </select>
       </div>
 
       <button type="button" id="btn-confirmar">Confirmar Agendamento</button>
@@ -332,39 +336,38 @@
   });
 
   document.getElementById('btn-confirmar').addEventListener('click', async () => {
-  const nome = document.getElementById('nome').value;
-  const servicoVal = document.getElementById('servico').value;
-  const barbeiro = barbeiroInput.value;
-  const dia = selectedDay;
-  const horario = selectedHour;
+    const nome = document.getElementById('nome').value;
+    const servicoVal = document.getElementById('servico').value;
+    const barbeiro = barbeiroInput.value;
+    const dia = selectedDay;
+    const horario = selectedHour;
+    const forma_pagamento = document.getElementById('forma_pagamento').value;
 
-  if (!nome || !servicoVal || !barbeiro || !dia || !horario) {
-    alert("Preencha todos os campos e escolha dia/horário.");
-    return;
-  }
-
-  const agendamento = { nome, servico: servicoVal, barbeiro, dia, horario };
-
-  try {
-    const res = await fetch(`${API_URL}/agendamentos`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(agendamento)
-    });
-
-    const data = await res.json();
-    if (res.ok) {
-      // Agendamento confirmado com sucesso, redirecionando para a página de confirmação
-      window.location.href = `/confirmacao.html?id=${data.id}`; // Redireciona para a confirmação passando o ID do agendamento
-    } else {
-      alert(data.error || "Erro ao confirmar agendamento.");
+    if (!nome || !servicoVal || !barbeiro || !dia || !horario || !forma_pagamento) {
+      alert("Preencha todos os campos e escolha dia/horário e forma de pagamento.");
+      return;
     }
-  } catch (err) {
-    console.error(err);
-    alert("Erro ao confirmar agendamento.");
-  }
-});
 
+    const agendamento = { nome, servico: servicoVal, barbeiro, dia, horario, forma_pagamento };
+
+    try {
+      const res = await fetch(`${API_URL}/agendamentos`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(agendamento)
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        window.location.href = `/confirmacao.html?id=${data.id}`;
+      } else {
+        alert(data.error || "Erro ao confirmar agendamento.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Erro ao confirmar agendamento.");
+    }
+  });
 </script>
 </body>
 </html>

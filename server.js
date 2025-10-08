@@ -22,6 +22,28 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false },
 });
 
+// 🛠️ Cria a coluna 'pagamento' se ela não existir
+(async () => {
+  try {
+    await pool.query(`
+      DO $$
+      BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM information_schema.columns 
+          WHERE table_name='agendamentos' AND column_name='pagamento'
+        ) THEN
+          ALTER TABLE agendamentos ADD COLUMN pagamento VARCHAR(50);
+        END IF;
+      END
+      $$;
+    `);
+    console.log("✅ Coluna 'pagamento' verificada/criada com sucesso.");
+  } catch (err) {
+    console.error("⚠️ Erro ao criar coluna 'pagamento':", err.message);
+  }
+})();
+
+
 // ---------- ROTAS API ---------- //
 
 // Teste
@@ -100,26 +122,26 @@ app.get("/api/agendamentos/:id", async (req, res) => {
 // Criar agendamento
 app.post("/api/agendamentos", async (req, res) => {
   try {
-    const { nome, servico, barbeiro, dia, horario } = req.body;
-    if (!nome || !servico || !barbeiro || !dia || !horario) 
+    const { nome, servico, barbeiro, dia, horario, pagamento } = req.body; 
+
+    if (!nome || !servico || !barbeiro || !dia || !horario)
       return res.status(400).json({ error: "Dados incompletos" });
 
     const existe = await pool.query(
       "SELECT * FROM agendamentos WHERE barbeiro=$1 AND dia=$2 AND horario=$3",
       [barbeiro, dia, horario]
     );
-    if (existe.rows.length) 
+    if (existe.rows.length)
       return res.status(400).json({ error: "Horário já ocupado" });
 
     const result = await pool.query(
-      `INSERT INTO agendamentos (nome, servico, barbeiro, dia, horario)
-       VALUES ($1,$2,$3,$4,$5) RETURNING *`,
-      [nome, servico, barbeiro, dia, horario]
+      `INSERT INTO agendamentos (nome, servico, barbeiro, dia, horario, pagamento)
+       VALUES ($1,$2,$3,$4,$5,$6) RETURNING *`,
+      [nome, servico, barbeiro, dia, horario, pagamento || null]
     );
 
     res.status(201).json(result.rows[0]);
   } catch (err) {
-    
     console.error("Erro ao criar agendamento:", err);
     res.status(500).json({ error: "Erro no servidor" });
   }
@@ -129,22 +151,24 @@ app.post("/api/agendamentos", async (req, res) => {
 app.put("/api/agendamentos/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const { dia, horario, barbeiro } = req.body;
-    if (!dia || !horario || !barbeiro) 
+    const { dia, horario, barbeiro, pagamento } = req.body;
+
+    if (!dia || !horario || !barbeiro)
       return res.status(400).json({ error: "Informe barbeiro, dia e horário" });
 
     const conflito = await pool.query(
       "SELECT * FROM agendamentos WHERE barbeiro=$1 AND dia=$2 AND horario=$3 AND id<>$4",
       [barbeiro, dia, horario, id]
     );
-    if (conflito.rows.length) 
+    if (conflito.rows.length)
       return res.status(400).json({ error: "Horário já ocupado" });
 
     const result = await pool.query(
-      "UPDATE agendamentos SET dia=$1, horario=$2, barbeiro=$3 WHERE id=$4 RETURNING *",
-      [dia, horario, barbeiro, id]
+      "UPDATE agendamentos SET dia=$1, horario=$2, barbeiro=$3, pagamento=$4 WHERE id=$5 RETURNING *",
+      [dia, horario, barbeiro, pagamento || null, id]
     );
-    if (result.rows.length === 0) 
+
+    if (result.rows.length === 0)
       return res.status(404).json({ error: "Agendamento não encontrado" });
 
     res.json(result.rows[0]);
@@ -153,6 +177,7 @@ app.put("/api/agendamentos/:id", async (req, res) => {
     res.status(500).json({ error: "Erro no servidor" });
   }
 });
+
 
 // Excluir agendamento
 app.delete("/api/agendamentos/:id", async (req, res) => {
