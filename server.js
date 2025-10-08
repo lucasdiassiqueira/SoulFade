@@ -122,7 +122,8 @@ app.get("/api/agendamentos/:id", async (req, res) => {
 // Criar agendamento
 app.post("/api/agendamentos", async (req, res) => {
   try {
-    const { nome, servico, barbeiro, dia, horario, pagamento } = req.body; 
+    const { nome, servico, barbeiro, dia, horario, forma_pagamento } = req.body;
+    const pagamento = forma_pagamento; // 👈 renomeia para compatibilidade 
 
     if (!nome || !servico || !barbeiro || !dia || !horario)
       return res.status(400).json({ error: "Dados incompletos" });
