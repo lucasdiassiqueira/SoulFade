@@ -6,66 +6,67 @@
 <title>Painel do Barbeiro</title>
 <link rel="icon" type="image/png" href="favicon-removebg-preview.png" />
 <style>
-  /* ===== RESET & BASE ===== */
-  * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; }
-  body { background:#f4f1ee; min-height:100vh; display:flex; justify-content:center; padding:20px; color:#4e342e; }
+/* ===== RESET & BASE ===== */
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; }
+body { background:#f4f1ee; min-height:100vh; display:flex; justify-content:center; padding:20px; color:#4e342e; }
 
-  /* ===== CONTAINER ===== */
-  #painelContainer { width:100%; max-width:1400px; }
+/* ===== CONTAINER ===== */
+#painelContainer { width:100%; max-width:1400px; }
 
-  /* ===== HEADER ===== */
-  .header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:8px; }
-  .header h1 { font-size:26px; font-weight:700; color:#3e2723; }
-  .header span { font-weight:600; font-size:15px; color:#6d4c41; }
+/* ===== HEADER ===== */
+.header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:8px; }
+.header h1 { font-size:26px; font-weight:700; color:#3e2723; }
+.header span { font-weight:600; font-size:15px; color:#6d4c41; }
 
-  /* ===== CARDS ===== */
-  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:16px; margin-bottom:20px; }
-  .card { background:#fff; padding:22px 18px; border-radius:14px; box-shadow:0 6px 20px rgba(0,0,0,0.08); text-align:center; transition:0.25s; }
-  .card:hover { transform:translateY(-3px); }
-  .card h3 { font-size:14px; color:#795548; margin-bottom:8px; font-weight:600; }
-  .card p { font-size:22px; font-weight:700; color:#3e2723; }
+/* ===== CARDS ===== */
+.cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:16px; margin-bottom:20px; }
+.card { background:#fff; padding:22px 18px; border-radius:14px; box-shadow:0 6px 20px rgba(0,0,0,0.08); text-align:center; transition:0.25s; }
+.card:hover { transform:translateY(-3px); }
+.card h3 { font-size:14px; color:#795548; margin-bottom:8px; font-weight:600; }
+.card p { font-size:22px; font-weight:700; color:#3e2723; }
 
-  /* ===== FILTROS ===== */
-  .filters { display:flex; gap:12px; align-items:center; margin-bottom:20px; flex-wrap:wrap; background:#fff; padding:14px 16px; border-radius:12px; box-shadow:0 4px 14px rgba(0,0,0,0.06); }
-  .filters label { font-weight:600; font-size:14px; }
-  select, input[type="date"] { padding:9px 10px; border-radius:8px; border:1px solid #c7b7ad; background:#fff; font-size:14px; }
-  .filters button { padding:9px 14px; border-radius:8px; border:none; background:#8d6e63; cursor:pointer; font-weight:600; color:#fff; font-size:14px; transition:0.2s; }
-  .filters button:hover { background:#6d4c41; }
+/* ===== FILTROS ===== */
+.filters { display:flex; gap:12px; align-items:center; margin-bottom:20px; flex-wrap:wrap; background:#fff; padding:14px 16px; border-radius:12px; box-shadow:0 4px 14px rgba(0,0,0,0.06); }
+.filters label { font-weight:600; font-size:14px; }
+select, input[type="date"] { padding:9px 10px; border-radius:8px; border:1px solid #c7b7ad; background:#fff; font-size:14px; }
+.filters button { padding:9px 14px; border-radius:8px; border:none; background:#8d6e63; cursor:pointer; font-weight:600; color:#fff; font-size:14px; transition:0.2s; }
+.filters button:hover { background:#6d4c41; }
 
-  /* ===== TABELA ===== */
-  .table-container { width:100%; overflow-x:auto; }
-  table { width:100%; border-collapse:collapse; background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 6px 20px rgba(0,0,0,0.08); margin-bottom:16px; min-width:700px; }
-  th, td { padding:12px; text-align:left; font-size:14px; }
-  th { background:#4e342e; color:#fff; }
-  tr:nth-child(even) { background:#fdfaf8; }
-  tr:hover { background:#f3edea; }
-  .no-appointments { margin:14px 0; font-style:italic; text-align:center; color:#6d4c41; font-size:14px; }
+/* ===== TABELA ===== */
+.table-container { width:100%; overflow-x:auto; }
+table { width:100%; border-collapse:collapse; background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 6px 20px rgba(0,0,0,0.08); margin-bottom:16px; min-width:600px; }
+th, td { padding:12px; text-align:left; font-size:14px; }
+th { background:#4e342e; color:#fff; }
+tr:nth-child(even) { background:#fdfaf8; }
+tr:hover { background:#f3edea; }
+.no-appointments { margin:14px 0; font-style:italic; text-align:center; color:#6d4c41; font-size:14px; }
 
-  /* ===== DASHBOARD GERENTE ===== */
-  #gerentePanel { margin-top:30px; display:none; background:#fff; padding:24px; border-radius:16px; box-shadow:0 6px 20px rgba(0,0,0,0.08); }
-  #gerentePanel h2 { margin-bottom:12px; }
-  #ganhosBarbeiros { display:flex; gap:12px; flex-wrap:wrap; list-style:none; padding:0; margin-top:16px; }
-  #ganhosBarbeiros li { background:#4e342e; color:#fff; padding:10px 16px; border-radius:10px; font-weight:600; }
+/* ===== DASHBOARD GERENTE ===== */
+#gerentePanel { margin-top:30px; display:none; background:#fff; padding:24px; border-radius:16px; box-shadow:0 6px 20px rgba(0,0,0,0.08); }
+#gerentePanel h2 { margin-bottom:12px; }
+#ganhosBarbeiros { display:flex; gap:12px; flex-wrap:wrap; list-style:none; padding:0; margin-top:16px; }
+#ganhosBarbeiros li { background:#4e342e; color:#fff; padding:10px 16px; border-radius:10px; font-weight:600; }
 
-  /* ===== BOTÕES ===== */
-  .editBtn, .delBtn { padding:6px 10px; margin:0 2px; border:none; border-radius:6px; font-size:12px; cursor:pointer; color:#fff; transition:0.2s; }
-  .editBtn { background:#ffb74d; } .editBtn:hover { background:#ffa726; }
-  .delBtn { background:#e57373; } .delBtn:hover { background:#ef5350; }
+/* ===== BOTÕES ===== */
+.editBtn, .delBtn { padding:6px 10px; margin:0 2px; border:none; border-radius:6px; font-size:12px; cursor:pointer; color:#fff; transition:0.2s; }
+.editBtn { background:#ffb74d; }
+.editBtn:hover { background:#ffa726; }
+.delBtn { background:#e57373; }
+.delBtn:hover { background:#ef5350; }
 
-  /* ===== MODAL ===== */
-  .modal { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); display:flex; justify-content:center; align-items:center; visibility:hidden; opacity:0; transition:0.3s; z-index:100; }
-  .modal.active { visibility:visible; opacity:1; }
-  .modal-content { background:#fff; padding:20px; border-radius:12px; width:340px; max-width:90%; text-align:center; box-shadow:0 6px 20px rgba(0,0,0,0.25); }
-  .modal-content h3 { margin-bottom:12px; font-size:18px; }
-  .modal-content input, .modal-content select { width:100%; padding:9px 10px; margin:6px 0; border-radius:8px; border:1px solid #c7b7ad; font-size:14px; }
-  .modal-content button { padding:9px 12px; border:none; border-radius:8px; margin:8px 4px; cursor:pointer; font-weight:600; font-size:14px; }
-  .modal-content .saveBtn { background:#4caf50; color:#fff; }
-  .modal-content .cancelBtn { background:#e57373; color:#fff; }
+/* ===== MODAL ===== */
+.modal { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); display:flex; justify-content:center; align-items:center; visibility:hidden; opacity:0; transition:0.3s; z-index:100; }
+.modal.active { visibility:visible; opacity:1; }
+.modal-content { background:#fff; padding:20px; border-radius:12px; width:340px; max-width:90%; text-align:center; box-shadow:0 6px 20px rgba(0,0,0,0.25); }
+.modal-content h3 { margin-bottom:12px; font-size:18px; }
+.modal-content input, .modal-content select { width:100%; padding:9px 10px; margin:6px 0; border-radius:8px; border:1px solid #c7b7ad; font-size:14px; }
+.modal-content button { padding:9px 12px; border:none; border-radius:8px; margin:8px 4px; cursor:pointer; font-weight:600; font-size:14px; }
+.modal-content .saveBtn { background:#4caf50; color:#fff; }
+.modal-content .cancelBtn { background:#e57373; color:#fff; }
 
-  /* ===== RESPONSIVO ===== */
-  @media (max-width:768px) { body { padding:12px; } .header h1 { font-size:22px; } .cards { grid-template-columns:repeat(2,1fr); gap:12px; } .card p { font-size:20px; } .filters { flex-direction:column; align-items:flex-start; gap:10px; } .filters button, select, input { width:100%; } .table-container { border-radius:10px; }
-  }
-  @media (max-width:480px) { .cards { grid-template-columns:1fr; } .header { flex-direction:column; align-items:flex-start; gap:6px; } .header h1 { font-size:20px; } .header span { font-size:13px; } .card h3 { font-size:13px; } .filters label { font-size:13px; } }
+/* ===== RESPONSIVO ===== */
+@media (max-width:768px) { body { padding:12px; } .header h1 { font-size:22px; } .cards { grid-template-columns:repeat(2,1fr); gap:12px; } .card p { font-size:20px; } .filters { flex-direction:column; align-items:flex-start; gap:10px; } .filters button, select, input { width:100%; } .table-container { border-radius:10px; } }
+@media (max-width:480px) { .cards { grid-template-columns:1fr; } .header { flex-direction:column; align-items:flex-start; gap:6px; } .header h1 { font-size:20px; } .header span { font-size:13px; } .card h3 { font-size:13px; } .card p { font-size:18px; } .filters label { font-size:13px; } }
 </style>
 </head>
 <body>
@@ -121,7 +122,7 @@
     </table>
   </div>
 
-  <div id="noAppointments" class="no-appointments">Selecione um barbeiro, pagamento ou data para ver os agendamentos.</div>
+  <div id="noAppointments" class="no-appointments">Selecione um barbeiro ou uma data para ver os agendamentos.</div>
 
   <!-- Painel Gerente -->
   <div id="gerentePanel">
@@ -203,7 +204,7 @@
 <script>
 const API_URL = "https://soulfade.onrender.com/api";
 
-// Elementos
+// ELEMENTOS
 const barbeiroSelect = document.getElementById("barbeiroSelect");
 const pagamentoSelect = document.getElementById("pagamentoSelect");
 const dateSelect = document.getElementById("dateSelect");
@@ -215,7 +216,7 @@ const cardGanhos = document.getElementById("cardGanhos");
 const cardClientes = document.getElementById("cardClientes");
 const cardAgendamentos = document.getElementById("cardAgendamentos");
 
-// Modal e inputs
+// MODAL E INPUTS
 const editModal = document.getElementById("editModal");
 const editDia = document.getElementById("editDia");
 const editHorario = document.getElementById("editHorario");
@@ -223,7 +224,15 @@ const editBarbeiro = document.getElementById("editBarbeiro");
 const editPagamento = document.getElementById("editPagamento");
 let editId = null;
 
-// Função carregar agendamentos com filtro de pagamento
+const novoModal = document.getElementById("novoModal");
+const novoDia = document.getElementById("novoDia");
+const novoHorario = document.getElementById("novoHorario");
+const novoCliente = document.getElementById("novoCliente");
+const novoServico = document.getElementById("novoServico");
+const novoBarbeiro = document.getElementById("novoBarbeiro");
+const novoPagamento = document.getElementById("novoPagamento");
+
+// FUNÇÃO CARREGAR AGENDAMENTOS COM FILTROS
 async function carregarAgendamentos(barbeiro, dia, pagamento) {
   try {
     let url = `${API_URL}/agendamentos`;
@@ -236,7 +245,7 @@ async function carregarAgendamentos(barbeiro, dia, pagamento) {
     const res = await fetch(url);
     let agendamentos = await res.json();
 
-    // 🔥 Filtro: só mantém os do mês atual
+    // FILTRO: só mantém os do mês atual
     const hoje = new Date();
     const mesAtual = hoje.getMonth();
     const anoAtual = hoje.getFullYear();
@@ -270,14 +279,40 @@ async function carregarAgendamentos(barbeiro, dia, pagamento) {
       tableBody.appendChild(tr);
     });
     ativarBotoes();
-  } catch(err) {
+  } catch (err) {
     console.error(err);
     tableBody.innerHTML = "";
     noAppointments.style.display = "block";
   }
 }
 
-// Salvar edição com pagamento
+// FUNÇÃO ATIVAR BOTÕES DE EDITAR E EXCLUIR
+function ativarBotoes() {
+  document.querySelectorAll(".delBtn").forEach(btn => {
+    btn.onclick = async () => {
+      if (!confirm("Deseja realmente excluir este agendamento?")) return;
+      const id = btn.dataset.id;
+      try { 
+        await fetch(`${API_URL}/agendamentos/${id}`, { method: "DELETE" });
+        atualizarTudo();
+      } catch(e){ console.error(e); }
+    };
+  });
+
+  document.querySelectorAll(".editBtn").forEach(btn => {
+    btn.onclick = () => {
+      editId = btn.dataset.id;
+      const tr = btn.closest("tr");
+      editDia.value = tr.children[0].textContent.split('/').reverse().join('-');
+      editHorario.value = tr.children[1].textContent;
+      editBarbeiro.value = tr.children[4].textContent;
+      editPagamento.value = tr.children[5].textContent;
+      editModal.classList.add("active");
+    };
+  });
+}
+
+// SALVAR EDIÇÃO
 editModal.querySelector(".saveBtn").onclick = async () => {
   if(!editDia.value || !editHorario.value || !editBarbeiro.value || !editPagamento.value) return alert("Preencha todos os campos!");
   try{
@@ -295,47 +330,15 @@ editModal.querySelector(".saveBtn").onclick = async () => {
     atualizarTudo();
   }catch(e){ console.error(e); }
 };
+editModal.querySelector(".cancelBtn").onclick = () => editModal.classList.remove("active");
 
-// Abrir modal de edição
-function ativarBotoes() {
-  document.querySelectorAll(".delBtn").forEach(btn => {
-    btn.onclick = async () => {
-      if (!confirm("Deseja realmente excluir este agendamento?")) return;
-      const id = btn.dataset.id;
-      try { await fetch(`${API_URL}/agendamentos/${id}`, { method: "DELETE" }); atualizarTudo(); }
-      catch(e){ console.error(e); }
-    };
-  });
-
-  document.querySelectorAll(".editBtn").forEach(btn => {
-    btn.onclick = () => {
-      editId = btn.dataset.id;
-      const tr = btn.closest("tr");
-      editDia.value = tr.children[0].textContent.split('/').reverse().join('-');
-      editHorario.value = tr.children[1].textContent;
-      editBarbeiro.value = tr.children[4].textContent;
-      editPagamento.value = tr.children[5].textContent;
-      editModal.classList.add("active");
-    };
-  });
-}
-
-// Modal novo agendamento
-const novoModal = document.getElementById("novoModal");
-const novoBtn = document.getElementById("novoAgendamentoBtn");
-const novoDia = document.getElementById("novoDia");
-const novoHorario = document.getElementById("novoHorario");
-const novoCliente = document.getElementById("novoCliente");
-const novoServico = document.getElementById("novoServico");
-const novoBarbeiro = document.getElementById("novoBarbeiro");
-const novoPagamento = document.getElementById("novoPagamento");
-
-novoBtn.onclick = () => {
+// NOVO AGENDAMENTO
+document.getElementById("novoAgendamentoBtn").onclick = () => {
   novoDia.value = "";
-  novoHorario.value = "";
+  novoHorario.value = "09:00";
   novoCliente.value = "";
   novoServico.value = "";
-  novoBarbeiro.value = "";
+  novoBarbeiro.value = "Lucas Dias";
   novoPagamento.value = "Dinheiro";
   novoModal.classList.add("active");
 };
@@ -363,14 +366,7 @@ document.getElementById("salvarNovo").onclick = async () => {
   }catch(e){ console.error(e); }
 };
 
-// Atualiza tudo
-function atualizarTudo(){
-  carregarAgendamentos(barbeiroSelect.value, dateSelect.value, pagamentoSelect.value);
-  atualizarCards(barbeiroSelect.value,dateSelect.value);
-  carregarGanhosGerente();
-}
-
-// Eventos filtros
+// FILTROS
 barbeiroSelect.onchange = atualizarTudo;
 pagamentoSelect.onchange = atualizarTudo;
 dateSelect.onchange = atualizarTudo;
@@ -381,7 +377,54 @@ document.getElementById("clearFilters").onclick = () => {
   atualizarTudo();
 };
 
-// Inicializa
+// FUNÇÃO ATUALIZAR CARDS
+async function atualizarCards(barbeiro, dia) {
+  try {
+    const res = await fetch(`${API_URL}/agendamentos`);
+    const agendamentos = await res.json();
+    let ganhos = 0;
+    let clientes = new Set();
+    agendamentos.forEach(a => {
+      if((!barbeiro || a.barbeiro === barbeiro) && (!dia || a.dia.startsWith(dia))) {
+        ganhos += a.valor ? Number(a.valor) : 50; // Valor padrão
+        clientes.add(a.nome);
+      }
+    });
+    cardGanhos.textContent = `R$ ${ganhos.toFixed(2)}`;
+    cardClientes.textContent = clientes.size;
+    cardAgendamentos.textContent = agendamentos.length;
+  } catch(e){ console.error(e); }
+}
+
+// FUNÇÃO CARREGAR GANHOS DO GERENTE
+async function carregarGanhosGerente() {
+  try {
+    const res = await fetch(`${API_URL}/agendamentos`);
+    const agendamentos = await res.json();
+    const barbeiros = {};
+    agendamentos.forEach(a => {
+      const valor = a.valor ? Number(a.valor) : 50;
+      if(!barbeiros[a.barbeiro]) barbeiros[a.barbeiro] = 0;
+      barbeiros[a.barbeiro] += valor;
+    });
+    ganhosBarbeirosList.innerHTML = "";
+    for(const b in barbeiros) {
+      const li = document.createElement("li");
+      li.textContent = `${b}: R$ ${barbeiros[b].toFixed(2)}`;
+      ganhosBarbeirosList.appendChild(li);
+    }
+    gerentePanel.style.display = "block";
+  } catch(e){ console.error(e); }
+}
+
+// FUNÇÃO ATUALIZAR TUDO
+function atualizarTudo() {
+  carregarAgendamentos(barbeiroSelect.value, dateSelect.value, pagamentoSelect.value);
+  atualizarCards(barbeiroSelect.value,dateSelect.value);
+  carregarGanhosGerente();
+}
+
+// INICIALIZAÇÃO
 atualizarTudo();
 </script>
 
