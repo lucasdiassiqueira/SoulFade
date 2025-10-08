@@ -239,19 +239,21 @@ async function carregarAgendamentos(barbeiro, dia, pagamento) {
     const params = new URLSearchParams();
     if (barbeiro) params.set("barbeiro", barbeiro);
     if (dia) params.set("dia", dia);
-    if (pagamento) params.set("pagamento", pagamento);
     if (params.toString()) url += "?" + params.toString();
 
     const res = await fetch(url);
     let agendamentos = await res.json();
 
-    // FILTRO: só mantém os do mês atual
+    // FILTRO: mês atual, ano atual e forma de pagamento
     const hoje = new Date();
     const mesAtual = hoje.getMonth();
     const anoAtual = hoje.getFullYear();
+
     agendamentos = agendamentos.filter(a => {
       const data = new Date(a.dia);
-      return data.getMonth() === mesAtual && data.getFullYear() === anoAtual;
+      const mesCorreto = data.getMonth() === mesAtual && data.getFullYear() === anoAtual;
+      const pagamentoCorreto = pagamento ? a.pagamento === pagamento : true;
+      return mesCorreto && pagamentoCorreto;
     });
 
     tableBody.innerHTML = "";
@@ -278,6 +280,7 @@ async function carregarAgendamentos(barbeiro, dia, pagamento) {
       `;
       tableBody.appendChild(tr);
     });
+
     ativarBotoes();
   } catch (err) {
     console.error(err);
@@ -285,6 +288,7 @@ async function carregarAgendamentos(barbeiro, dia, pagamento) {
     noAppointments.style.display = "block";
   }
 }
+
 
 // FUNÇÃO ATIVAR BOTÕES DE EDITAR E EXCLUIR
 function ativarBotoes() {
