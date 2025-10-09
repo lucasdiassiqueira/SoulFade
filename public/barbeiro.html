@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Painel do Barbeiro</title>
 <link rel="icon" type="image/png" href="favicon-removebg-preview.png" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <style>
 /* ===== RESET & BASE ===== */
 * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; }
@@ -110,6 +112,8 @@ tr:hover { background:#f3edea; }
 
     <button id="clearFilters">Limpar filtros</button>
     <button id="novoAgendamentoBtn">Novo Agendamento</button>
+    <button id="fecharMesBtn" style="background:#4e342e">Fechar Mês</button>
+
   </div>
 
   <!-- TABELA -->
@@ -156,6 +160,17 @@ tr:hover { background:#f3edea; }
       <button class="saveBtn">Salvar</button>
       <button class="cancelBtn">Cancelar</button>
     </div>
+  </div>
+</div>
+
+<!-- Modal Relatório Mensal -->
+<div id="relatorioModal" class="modal">
+  <div class="modal-content" style="max-width:700px;">
+    <h3>📊 Relatório Mensal</h3>
+    <canvas id="graficoPagamentos" style="margin-top:14px;"></canvas>
+    <canvas id="graficoServicos" style="margin-top:14px;"></canvas>
+    <p id="resumoMensal" style="margin-top:16px; font-weight:600; color:#4e342e;"></p>
+    <button class="cancelBtn" id="fecharRelatorio">Fechar</button>
   </div>
 </div>
 
@@ -427,6 +442,101 @@ function atualizarTudo() {
   atualizarCards(barbeiroSelect.value,dateSelect.value);
   carregarGanhosGerente();
 }
+
+// ======== FECHAR MÊS ========
+document.getElementById("fecharMesBtn").onclick = async () => {
+  try {
+    const res = await fetch(`${API_URL}/agendamentos`);
+    const agendamentos = await res.json();
+
+    const hoje = new Date();
+    const mesAtual = hoje.getMonth();
+    const anoAtual = hoje.getFullYear();
+
+    // Filtra só o mês atual
+    const agMes = agendamentos.filter(a => {
+      const data = new Date(a.dia);
+      return data.getMonth() === mesAtual && data.getFullYear() === anoAtual;
+    });
+
+    if (!agMes.length) return alert("Nenhum agendamento neste mês!");
+
+    // === Estatísticas ===
+    const totalClientes = new Set(agMes.map(a => a.nome)).size;
+    const totalAtendimentos = agMes.length;
+
+    const pagamentos = { Pix: 0, Cartão: 0, Dinheiro: 0 };
+    const servicos = {};
+
+    agMes.forEach(a => {
+      if (a.pagamento && pagamentos[a.pagamento] !== undefined) pagamentos[a.pagamento]++;
+      if (a.servico) servicos[a.servico] = (servicos[a.servico] || 0) + 1;
+    });
+
+    const totalGanhos = agMes.reduce((acc, a) => acc + (Number(a.valor) || 50), 0);
+
+    // === Atualiza texto resumo ===
+    document.getElementById("resumoMensal").innerHTML = `
+      Total de clientes únicos: ${totalClientes}<br>
+      Total de atendimentos: ${totalAtendimentos}<br>
+      Ganhos estimados: R$ ${totalGanhos.toFixed(2)}
+    `;
+
+    // === Gera gráficos ===
+    gerarGraficos(pagamentos, servicos);
+
+    // Abre modal
+    document.getElementById("relatorioModal").classList.add("active");
+
+  } catch (err) {
+    console.error(err);
+    alert("Erro ao gerar relatório!");
+  }
+};
+
+document.getElementById("fecharRelatorio").onclick = () => {
+  document.getElementById("relatorioModal").classList.remove("active");
+};
+
+// ======== FUNÇÃO GERAR GRÁFICOS ========
+function gerarGraficos(pagamentos, servicos) {
+  // Limpa gráficos anteriores
+  const ctxPag = document.getElementById("graficoPagamentos").getContext("2d");
+  const ctxServ = document.getElementById("graficoServicos").getContext("2d");
+  if (window.graficoPag) window.graficoPag.destroy();
+  if (window.graficoServ) window.graficoServ.destroy();
+
+  window.graficoPag = new Chart(ctxPag, {
+    type: "pie",
+    data: {
+      labels: Object.keys(pagamentos),
+      datasets: [{
+        data: Object.values(pagamentos),
+        backgroundColor: ["#4caf50", "#2196f3", "#ff9800"]
+      }]
+    },
+    options: {
+      plugins: { title: { display: true, text: "Formas de Pagamento" } }
+    }
+  });
+
+  window.graficoServ = new Chart(ctxServ, {
+    type: "bar",
+    data: {
+      labels: Object.keys(servicos),
+      datasets: [{
+        label: "Quantidade de Cortes/Serviços",
+        data: Object.values(servicos),
+        backgroundColor: "#8d6e63"
+      }]
+    },
+    options: {
+      plugins: { title: { display: true, text: "Serviços mais realizados" } },
+      scales: { y: { beginAtZero: true } }
+    }
+  });
+}
+
 
 // INICIALIZAÇÃO
 atualizarTudo();
