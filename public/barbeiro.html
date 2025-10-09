@@ -75,44 +75,34 @@ tr:hover { background:#f3edea; }
 
 .modal-content {
   background: linear-gradient(145deg, #ffffff, #f5f1ee);
-  padding: 24px;
-  border-radius: 16px;
-  width: 90%;
-  max-width: 600px; 
+  padding: 28px;
+  border-radius: 18px;
+  width: 92%;
+  max-width: 650px;
   max-height: 90vh;
-  overflow-y: auto; 
+  overflow-y: auto;
   box-shadow: 0 10px 35px rgba(0,0,0,0.15);
   text-align: center;
   animation: slideIn 0.4s ease;
 }
 
-@keyframes slideIn {
-  from { transform: translateY(40px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
 .modal-content h3 {
   font-size: 22px;
   color: #3e2723;
   font-weight: 700;
   margin-bottom: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-.modal-content h3::before {
-  content: "📊";
-  font-size: 22px;
 }
 
 .modal-content canvas {
-  width: 100% !important; 
-  height: 220px !important; 
-  margin: 10px 0;
+  display: block;
+  width: 100%;
+  height: auto !important; 
+  aspect-ratio: 16 / 9; 
+  margin: 16px 0;
   background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  padding: 6px;
+  border-radius: 14px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  padding: 10px;
 }
 
 .modal-content p {
@@ -124,6 +114,7 @@ tr:hover { background:#f3edea; }
   line-height: 1.5;
   margin-top: 10px;
 }
+
 .modal-content button {
   padding: 10px 18px;
   border: none;
@@ -136,10 +127,12 @@ tr:hover { background:#f3edea; }
   transition: 0.25s;
   margin-top: 16px;
 }
+
 .modal-content button:hover {
   background: #6d4c41;
   transform: scale(1.05);
 }
+
 
 
 /* ===== RESPONSIVO ===== */
