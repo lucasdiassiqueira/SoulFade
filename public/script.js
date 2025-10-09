@@ -375,33 +375,54 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// Performance optimization: Throttle scroll events
-function throttle(func, limit) {
-    let inThrottle;
-    return function() {
-        const args = arguments;
-        const context = this;
-        if (!inThrottle) {
-            func.apply(context, args);
-            inThrottle = true;
-            setTimeout(() => inThrottle = false, limit);
-        }
+// --- SCROLL HANDLER UNIFICADO ---
+function handleScroll() {
+  const scrollY = window.scrollY;
+
+  // --- Header compacto ---
+  if (scrollY > 50) {
+    header.classList.add('scrolled');
+  } else {
+    header.classList.remove('scrolled');
+  }
+
+  // --- Back to Top Button ---
+  if (scrollY > 500) {
+    backToTopBtn.classList.add('visible');
+  } else {
+    backToTopBtn.classList.remove('visible');
+  }
+
+  // --- Scroll Spy ---
+  let current = '';
+  sections.forEach(section => {
+    const sectionTop = section.offsetTop - 120; // margem extra
+    const sectionHeight = section.clientHeight;
+    if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+      current = section.getAttribute('id');
     }
+  });
+
+  navLinks.forEach(link => {
+    link.classList.remove('active');
+    if (link.getAttribute('href') === '#' + current) {
+      link.classList.add('active');
+    }
+  });
 }
 
-// Apply throttling to scroll events
-window.addEventListener('scroll', throttle(() => {
-    // Header scroll effect
-    if (window.scrollY > 100) {
-        header.classList.add('scrolled');
-    } else {
-        header.classList.remove('scrolled');
+// --- Throttle para performance (~60fps) ---
+function throttle(func, limit) {
+  let inThrottle;
+  return function() {
+    const args = arguments;
+    const context = this;
+    if (!inThrottle) {
+      func.apply(context, args);
+      inThrottle = true;
+      setTimeout(() => inThrottle = false, limit);
     }
-    
-    // Back to top button
-    if (window.scrollY > 500) {
-        backToTopBtn.classList.add('visible');
-    } else {
-        backToTopBtn.classList.remove('visible');
-    }
-}, 16)); // ~60fps
+  }
+}
+
+window.addEventListener('scroll', throttle(handleScroll, 16));
