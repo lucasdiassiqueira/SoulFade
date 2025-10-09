@@ -213,24 +213,24 @@ app.get("/api/ganhos", async (req, res) => {
       "Pacote Premium": 230
     };
 
-    const ganhos = {};     // valores líquidos (70%)
-    const comissoes = {};  // valores da barbearia (30%)
-    let totalGanhos = 0;
-    let totalComissoes = 0;
+    const ganhos = {}; 
+const comissoes = {}; 
+let totalGanhos = 0;   
+let totalComissoes = 0; 
 
-    result.rows.forEach(a => {
-      const preco = precos[a.servico] || 0;
-      const ganhoBarbeiro = preco * 0.7;
-      const comissao = preco * 0.3;
+result.rows.forEach(a => {
+  const preco = precos[a.servico] || 0;
+  const ganhoBarbearia = preco * 0.7; 
+  const comissaoBarbeiro = preco * 0.3; 
 
-      // ganhos barbeiro
-      ganhos[a.barbeiro] = (ganhos[a.barbeiro] || 0) + ganhoBarbeiro;
-      totalGanhos += ganhoBarbeiro;
+  // ganhos barbearia
+  ganhos[a.barbeiro] = (ganhos[a.barbeiro] || 0) + ganhoBarbearia;
+  totalGanhos += ganhoBarbearia;
 
-      // comissão barbeiro
-      comissoes[a.barbeiro] = (comissoes[a.barbeiro] || 0) + comissao;
-      totalComissoes += comissao;
-    });
+  // comissão barbeiro
+  comissoes[a.barbeiro] = (comissoes[a.barbeiro] || 0) + comissaoBarbeiro;
+  totalComissoes += comissaoBarbeiro;
+});
 
     res.json({
       ganhos,
