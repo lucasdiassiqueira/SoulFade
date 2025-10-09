@@ -184,16 +184,16 @@ body {
 }
 
 .nav-profile i {
-  color: #745538; 
+  color: #fff; 
   transition: color 0.3s ease;
 }
 
 .nav-profile a:hover i {
-  color: #493623; 
+  color: #eb7d16; 
 }
 
 .nav-profile a:active i {
-  color: #d86a21; 
+  color: #493623; 
 }
 
 .logo img {
