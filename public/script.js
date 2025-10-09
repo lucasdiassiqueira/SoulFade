@@ -1,16 +1,3 @@
-
-// Header
-const header = document.getElementById("header");
-
-window.addEventListener("scroll", () => {
-  if (window.scrollY > 50) {
-    header.classList.add("show");
-  } else {
-    header.classList.remove("show");
-  }
-});
-
-
 document.addEventListener("DOMContentLoaded", () => {
     const modal = document.getElementById("imageModal");
     const modalImg = document.getElementById("modalImg");
