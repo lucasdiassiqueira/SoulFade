@@ -134,7 +134,7 @@ body {
   box-shadow: none;
 }
 
-/* HEADER COMPACTO (ao rolar) */
+/* HEADER COMPACTO */
 .header.scrolled {
   top: 20px;
   left: 50%;
@@ -142,7 +142,7 @@ body {
   width: 90%;
   max-width: 1200px;
   padding: 10px 30px;
-  background: rgba(84, 61, 45, 0.8);
+  background: rgba(84, 61, 45, 0.7);
   border-radius: 50px;
   backdrop-filter: blur(10px);
   box-shadow: 0 4px 20px rgba(0,0,0,0.15);
@@ -174,15 +174,27 @@ body {
 }
 
 .nav-link:hover {
-  color: #ea5318;
+  color: #eb7d16;
 }
 
 .nav-link.active {
-  color: #ea5318; 
+  color: #eb7d16; 
   font-weight: 600;
-  border-bottom: 2px solid #ea5318; 
+  border-bottom: 2px solid #eb7d16; 
 }
 
+.nav-profile i {
+  color: #745538; 
+  transition: color 0.3s ease;
+}
+
+.nav-profile a:hover i {
+  color: #493623; 
+}
+
+.nav-profile a:active i {
+  color: #d86a21; 
+}
 
 .logo img {
   height: 65px;
@@ -193,7 +205,6 @@ body {
   height: 55px;
 }
 
-/* MOBILE MENU PLACEHOLDER */
 .hamburger {
   display: none;
 }
