@@ -6,6 +6,8 @@
 <title>Painel do Barbeiro</title>
 <link rel="icon" type="image/png" href="favicon-removebg-preview.png" />
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
 /* ===== RESET & BASE ===== */
@@ -487,6 +489,10 @@ document.getElementById("fecharMesBtn").onclick = async () => {
 
     // Abre modal
     document.getElementById("relatorioModal").classList.add("active");
+    // Aguarda um pouquinho o render dos gráficos e gera PDF
+setTimeout(() => {
+  gerarPDFRelatorio();
+}, 1200);
 
   } catch (err) {
     console.error(err);
@@ -540,6 +546,36 @@ function gerarGraficos(pagamentos, servicos) {
 
 // INICIALIZAÇÃO
 atualizarTudo();
+
+<!-- BIBLIOTECAS PARA PDF -->
+
+async function gerarPDFRelatorio() {
+  const { jsPDF } = window.jspdf;
+  const relatorioModal = document.querySelector("#relatorioModal .modal-content");
+
+  // Captura visual do conteúdo do modal
+  const canvas = await html2canvas(relatorioModal, {
+    scale: 2, // qualidade melhor
+    backgroundColor: "#ffffff"
+  });
+
+  const imgData = canvas.toDataURL("image/png");
+  const pdf = new jsPDF("p", "mm", "a4");
+
+  // Calcula proporção pra caber certinho na folha
+  const pdfWidth = pdf.internal.pageSize.getWidth();
+  const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+  pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+
+  // Nome do arquivo com o mês
+  const hoje = new Date();
+  const nomeArquivo = `Relatorio_SoulFade_${hoje.toLocaleString("pt-BR", { month: "long", year: "numeric" })}.pdf`;
+
+  // Abre em nova aba (ou pode trocar pra pdf.save(nomeArquivo) pra baixar direto)
+  pdf.output("dataurlnewwindow", { filename: nomeArquivo });
+}
+
 </script>
 
 </body>
