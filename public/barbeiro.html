@@ -292,6 +292,17 @@ tr:hover { background:#f3edea; }
 <script>
 const API_URL = "https://soulfade.onrender.com/api";
 
+// Valores dos serviços (mesmos do backend)
+const valoresServico = {
+  "Corte Tradicional": 45,
+  "Social e Degradê": 45,
+  "Locs": 310,
+  "Barba Completa": 30,
+  "Tratamento Capilar": 150,
+  "Trança": 150,
+  "Pacote Premium": 230
+};
+
 // ELEMENTOS
 const barbeiroSelect = document.getElementById("barbeiroSelect");
 const pagamentoSelect = document.getElementById("pagamentoSelect");
@@ -320,7 +331,7 @@ const novoServico = document.getElementById("novoServico");
 const novoBarbeiro = document.getElementById("novoBarbeiro");
 const novoPagamento = document.getElementById("novoPagamento");
 
-// FUNÇÃO CARREGAR AGENDAMENTOS COM FILTROS
+// ================= CARREGAR AGENDAMENTOS =================
 async function carregarAgendamentos(barbeiro, dia, pagamento) {
   try {
     let url = `${API_URL}/agendamentos`;
@@ -332,7 +343,6 @@ async function carregarAgendamentos(barbeiro, dia, pagamento) {
     const res = await fetch(url);
     let agendamentos = await res.json();
 
-    // FILTRO: mês atual, ano atual e forma de pagamento
     const hoje = new Date();
     const mesAtual = hoje.getMonth();
     const anoAtual = hoje.getFullYear();
@@ -377,8 +387,7 @@ async function carregarAgendamentos(barbeiro, dia, pagamento) {
   }
 }
 
-
-// FUNÇÃO ATIVAR BOTÕES DE EDITAR E EXCLUIR
+// ================= EDITAR/EXCLUIR =================
 function ativarBotoes() {
   document.querySelectorAll(".delBtn").forEach(btn => {
     btn.onclick = async () => {
@@ -404,7 +413,7 @@ function ativarBotoes() {
   });
 }
 
-// SALVAR EDIÇÃO
+// ================= SALVAR EDIÇÃO =================
 editModal.querySelector(".saveBtn").onclick = async () => {
   if(!editDia.value || !editHorario.value || !editBarbeiro.value || !editPagamento.value) return alert("Preencha todos os campos!");
   try{
@@ -424,7 +433,7 @@ editModal.querySelector(".saveBtn").onclick = async () => {
 };
 editModal.querySelector(".cancelBtn").onclick = () => editModal.classList.remove("active");
 
-// NOVO AGENDAMENTO
+// ================= NOVO AGENDAMENTO =================
 document.getElementById("novoAgendamentoBtn").onclick = () => {
   novoDia.value = "";
   novoHorario.value = "09:00";
@@ -458,7 +467,7 @@ document.getElementById("salvarNovo").onclick = async () => {
   }catch(e){ console.error(e); }
 };
 
-// FILTROS
+// ================= FILTROS =================
 barbeiroSelect.onchange = atualizarTudo;
 pagamentoSelect.onchange = atualizarTudo;
 dateSelect.onchange = atualizarTudo;
@@ -469,54 +478,60 @@ document.getElementById("clearFilters").onclick = () => {
   atualizarTudo();
 };
 
-// FUNÇÃO ATUALIZAR CARDS
+// ================= CARDS 70% / 30% =================
 async function atualizarCards(barbeiro, dia) {
   try {
     const res = await fetch(`${API_URL}/agendamentos`);
     const agendamentos = await res.json();
-    let ganhos = 0;
+    let ganhosBarbearia = 0;
     let clientes = new Set();
+    let totalAgendamentos = 0;
+
     agendamentos.forEach(a => {
       if((!barbeiro || a.barbeiro === barbeiro) && (!dia || a.dia.startsWith(dia))) {
-        ganhos += a.valor ? Number(a.valor) : 50; // Valor padrão
+        const preco = valoresServico[a.servico] || 50;
+        ganhosBarbearia += preco * 0.7; // 70% para barbearia
         clientes.add(a.nome);
+        totalAgendamentos++;
       }
     });
-    cardGanhos.textContent = `R$ ${ganhos.toFixed(2)}`;
+
+    cardGanhos.textContent = `R$ ${ganhosBarbearia.toFixed(2)}`;
     cardClientes.textContent = clientes.size;
-    cardAgendamentos.textContent = agendamentos.length;
+    cardAgendamentos.textContent = totalAgendamentos;
   } catch(e){ console.error(e); }
 }
 
-// FUNÇÃO CARREGAR GANHOS DO GERENTE
 async function carregarGanhosGerente() {
   try {
     const res = await fetch(`${API_URL}/agendamentos`);
     const agendamentos = await res.json();
-    const barbeiros = {};
+    const ganhosBarbeiros = {};
+
     agendamentos.forEach(a => {
-      const valor = a.valor ? Number(a.valor) : 50;
-      if(!barbeiros[a.barbeiro]) barbeiros[a.barbeiro] = 0;
-      barbeiros[a.barbeiro] += valor;
+      const preco = valoresServico[a.servico] || 50;
+      if(!ganhosBarbeiros[a.barbeiro]) ganhosBarbeiros[a.barbeiro] = 0;
+      ganhosBarbeiros[a.barbeiro] += preco * 0.3; // 30% para barbeiro
     });
+
     ganhosBarbeirosList.innerHTML = "";
-    for(const b in barbeiros) {
+    for(const b in ganhosBarbeiros) {
       const li = document.createElement("li");
-      li.textContent = `${b}: R$ ${barbeiros[b].toFixed(2)}`;
+      li.textContent = `${b}: R$ ${ganhosBarbeiros[b].toFixed(2)}`;
       ganhosBarbeirosList.appendChild(li);
     }
     gerentePanel.style.display = "block";
   } catch(e){ console.error(e); }
 }
 
-// FUNÇÃO ATUALIZAR TUDO
+// ================= ATUALIZAR TUDO =================
 function atualizarTudo() {
   carregarAgendamentos(barbeiroSelect.value, dateSelect.value, pagamentoSelect.value);
   atualizarCards(barbeiroSelect.value,dateSelect.value);
   carregarGanhosGerente();
 }
 
-// ======== FECHAR MÊS ========
+// ================= FECHAR MÊS =================
 document.getElementById("fecharMesBtn").onclick = async () => {
   try {
     const res = await fetch(`${API_URL}/agendamentos`);
@@ -526,7 +541,6 @@ document.getElementById("fecharMesBtn").onclick = async () => {
     const mesAtual = hoje.getMonth();
     const anoAtual = hoje.getFullYear();
 
-    // Filtra só o mês atual
     const agMes = agendamentos.filter(a => {
       const data = new Date(a.dia);
       return data.getMonth() === mesAtual && data.getFullYear() === anoAtual;
@@ -534,38 +548,31 @@ document.getElementById("fecharMesBtn").onclick = async () => {
 
     if (!agMes.length) return alert("Nenhum agendamento neste mês!");
 
-    // === Estatísticas ===
     const totalClientes = new Set(agMes.map(a => a.nome)).size;
     const totalAtendimentos = agMes.length;
 
     const pagamentos = { Pix: 0, Cartão: 0, Dinheiro: 0 };
     const servicos = {};
+    let totalGanhos = 0;
 
     agMes.forEach(a => {
-      if (a.pagamento && pagamentos[a.pagamento] !== undefined) pagamentos[a.pagamento]++;
-      if (a.servico) servicos[a.servico] = (servicos[a.servico] || 0) + 1;
+      const preco = valoresServico[a.servico] || 50;
+      totalGanhos += preco * 0.7; // 70% barbearia
+      if(a.pagamento && pagamentos[a.pagamento] !== undefined) pagamentos[a.pagamento]++;
+      if(a.servico) servicos[a.servico] = (servicos[a.servico] || 0) + 1;
     });
 
-    const totalGanhos = agMes.reduce((acc, a) => acc + (Number(a.valor) || 50), 0);
-
-    // === Atualiza texto resumo ===
     document.getElementById("resumoMensal").innerHTML = `
       Total de clientes únicos: ${totalClientes}<br>
       Total de atendimentos: ${totalAtendimentos}<br>
-      Ganhos estimados: R$ ${totalGanhos.toFixed(2)}
+      Ganhos estimados (barbearia 70%): R$ ${totalGanhos.toFixed(2)}
     `;
 
-    // === Gera gráficos ===
     gerarGraficos(pagamentos, servicos);
-
-    // Abre modal
     document.getElementById("relatorioModal").classList.add("active");
-    // Aguarda um pouquinho o render dos gráficos e gera PDF
-setTimeout(() => {
-  gerarPDFRelatorio();
-}, 1200);
 
-  } catch (err) {
+    setTimeout(() => gerarPDFRelatorio(), 1200);
+  } catch(err) {
     console.error(err);
     alert("Erro ao gerar relatório!");
   }
@@ -575,7 +582,7 @@ document.getElementById("fecharRelatorio").onclick = () => {
   document.getElementById("relatorioModal").classList.remove("active");
 };
 
-// ======== FUNÇÃO GERAR GRÁFICOS ========
+// ================= GRÁFICOS =================
 function gerarGraficos(pagamentos, servicos) {
   const ctxPag = document.getElementById("graficoPagamentos").getContext("2d");
   const ctxServ = document.getElementById("graficoServicos").getContext("2d");
@@ -583,60 +590,41 @@ function gerarGraficos(pagamentos, servicos) {
   if (window.graficoPag) window.graficoPag.destroy();
   if (window.graficoServ) window.graficoServ.destroy();
 
-  // === Gráfico de pagamentos ===
   window.graficoPag = new Chart(ctxPag, {
     type: "pie",
     data: {
       labels: Object.keys(pagamentos),
-      datasets: [{
-        data: Object.values(pagamentos),
-        backgroundColor: ["#4caf50", "#2196f3", "#ff9800"]
-      }]
+      datasets: [{ data: Object.values(pagamentos), backgroundColor: ["#4caf50","#2196f3","#ff9800"] }]
     },
-    options: {
-      plugins: {
-        title: { display: true, text: "Formas de Pagamento" }
-      }
-    }
+    options: { plugins: { title: { display:true, text:"Formas de Pagamento" } } }
   });
 
-  // === Gráfico de serviços ===
   window.graficoServ = new Chart(ctxServ, {
     type: "bar",
     data: {
       labels: Object.keys(servicos),
-      datasets: [{
-        label: "Quantidade de Cortes/Serviços",
-        data: Object.values(servicos),
-        backgroundColor: "#8d6e63"
-      }]
+      datasets: [{ label:"Quantidade de Cortes/Serviços", data: Object.values(servicos), backgroundColor:"#8d6e63" }]
     },
-    options: {
-      plugins: {
-        title: { display: true, text: "Serviços Realizados" }
-      },
-      scales: {
-        y: { beginAtZero: true }
-      }
-    }
+    options: { plugins: { title:{ display:true, text:"Serviços Realizados" } }, scales:{ y:{ beginAtZero:true } } }
   });
 }
 
+// ================= GERAR PDF =================
 async function gerarPDFRelatorio() {
   const modal = document.querySelector("#relatorioModal .modal-content");
   const canvas = await html2canvas(modal);
   const imgData = canvas.toDataURL("image/png");
-  const pdf = new jspdf.jsPDF("p", "mm", "a4");
+  const pdf = new jspdf.jsPDF("p","mm","a4");
   const width = pdf.internal.pageSize.getWidth();
   const height = (canvas.height * width) / canvas.width;
-  pdf.addImage(imgData, "PNG", 0, 0, width, height);
+  pdf.addImage(imgData,"PNG",0,0,width,height);
   pdf.save("Relatorio-Mensal.pdf");
 }
 
-
-// INICIALIZAÇÃO
+// ================= INICIALIZAÇÃO =================
 atualizarTudo();
 </script>
+
 
 </body>
 </html>
