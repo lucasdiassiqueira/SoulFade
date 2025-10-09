@@ -375,54 +375,101 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// --- SCROLL HANDLER UNIFICADO ---
-function handleScroll() {
-  const scrollY = window.scrollY;
+document.addEventListener("DOMContentLoaded", () => {
+    // ====== GALERIA MODAL ======
+    const modal = document.getElementById("imageModal");
+    const modalImg = document.getElementById("modalImg");
+    const closeBtn = document.querySelector(".close");
 
-  // --- Header compacto ---
-  if (scrollY > 50) {
-    header.classList.add('scrolled');
-  } else {
-    header.classList.remove('scrolled');
-  }
+    if (modal && modalImg && closeBtn) {
+        document.querySelectorAll(".gallery-item img").forEach(img => {
+            img.addEventListener("click", () => {
+                modal.style.display = "flex";
+                modalImg.src = img.src;
+            });
+        });
 
-  // --- Back to Top Button ---
-  if (scrollY > 500) {
-    backToTopBtn.classList.add('visible');
-  } else {
-    backToTopBtn.classList.remove('visible');
-  }
-
-  // --- Scroll Spy ---
-  let current = '';
-  sections.forEach(section => {
-    const sectionTop = section.offsetTop - 120; // margem extra
-    const sectionHeight = section.clientHeight;
-    if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
-      current = section.getAttribute('id');
+        closeBtn.addEventListener("click", () => modal.style.display = "none");
+        modal.addEventListener("click", e => { if (e.target === modal) modal.style.display = "none"; });
     }
-  });
 
-  navLinks.forEach(link => {
-    link.classList.remove('active');
-    if (link.getAttribute('href') === '#' + current) {
-      link.classList.add('active');
+    // ====== MOBILE MENU ======
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('.nav-menu');
+
+    if (hamburger && navMenu) {
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
     }
-  });
-}
 
-// --- Throttle para performance (~60fps) ---
-function throttle(func, limit) {
-  let inThrottle;
-  return function() {
-    const args = arguments;
-    const context = this;
-    if (!inThrottle) {
-      func.apply(context, args);
-      inThrottle = true;
-      setTimeout(() => inThrottle = false, limit);
+    // ====== SMOOTH SCROLL ======
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', e => {
+            e.preventDefault();
+            const target = document.querySelector(anchor.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+
+    // ====== BACK TO TOP ======
+    const backToTopBtn = document.getElementById('backToTop');
+    if (backToTopBtn) {
+        window.addEventListener('scroll', () => {
+            backToTopBtn.classList.toggle('visible', window.scrollY > 500);
+        });
+
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
     }
-  }
-}
 
-window.addEventListener('scroll', throttle(handleScroll, 16));
+    // ====== SCROLL SPY + HEADER ======
+    const header = document.getElementById('header');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('section[id]');
+
+    function handleScroll() {
+        const scrollY = window.scrollY;
+        if (header) header.classList.toggle('scrolled', scrollY > 50);
+
+        let current = '';
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop - 120;
+            const sectionHeight = section.clientHeight;
+            if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+                current = section.getAttribute('id');
+            }
+        });
+
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === '#' + current) {
+                link.classList.add('active');
+            }
+        });
+    }
+
+    function throttle(func, limit) {
+        let inThrottle;
+        return function() {
+            if (!inThrottle) {
+                func();
+                inThrottle = true;
+                setTimeout(() => inThrottle = false, limit);
+            }
+        };
+    }
+
+    window.addEventListener('scroll', throttle(handleScroll, 16));
+});
