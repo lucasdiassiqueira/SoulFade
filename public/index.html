@@ -11,8 +11,7 @@
 </head>
 <body>
    
-
-<!-- Header -->
+<!-- HEADER -->
 <header class="header" id="header">
   <nav class="navbar">
     <div class="nav-container">
@@ -32,30 +31,11 @@
         <li><a href="#testimonials" class="nav-link">Depoimentos</a></li>
         <li><a href="#contact" class="nav-link">Contato</a></li>
         <li class="nav-profile">
-  <a href="perfil.html" id="profileLink">
-    <i id="profileIcon" class="fas fa-user" style="font-size:24px;"></i>
-    <img id="navProfilePic" src="" alt="Perfil" style="display:none; width:30px; height:30px; border-radius:20%; object-fit:cover;">
-  </a>
-</li>
-
-<script>
-window.addEventListener('DOMContentLoaded', () => {
-  const savedUser = JSON.parse(localStorage.getItem('userProfile'));
-  const navProfilePic = document.getElementById('navProfilePic');
-  const profileIcon = document.getElementById('profileIcon'); // o <i class="fas fa-user" id="profileIcon"></i>
-
-  if(savedUser && savedUser.foto){
-    navProfilePic.src = savedUser.foto;       // coloca a foto
-    navProfilePic.style.display = 'block';    // mostra a imagem
-    profileIcon.style.display = 'none';       // esconde o ícone
-  } else {
-    navProfilePic.style.display = 'none';     // esconde a imagem se não houver
-    profileIcon.style.display = 'block';      // mostra o ícone padrão
-  }
-});
-
-</script>
-
+          <a href="perfil.html" id="profileLink">
+            <i id="profileIcon" class="fas fa-user" style="font-size:22px;"></i>
+            <img id="navProfilePic" src="" alt="Perfil" style="display:none; width:34px; height:34px; border-radius:50%; object-fit:cover;">
+          </a>
+        </li>
       </ul>
 
       <!-- Menu mobile -->
@@ -68,12 +48,32 @@ window.addEventListener('DOMContentLoaded', () => {
   </nav>
 </header>
 
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+  const savedUser = JSON.parse(localStorage.getItem('userProfile'));
+  const navProfilePic = document.getElementById('navProfilePic');
+  const profileIcon = document.getElementById('profileIcon');
+  if(savedUser && savedUser.foto){
+    navProfilePic.src = savedUser.foto;
+    navProfilePic.style.display = 'block';
+    profileIcon.style.display = 'none';
+  }
+});
+
+window.addEventListener('scroll', () => {
+  const header = document.getElementById('header');
+  if(window.scrollY > 50){
+    header.classList.add('scrolled');
+  } else {
+    header.classList.remove('scrolled');
+  }
+});
+</script>
+
 <!-- Hero Section -->
 <section id="home" class="hero">
   <div class="hero-background"></div>
 </section>
-
-
 
     <!-- About Section -->
     <section id="about" class="about">

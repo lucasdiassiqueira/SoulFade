@@ -120,51 +120,40 @@ body {
   z-index: -1;
 }
 
-/* Header */
+/* HEADER BASE */
 .header {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  padding: 15px 40px;
-  transition: transform 0.4s ease-in-out, background 0.3s ease-in-out;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 1200px;
+  padding: 18px 40px;
+  background: rgba(84, 61, 45, 0.3);
+  border-radius: 50px;
+  backdrop-filter: blur(10px);
+  transition: all 0.4s ease;
   z-index: 1000;
-  background: transparent;
 }
 
-.header.show {
-  background: rgb(84, 61, 45, 0.7);
-  transform: translateY(0);
+/* Quando rola a página */
+.header.scrolled {
+  background: rgba(84, 61, 45, 0.8);
+  padding: 10px 30px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  width: 85%;
 }
 
-.header.hide {
-  transform: translateY(-100%); 
-}
-
-/* Navbar */
-.navbar {
-  width: 100%;
-}
-
+/* NAV */
 .nav-container {
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-between;
   align-items: center;
-  width: 100%;
-}
-
-.logo {
-  flex-grow: 0; 
-}
-
-.logo img {
-  height: 80px;
-  width: auto;
 }
 
 .nav-menu {
   display: flex;
-  gap: 20px;
+  gap: 25px;
   list-style: none;
 }
 
@@ -172,31 +161,43 @@ body {
   color: #fff;
   text-decoration: none;
   font-weight: 500;
-  font-size: 16px;
   transition: color 0.3s;
 }
 
 .nav-link:hover {
-  color: #e7820d;
+  color: #e74b0d;
 }
 
-.nav-profile a {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 5px;
-  border-radius: 50%;
-  background: #311f0c; 
-  color: #fff;
-  transition: background 0.3s, transform 0.3s;
-  text-decoration: none;
-  width: 50px;
-  height: 50px;
+.logo img {
+  height: 45px;
+  transition: height 0.4s ease;
 }
 
-.nav-profile a:hover {
-  background: #5a3314; 
-  transform: scale(1.1);
+.header.scrolled .logo img {
+  height: 35px;
+}
+
+/* MOBILE MENU PLACEHOLDER */
+.hamburger {
+  display: none;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .nav-menu {
+    display: none;
+  }
+  .hamburger {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+  }
+  .hamburger span {
+    width: 25px;
+    height: 3px;
+    background: #fff;
+  }
 }
 
 
