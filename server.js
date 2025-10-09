@@ -7,7 +7,7 @@ import pkg from "pg";
 const { Pool } = pkg;
 const app = express();
 
-// Configurações para __dirname em módulos ES
+// Configuração de diretórios
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -16,13 +16,13 @@ app.use(cors({ origin: "*" }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
-// PostgreSQL
+// Banco de dados PostgreSQL
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false },
 });
 
-// 🛠️ Cria a coluna 'pagamento' se ela não existir
+// 🧾 Tabela e coluna 'pagamento' garantidas
 (async () => {
   try {
     await pool.query(`
@@ -43,6 +43,16 @@ const pool = new Pool({
   }
 })();
 
+// 💈 Valores fixos dos serviços
+const valoresServico = {
+  "Corte Tradicional": 45,
+  "Social e Degradê": 45,
+  "Locs": 310,
+  "Barba Completa": 30,
+  "Tratamento Capilar": 150,
+  "Trança": 150,
+  "Pacote Premium": 230
+};
 
 // ---------- ROTAS API ---------- //
 
@@ -55,7 +65,7 @@ app.post("/api/login", async (req, res) => {
     const { usuario, senha } = req.body;
     if (!usuario || !senha) return res.status(400).json({ error: "Informe usuário e senha" });
 
-    if (senha === "lucasmanager") 
+    if (senha === "lucasmanager")
       return res.json({ ok: true, barbeiro: "lucas", tipo: "gerente" });
 
     const result = await pool.query(
@@ -63,7 +73,7 @@ app.post("/api/login", async (req, res) => {
       [usuario, senha]
     );
 
-    if (result.rows.length === 0) 
+    if (result.rows.length === 0)
       return res.status(401).json({ error: "Usuário ou senha inválidos" });
 
     const barbeiro = result.rows[0];
@@ -82,13 +92,13 @@ app.get("/api/agendamentos", async (req, res) => {
     const params = [];
     const conditions = [];
 
-    if (barbeiro) { 
-      params.push(barbeiro); 
-      conditions.push(`barbeiro = $${params.length}`); 
+    if (barbeiro) {
+      params.push(barbeiro);
+      conditions.push(`barbeiro = $${params.length}`);
     }
-    if (dia) { 
-      params.push(dia); 
-      conditions.push(`dia = $${params.length}`); 
+    if (dia) {
+      params.push(dia);
+      conditions.push(`dia = $${params.length}`);
     }
 
     if (conditions.length) query += " WHERE " + conditions.join(" AND ");
@@ -118,12 +128,11 @@ app.get("/api/agendamentos/:id", async (req, res) => {
   }
 });
 
-
 // Criar agendamento
 app.post("/api/agendamentos", async (req, res) => {
   try {
     const { nome, servico, barbeiro, dia, horario, forma_pagamento } = req.body;
-    const pagamento = forma_pagamento; // 👈 renomeia para compatibilidade 
+    const pagamento = forma_pagamento;
 
     if (!nome || !servico || !barbeiro || !dia || !horario)
       return res.status(400).json({ error: "Dados incompletos" });
@@ -179,16 +188,13 @@ app.put("/api/agendamentos/:id", async (req, res) => {
   }
 });
 
-
 // Excluir agendamento
 app.delete("/api/agendamentos/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await pool.query(
-      "DELETE FROM agendamentos WHERE id=$1 RETURNING *",
-      [id]
-    );
-    if (!result.rows.length) 
+    const result = await pool.query("DELETE FROM agendamentos WHERE id=$1 RETURNING *", [id]);
+
+    if (!result.rows.length)
       return res.status(404).json({ error: "Agendamento não encontrado" });
 
     res.json({ ok: true, msg: "Agendamento excluído" });
@@ -199,59 +205,44 @@ app.delete("/api/agendamentos/:id", async (req, res) => {
 });
 
 // ------------------- SERVIÇOS E RELATÓRIO ------------------- //
+
+// 💰 Ganhos gerais e comissões
 app.get("/api/ganhos", async (req, res) => {
   try {
     const result = await pool.query("SELECT servico, barbeiro FROM agendamentos");
 
-    const precos = {
-      "Corte Tradicional": 45,
-      "Social e Degradê": 45,
-      "Locs": 310,
-      "Barba Completa": 30,
-      "Tratamento Capilar": 150,
-      "Trança": 150,
-      "Pacote Premium": 230
-    };
+    const ganhos = {};
+    const comissoes = {};
+    let totalGanhos = 0;
+    let totalComissoes = 0;
 
-    const ganhos = {}; 
-const comissoes = {}; 
-let totalGanhos = 0;   
-let totalComissoes = 0; 
+    result.rows.forEach(a => {
+      const preco = valoresServico[a.servico] || 0;
+      const ganhoBarbearia = preco * 0.7;
+      const comissaoBarbeiro = preco * 0.3;
 
-result.rows.forEach(a => {
-  const preco = precos[a.servico] || 0;
-  const ganhoBarbearia = preco * 0.7; 
-  const comissaoBarbeiro = preco * 0.3; 
+      ganhos[a.barbeiro] = (ganhos[a.barbeiro] || 0) + ganhoBarbearia;
+      comissoes[a.barbeiro] = (comissoes[a.barbeiro] || 0) + comissaoBarbeiro;
 
-  // ganhos barbearia
-  ganhos[a.barbeiro] = (ganhos[a.barbeiro] || 0) + ganhoBarbearia;
-  totalGanhos += ganhoBarbearia;
-
-  // comissão barbeiro
-  comissoes[a.barbeiro] = (comissoes[a.barbeiro] || 0) + comissaoBarbeiro;
-  totalComissoes += comissaoBarbeiro;
-});
-
-    res.json({
-      ganhos,
-      comissoes,
-      totalGanhos,
-      totalComissoes
+      totalGanhos += ganhoBarbearia;
+      totalComissoes += comissaoBarbeiro;
     });
+
+    res.json({ ganhos, comissoes, totalGanhos, totalComissoes });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Erro ao calcular ganhos" });
   }
 });
 
-// Relatório detalhado
+// 📊 Relatório detalhado
 app.get("/api/relatorio", async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM agendamentos ORDER BY barbeiro, dia, horario");
     const relatorio = {};
 
     result.rows.forEach(a => {
-      const valor = valoresServico[a.servico] || 50;
+      const valor = valoresServico[a.servico] || 0;
       const comissao = valor * 0.3;
 
       if (!relatorio[a.barbeiro]) {
@@ -285,7 +276,7 @@ app.get("/api/relatorio", async (req, res) => {
 });
 
 // ------------------- FRONTEND ------------------- //
-app.get("*", (req, res) => 
+app.get("*", (req, res) =>
   res.sendFile(path.join(__dirname, "public", "index.html"))
 );
 
