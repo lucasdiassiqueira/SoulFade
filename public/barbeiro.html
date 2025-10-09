@@ -506,12 +506,13 @@ document.getElementById("fecharRelatorio").onclick = () => {
 
 // ======== FUNÇÃO GERAR GRÁFICOS ========
 function gerarGraficos(pagamentos, servicos) {
-  // Limpa gráficos anteriores
   const ctxPag = document.getElementById("graficoPagamentos").getContext("2d");
   const ctxServ = document.getElementById("graficoServicos").getContext("2d");
+
   if (window.graficoPag) window.graficoPag.destroy();
   if (window.graficoServ) window.graficoServ.destroy();
 
+  // === Gráfico de pagamentos ===
   window.graficoPag = new Chart(ctxPag, {
     type: "pie",
     data: {
@@ -522,10 +523,13 @@ function gerarGraficos(pagamentos, servicos) {
       }]
     },
     options: {
-      plugins: { title: { display: true, text: "Formas de Pagamento" } }
+      plugins: {
+        title: { display: true, text: "Formas de Pagamento" }
+      }
     }
   });
 
+  // === Gráfico de serviços ===
   window.graficoServ = new Chart(ctxServ, {
     type: "bar",
     data: {
@@ -537,45 +541,30 @@ function gerarGraficos(pagamentos, servicos) {
       }]
     },
     options: {
-      plugins: { title: { display: true, text: "Serviços mais realizados" } },
-      scales: { y: { beginAtZero: true } }
+      plugins: {
+        title: { display: true, text: "Serviços Realizados" }
+      },
+      scales: {
+        y: { beginAtZero: true }
+      }
     }
   });
+}
+
+async function gerarPDFRelatorio() {
+  const modal = document.querySelector("#relatorioModal .modal-content");
+  const canvas = await html2canvas(modal);
+  const imgData = canvas.toDataURL("image/png");
+  const pdf = new jspdf.jsPDF("p", "mm", "a4");
+  const width = pdf.internal.pageSize.getWidth();
+  const height = (canvas.height * width) / canvas.width;
+  pdf.addImage(imgData, "PNG", 0, 0, width, height);
+  pdf.save("Relatorio-Mensal.pdf");
 }
 
 
 // INICIALIZAÇÃO
 atualizarTudo();
-
-<!-- BIBLIOTECAS PARA PDF -->
-
-async function gerarPDFRelatorio() {
-  const { jsPDF } = window.jspdf;
-  const relatorioModal = document.querySelector("#relatorioModal .modal-content");
-
-  // Captura visual do conteúdo do modal
-  const canvas = await html2canvas(relatorioModal, {
-    scale: 2, // qualidade melhor
-    backgroundColor: "#ffffff"
-  });
-
-  const imgData = canvas.toDataURL("image/png");
-  const pdf = new jsPDF("p", "mm", "a4");
-
-  // Calcula proporção pra caber certinho na folha
-  const pdfWidth = pdf.internal.pageSize.getWidth();
-  const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-
-  pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-
-  // Nome do arquivo com o mês
-  const hoje = new Date();
-  const nomeArquivo = `Relatorio_SoulFade_${hoje.toLocaleString("pt-BR", { month: "long", year: "numeric" })}.pdf`;
-
-  // Abre em nova aba (ou pode trocar pra pdf.save(nomeArquivo) pra baixar direto)
-  pdf.output("dataurlnewwindow", { filename: nomeArquivo });
-}
-
 </script>
 
 </body>
