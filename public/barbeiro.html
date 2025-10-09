@@ -75,13 +75,17 @@ tr:hover { background:#f3edea; }
 
 .modal-content {
   background: linear-gradient(145deg, #ffffff, #f5f1ee);
-  padding: 28px 24px;
+  padding: 24px;
   border-radius: 16px;
-  width: 95%; max-width: 750px;
+  width: 90%;
+  max-width: 600px; 
+  max-height: 90vh;
+  overflow-y: auto; 
   box-shadow: 0 10px 35px rgba(0,0,0,0.15);
   text-align: center;
   animation: slideIn 0.4s ease;
 }
+
 @keyframes slideIn {
   from { transform: translateY(40px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
@@ -100,13 +104,17 @@ tr:hover { background:#f3edea; }
   content: "📊";
   font-size: 22px;
 }
+
 .modal-content canvas {
-  margin: 16px 0;
+  width: 100% !important; 
+  height: 220px !important; 
+  margin: 10px 0;
   background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
-  padding: 8px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 6px;
 }
+
 .modal-content p {
   background: #f9f5f3;
   border-radius: 10px;
