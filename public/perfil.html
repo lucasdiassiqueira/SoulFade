@@ -10,7 +10,6 @@
 
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
 body {
   font-family: 'Roboto', sans-serif;
   background: #f5f0eb;
@@ -18,8 +17,8 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  color: #4b3a2b;
 }
-
 .dashboard {
   background: #fff8f2;
   width: 420px;
@@ -27,14 +26,18 @@ body {
   box-shadow: 0 12px 35px rgba(0,0,0,0.15);
   overflow: hidden;
   transition: all 0.3s ease;
+  padding-bottom: 10px;
 }
-
+h2 {
+  text-align: center;
+  color: #a9714f;
+  margin-bottom: 15px;
+}
 .tabs {
   display: flex;
   background: #a9714f;
   border-bottom: 2px solid #8b5e3c;
 }
-
 .tab {
   flex: 1;
   text-align: center;
@@ -44,12 +47,48 @@ body {
   cursor: pointer;
   transition: background 0.3s ease;
 }
-
 .tab.active { background: #8b5e3c; }
-
 .tab-content { padding: 25px; display: none; }
 .tab-content.active { display: block; }
 
+/* ===== LOGIN / REGISTER ===== */
+.auth-container {
+  text-align: center;
+  padding: 30px 25px;
+}
+.auth-container input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 10px;
+  border: 1px solid #d1bfa7;
+  background: #fff5f0;
+}
+.auth-container button {
+  background: #a9714f;
+  color: #fff;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  width: 100%;
+  margin-top: 10px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+.auth-container button:hover {
+  background: #8b5e3c;
+  transform: translateY(-2px);
+}
+.auth-container a {
+  color: #a9714f;
+  font-weight: 500;
+  cursor: pointer;
+  display: block;
+  margin-top: 10px;
+}
+
+/* ===== PROFILE ===== */
 .profile-wrapper {
   position: relative;
   width: 110px;
@@ -57,7 +96,6 @@ body {
   margin: 0 auto 20px auto;
   cursor: pointer;
 }
-
 .profile-pic {
   width: 100%;
   height: 100%;
@@ -66,12 +104,10 @@ body {
   border: 4px solid #a9714f;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
 .profile-wrapper:hover .profile-pic {
   transform: scale(1.1);
   box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
-
 .edit-icon {
   position: absolute;
   bottom: 0;
@@ -88,9 +124,7 @@ body {
   border: 2px solid #fff8f2;
   transition: background 0.3s ease;
 }
-
 .edit-icon:hover { background: #8b5e3c; }
-
 input[type="file"] { display: none; }
 
 input[type="text"], input[type="email"], textarea, select {
@@ -103,9 +137,7 @@ input[type="text"], input[type="email"], textarea, select {
   background: #fff5f0;
   color: #4b3a2b;
 }
-
 textarea { resize: none; height: 90px; }
-
 label { display: block; margin-top: 15px; font-weight: 500; color: #5a422b; font-size: 14px; }
 
 .save-btn {
@@ -121,17 +153,16 @@ label { display: block; margin-top: 15px; font-weight: 500; color: #5a422b; font
   transition: background 0.3s ease, transform 0.2s ease;
   font-weight: 500;
 }
-
 .save-btn:hover { background: #8b5e3c; transform: translateY(-2px); }
 
-input[type="checkbox"] { accent-color: #a9714f; margin-right: 8px; }
-
-select {
-  appearance: none;
-  -webkit-appearance: none;
-  background: #fff5f0 url('data:image/svg+xml;utf8,<svg fill="%238b5e3c" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 12px center;
-  background-size: 16px;
-  padding-right: 36px;
+.logout-btn {
+  background: transparent;
+  border: none;
+  color: #a9714f;
+  margin-top: 15px;
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: 500;
 }
 
 @media(max-width: 480px){ .dashboard { width: 90%; } }
@@ -139,7 +170,26 @@ select {
 </head>
 <body>
 
-<div class="dashboard">
+<div class="dashboard" id="authSection">
+  <div class="auth-container" id="loginForm">
+    <h2>Entrar</h2>
+    <input type="email" id="loginEmail" placeholder="Email" required>
+    <input type="password" id="loginPassword" placeholder="Senha" required>
+    <button onclick="loginUser()">Entrar</button>
+    <a onclick="toggleAuthForms('register')">Criar nova conta</a>
+  </div>
+
+  <div class="auth-container" id="registerForm" style="display:none;">
+    <h2>Criar Conta</h2>
+    <input type="text" id="regName" placeholder="Nome completo" required>
+    <input type="email" id="regEmail" placeholder="Email" required>
+    <input type="password" id="regPassword" placeholder="Senha" required>
+    <button onclick="registerUser()">Registrar</button>
+    <a onclick="toggleAuthForms('login')">Já tem uma conta? Entrar</a>
+  </div>
+</div>
+
+<div class="dashboard" id="profileSection" style="display:none;">
   <div class="tabs">
     <div class="tab active" data-tab="profile">Perfil</div>
     <div class="tab" data-tab="settings">Configurações</div>
@@ -159,6 +209,7 @@ select {
     <textarea id="userBio" placeholder="Sobre você..."></textarea>
 
     <button class="save-btn" onclick="saveUser()">Salvar</button>
+    <button class="logout-btn" onclick="logoutUser()">Sair</button>
   </div>
 
   <div class="tab-content" id="settings">
@@ -170,7 +221,6 @@ select {
       <option value="private">Privado</option>
       <option value="friends">Somente amigos</option>
     </select>
-
     <button class="save-btn" onclick="saveSettings()">Salvar Configurações</button>
   </div>
 </div>
@@ -188,28 +238,51 @@ tabs.forEach(tab => {
   });
 });
 
+// ===== LOGIN E REGISTRO =====
+function toggleAuthForms(form) {
+  document.getElementById('loginForm').style.display = (form === 'login') ? 'block' : 'none';
+  document.getElementById('registerForm').style.display = (form === 'register') ? 'block' : 'none';
+}
+
+function registerUser() {
+  const name = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const password = document.getElementById('regPassword').value;
+
+  if (!name || !email || !password) return alert('Preencha todos os campos.');
+
+  const users = JSON.parse(localStorage.getItem('users')) || [];
+  if (users.some(u => u.email === email)) return alert('Email já cadastrado.');
+
+  users.push({ name, email, password });
+  localStorage.setItem('users', JSON.stringify(users));
+  alert('Conta criada com sucesso!');
+  toggleAuthForms('login');
+}
+
+function loginUser() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+
+  const users = JSON.parse(localStorage.getItem('users')) || [];
+  const user = users.find(u => u.email === email && u.password === password);
+
+  if (!user) return alert('Email ou senha incorretos.');
+
+  localStorage.setItem('loggedUser', email);
+  showProfile();
+}
+
+function logoutUser() {
+  localStorage.removeItem('loggedUser');
+  document.getElementById('profileSection').style.display = 'none';
+  document.getElementById('authSection').style.display = 'block';
+}
+
+// ===== PERFIL =====
 const profilePic = document.getElementById('profilePic');
 const profileUpload = document.getElementById('profileUpload');
 
-// Carregar dados salvos
-window.addEventListener('DOMContentLoaded', () => {
-  const savedUser = JSON.parse(localStorage.getItem('userProfile'));
-  if(savedUser){
-    document.getElementById('userName').value = savedUser.nome || '';
-    document.getElementById('userEmail').value = savedUser.email || '';
-    document.getElementById('userBio').value = savedUser.bio || '';
-    profilePic.src = savedUser.foto || 'https://via.placeholder.com/100';
-  }
-
-  const savedSettings = JSON.parse(localStorage.getItem('userSettings'));
-  if(savedSettings){
-    document.getElementById('notifEmail').checked = savedSettings.emailNotif;
-    document.getElementById('notifApp').checked = savedSettings.appNotif;
-    document.getElementById('visibility').value = savedSettings.visibilidade;
-  }
-});
-
-// Upload da foto
 profileUpload.addEventListener('change', function() {
   const file = this.files[0];
   if(file){
@@ -219,7 +292,22 @@ profileUpload.addEventListener('change', function() {
   }
 });
 
-// Salvar dados do perfil
+function showProfile() {
+  const email = localStorage.getItem('loggedUser');
+  if (!email) return;
+
+  document.getElementById('authSection').style.display = 'none';
+  document.getElementById('profileSection').style.display = 'block';
+
+  const savedUser = JSON.parse(localStorage.getItem('userProfile'));
+  if(savedUser){
+    document.getElementById('userName').value = savedUser.nome || '';
+    document.getElementById('userEmail').value = savedUser.email || email;
+    document.getElementById('userBio').value = savedUser.bio || '';
+    profilePic.src = savedUser.foto || 'https://via.placeholder.com/100';
+  }
+}
+
 function saveUser() {
   const user = {
     nome: document.getElementById('userName').value,
@@ -231,7 +319,6 @@ function saveUser() {
   alert("Perfil salvo com sucesso!");
 }
 
-// Salvar configurações
 function saveSettings() {
   const settings = {
     emailNotif: document.getElementById('notifEmail').checked,
@@ -241,6 +328,12 @@ function saveSettings() {
   localStorage.setItem('userSettings', JSON.stringify(settings));
   alert("Configurações salvas com sucesso!");
 }
+
+// ===== AUTO-LOGIN =====
+window.addEventListener('DOMContentLoaded', () => {
+  const logged = localStorage.getItem('loggedUser');
+  if (logged) showProfile();
+});
 </script>
 </body>
 </html>
