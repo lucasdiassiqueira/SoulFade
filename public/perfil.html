@@ -308,14 +308,14 @@ function registerUser() {
     to_email: email
   };
 
-  emailjs.send("service_r5tgsxp", "template_px41keq", templateParams)
-    .then(() => {
-      showModal("Conta criada com sucesso! Um e-mail de boas-vindas foi enviado.", "Bem-vindo à SoulFade!");
-    })
-    .catch(err => {
-      console.error("Erro ao enviar e-mail:", err);
-      showModal("Conta criada, mas houve um erro ao enviar o e-mail.", "Aviso");
-    });
+ emailjs.send("service_r5tgsxp", "template_px41keq", templateParams)
+  .then(() => {
+    showModal("Conta criada com sucesso! Um e-mail de boas-vindas foi enviado.", "Bem-vindo à SoulFade!");
+  })
+  .catch(err => {
+    console.error("Erro ao enviar e-mail:", err);
+    showModal("Conta criada, mas houve um erro ao enviar o e-mail.", "Aviso");
+  });
 }
 
 // === Login ===
