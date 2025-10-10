@@ -251,28 +251,38 @@ select {
 </div>
 
 <script>
-emailjs.init("naT5Mrdcx4blZ07M2");
+// Inicializa EmailJS
+    (function(){
+      emailjs.init("naT5Mrdcx4blZ07M2"); 
+    })();
 
-const tabs = document.querySelectorAll('.tab');
-const contents = document.querySelectorAll('.tab-content');
-tabs.forEach(tab => {
-  tab.addEventListener('click', () => {
-    tabs.forEach(t => t.classList.remove('active'));
-    contents.forEach(c => c.classList.remove('active'));
-    tab.classList.add('active');
-    document.getElementById(tab.dataset.tab).classList.add('active');
-  });
-});
+    const form = document.getElementById("signupForm");
 
-function showModal(message, title = "Sucesso!") {
-  document.getElementById("modalTitle").innerText = title;
-  document.getElementById("modalMessage").innerText = message;
-  document.getElementById("modalOverlay").style.display = "flex";
-}
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
 
-function closeModal() {
-  document.getElementById("modalOverlay").style.display = "none";
-}
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+
+      const templateParams = {
+        to_name: name,
+        to_email: email
+      };
+
+      emailjs.send("service_r5tgsxp", "template_px41keq", templateParams)
+        .then(() => {
+          document.getElementById("successModal").style.display = "flex";
+          form.reset();
+        })
+        .catch(err => {
+          console.error("Erro ao enviar e-mail:", err);
+          alert("❌ Ocorreu um erro ao enviar o e-mail. Verifique o console para detalhes.");
+        });
+    });
+
+    function closeModal() {
+      document.getElementById("successModal").style.display = "none";
+    }
 
 // Upload da foto
 const profilePic = document.getElementById('profilePic');
