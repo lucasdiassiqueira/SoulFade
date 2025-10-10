@@ -251,40 +251,23 @@ select {
 </div>
 
 <script>
-// Inicializa EmailJS
-    (function(){
-      emailjs.init("naT5Mrdcx4blZ07M2"); 
-    })();
 
-    const form = document.getElementById("signupForm");
+// === Inicializa o EmailJS ===
+(function(){
+  emailjs.init("naT5Mrdcx4blZ07M2"); // sua Public Key
+})();
 
-    form.addEventListener("submit", function(e) {
-      e.preventDefault();
+// === Troca de abas ===
+document.querySelectorAll(".tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    document.querySelectorAll(".tab-content").forEach(tc => tc.classList.remove("active"));
+    tab.classList.add("active");
+    document.getElementById(tab.dataset.tab).classList.add("active");
+  });
+});
 
-      const name = document.getElementById("name").value;
-      const email = document.getElementById("email").value;
-
-      const templateParams = {
-        to_name: name,
-        to_email: email
-      };
-
-      emailjs.send("service_r5tgsxp", "template_px41keq", templateParams)
-        .then(() => {
-          document.getElementById("successModal").style.display = "flex";
-          form.reset();
-        })
-        .catch(err => {
-          console.error("Erro ao enviar e-mail:", err);
-          alert("❌ Ocorreu um erro ao enviar o e-mail. Verifique o console para detalhes.");
-        });
-    });
-
-    function closeModal() {
-      document.getElementById("successModal").style.display = "none";
-    }
-
-// Upload da foto
+// === Upload da foto ===
 const profilePic = document.getElementById('profilePic');
 const profileUpload = document.getElementById('profileUpload');
 profileUpload.addEventListener('change', function() {
@@ -296,30 +279,50 @@ profileUpload.addEventListener('change', function() {
   }
 });
 
-// Cadastrar usuário
-function registerUser() {
-  const nome = document.getElementById('regName').value;
-  const email = document.getElementById('regEmail').value;
-  const senha = document.getElementById('regPassword').value;
+// === MODAL ===
+function showModal(msg, title="Sucesso") {
+  document.getElementById("modalTitle").innerText = title;
+  document.getElementById("modalMessage").innerText = msg;
+  document.getElementById("modalOverlay").style.display = "flex";
+}
 
-  if(!nome || !email || !senha) return showModal("Preencha todos os campos!", "Atenção");
+function closeModal() {
+  document.getElementById("modalOverlay").style.display = "none";
+}
+
+// === Cadastrar usuário ===
+function registerUser() {
+  const nome = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const senha = document.getElementById('regPassword').value.trim();
+
+  if(!nome || !email || !senha) 
+    return showModal("Preencha todos os campos!", "Atenção");
 
   const newUser = { nome, email, senha };
   localStorage.setItem('userAccount', JSON.stringify(newUser));
 
-  emailjs.send("service_jcbzjic", "template_px41keq", {
-    user_name: nome,
-    user_email: email
-  });
+  // Envia e-mail de boas-vindas
+  const templateParams = {
+    to_name: nome,
+    to_email: email
+  };
 
-  showModal("Conta criada com sucesso! Um e-mail de boas-vindas foi enviado.");
+  emailjs.send("service_r5tgsxp", "template_px41keq", templateParams)
+    .then(() => {
+      showModal("Conta criada com sucesso! Um e-mail de boas-vindas foi enviado.", "Bem-vindo à SoulFade!");
+    })
+    .catch(err => {
+      console.error("Erro ao enviar e-mail:", err);
+      showModal("Conta criada, mas houve um erro ao enviar o e-mail.", "Aviso");
+    });
 }
 
-// Login
+// === Login ===
 function loginUser() {
   const saved = JSON.parse(localStorage.getItem('userAccount'));
-  const email = document.getElementById('loginEmail').value;
-  const senha = document.getElementById('loginPassword').value;
+  const email = document.getElementById('loginEmail').value.trim();
+  const senha = document.getElementById('loginPassword').value.trim();
 
   if(!saved || saved.email !== email || saved.senha !== senha) 
     return showModal("Email ou senha incorretos.", "Erro");
@@ -328,7 +331,7 @@ function loginUser() {
   showModal("Login realizado com sucesso!", "Bem-vindo!");
 }
 
-// Salvar dados do perfil
+// === Salvar dados do perfil ===
 function saveUser() {
   const user = {
     nome: document.getElementById('userName').value,
@@ -340,7 +343,7 @@ function saveUser() {
   showModal("Perfil salvo com sucesso!");
 }
 
-// Salvar configurações
+// === Salvar configurações ===
 function saveSettings() {
   const settings = {
     emailNotif: document.getElementById('notifEmail').checked,
@@ -350,6 +353,7 @@ function saveSettings() {
   localStorage.setItem('userSettings', JSON.stringify(settings));
   showModal("Configurações salvas com sucesso!");
 }
+
 </script>
 </body>
 </html>
