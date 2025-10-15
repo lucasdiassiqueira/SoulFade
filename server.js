@@ -22,7 +22,7 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false },
 });
 
-// 🧾 Tabela e coluna 'pagamento' garantidas
+//  Tabela e coluna 'pagamento' garantidas
 (async () => {
   try {
     await pool.query(`
