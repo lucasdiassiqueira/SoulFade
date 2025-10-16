@@ -289,8 +289,69 @@ tr:hover { background:#f3edea; }
   </div>
 </div>
 
+<!-- LOGIN MODAL -->
+<div id="loginModal" class="modal active">
+  <div class="modal-content">
+    <h3>Login do Painel</h3>
+    <input type="email" id="loginEmail" placeholder="Digite seu e-mail" style="width:100%;padding:10px;margin-bottom:12px;border-radius:8px;border:1px solid #ccc;">
+    <input type="password" id="loginSenha" placeholder="Digite sua senha" style="width:100%;padding:10px;margin-bottom:14px;border-radius:8px;border:1px solid #ccc;">
+    <button id="entrarBtn">Entrar</button>
+    <p id="loginMsg" style="margin-top:10px;color:#b71c1c;font-weight:600;"></p>
+  </div>
+</div>
+
+
 <script>
 const API_URL = "https://soulfade.onrender.com/api";
+
+// ================= LOGIN =================
+const loginModal = document.getElementById("loginModal");
+const loginEmail = document.getElementById("loginEmail");
+const loginSenha = document.getElementById("loginSenha");
+const entrarBtn = document.getElementById("entrarBtn");
+const loginMsg = document.getElementById("loginMsg");
+let usuarioAtual = null;
+
+entrarBtn.onclick = () => {
+  const email = loginEmail.value.trim();
+  const senha = loginSenha.value.trim();
+
+  if (!email || !senha) {
+    loginMsg.textContent = "Preencha todos os campos!";
+    return;
+  }
+
+  // Login de teste (sem backend)
+  if (email === "lucasmanager@soulfade.com" && senha === "1234") {
+    usuarioAtual = "gerente";
+  } else if (email.endsWith("@soulfade.com")) {
+    usuarioAtual = "barbeiro";
+  } else {
+    loginMsg.textContent = "Acesso negado.";
+    return;
+  }
+
+  loginModal.classList.remove("active");
+  document.body.style.overflow = "auto";
+  aplicarPermissoes();
+  atualizarTudo();
+};
+
+function aplicarPermissoes() {
+  const gerentePanel = document.getElementById("gerentePanel");
+  const cards = document.querySelector(".cards");
+
+  if (usuarioAtual === "gerente") {
+    gerentePanel.style.display = "block";
+    cards.style.display = "grid";
+  } else {
+    // oculta ganhos e dashboard
+    gerentePanel.style.display = "none";
+    const cardGanhos = cards.querySelector(".card:first-child");
+    cardGanhos.style.display = "none";
+  }
+}
+
 
 // Valores dos serviços (mesmos do backend)
 const valoresServico = {
