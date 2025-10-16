@@ -146,6 +146,17 @@ label { display: block; margin-top: 15px; font-weight: 500; color: #5a422b; font
     <button class="save-btn" onclick="saveUser()">Salvar</button>
     <button class="logout-btn" onclick="logoutUser()">Sair</button>
 
+    <!-- Formulário de Agendamento -->
+    <h3 style="color:#a9714f;margin-top:20px;">📅 Agendar Serviço</h3>
+    <div id="agendamentoForm">
+      <input type="text" id="servico" placeholder="Serviço">
+      <input type="text" id="barbeiro" placeholder="Barbeiro">
+      <input type="date" id="dia">
+      <input type="time" id="horario">
+      <input type="text" id="pagamento" placeholder="Forma de pagamento">
+      <button class="save-btn" onclick="salvarAgendamento()">Salvar Agendamento</button>
+    </div>
+
     <!-- Container do Agendamento -->
     <div id="agendamentoContainer"></div>
   </div>
@@ -229,6 +240,7 @@ function resetPassword(){
 const profilePic = document.getElementById('profilePic');
 const profileUpload = document.getElementById('profileUpload');
 
+// Upload de foto
 profileUpload.addEventListener('change',function(){
   const file=this.files[0];
   if(file){
@@ -238,6 +250,7 @@ profileUpload.addEventListener('change',function(){
   }
 });
 
+// Mostrar perfil
 function showProfile(){
   const email = localStorage.getItem('loggedUser');
   if(!email) return;
@@ -255,43 +268,50 @@ function showProfile(){
   carregarAgendamento(); // sempre atualiza
 }
 
-function saveUser() {
-  const user = {
-    nome: document.getElementById('userName').value,
-    email: document.getElementById('userEmail').value,
-    bio: document.getElementById('userBio').value,
-    foto: profilePic.src
-  };
-  localStorage.setItem('userProfile', JSON.stringify(user));
-  showModal("Perfil salvo com sucesso!");
-}
+// SALVAR AGENDAMENTO COM BACKEND
+async function salvarAgendamento() {
+  const nome = document.getElementById('userName').value.trim();
+  const servico = document.getElementById('servico').value.trim();
+  const barbeiro = document.getElementById('barbeiro').value.trim();
+  const dia = document.getElementById('dia').value;
+  const horario = document.getElementById('horario').value;
+  const pagamento = document.getElementById('pagamento').value;
 
-function saveSettings() {
-  const settings = {
-    emailNotif: document.getElementById('notifEmail').checked,
-    appNotif: document.getElementById('notifApp').checked
-  };
-  localStorage.setItem('userSettings', JSON.stringify(settings));
-  showModal("Configurações salvas com sucesso!");
-}
-
-window.addEventListener('DOMContentLoaded', () => {
-  const logged = localStorage.getItem('loggedUser');
-  if (logged) showProfile();
-});
-
-async function carregarAgendamento() {
-  const agendamentoId = localStorage.getItem("agendamentoId");
-  if (!agendamentoId) return;
+  if(!nome || !servico || !barbeiro || !dia || !horario) return showModal("Preencha todos os campos!");
 
   try {
-    const response = await fetch(`/api/agendamentos/${agendamentoId}`);
-    if (!response.ok) throw new Error("Agendamento não encontrado");
-    const agendamento = await response.json();
+    const response = await fetch("/api/agendamentos", {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({nome, servico, barbeiro, dia, horario, forma_pagamento: pagamento})
+    });
+    if(!response.ok){
+      const err = await response.json();
+      return showModal(err.error || "Erro ao salvar agendamento");
+    }
+    showModal("Agendamento salvo com sucesso!");
+    carregarAgendamento();
+  } catch(err){
+    console.error(err);
+    showModal("Erro ao salvar agendamento");
+  }
+}
 
-    // Remove card antigo se existir
+// CARREGAR AGENDAMENTO DO BACKEND
+async function carregarAgendamento() {
+  const email = localStorage.getItem("loggedUser");
+  if(!email) return;
+
+  try {
+    // Aqui a gente vai buscar todos e pegar o do usuário
+    const response = await fetch("/api/agendamentos");
+    if(!response.ok) throw new Error("Erro ao buscar agendamento");
+    const agendamentos = await response.json();
+    const agendamento = agendamentos.find(a => a.nome === document.getElementById('userName').value);
+
     const containerAntigo = document.getElementById("meuAgendamento");
-    if (containerAntigo) containerAntigo.remove();
+    if(containerAntigo) containerAntigo.remove();
+    if(!agendamento) return;
 
     const container = document.createElement("div");
     container.id = "meuAgendamento";
@@ -318,24 +338,24 @@ async function carregarAgendamento() {
     document.getElementById("agendamentoContainer").appendChild(container);
 
     const numeroWhats = "5541999016634";
-
     document.getElementById("btnCancelar").onclick = () => {
-      const msg = encodeURIComponent(
-        `Olá! Gostaria de *cancelar* meu agendamento de ${agendamento.servico} com ${agendamento.barbeiro} no dia ${agendamento.dia} às ${agendamento.horario}.`
-      );
+      const msg = encodeURIComponent(`Olá! Gostaria de *cancelar* meu agendamento de ${agendamento.servico} com ${agendamento.barbeiro} no dia ${agendamento.dia} às ${agendamento.horario}.`);
       window.open(`https://wa.me/${numeroWhats}?text=${msg}`, "_blank");
     };
-
     document.getElementById("btnAlterar").onclick = () => {
-      const msg = encodeURIComponent(
-        `Olá! Gostaria de *alterar o horário* do meu agendamento de ${agendamento.servico} com ${agendamento.barbeiro} no dia ${agendamento.dia} às ${agendamento.horario}.`
-      );
+      const msg = encodeURIComponent(`Olá! Gostaria de *alterar o horário* do meu agendamento de ${agendamento.servico} com ${agendamento.barbeiro} no dia ${agendamento.dia} às ${agendamento.horario}.`);
       window.open(`https://wa.me/${numeroWhats}?text=${msg}`, "_blank");
     };
-  } catch (err) {
-    console.error("Erro ao carregar agendamento:", err);
+  } catch(err){
+    console.error(err);
   }
 }
+
+window.addEventListener('DOMContentLoaded', () => {
+  const logged = localStorage.getItem('loggedUser');
+  if (logged) showProfile();
+});
+</script>
 </script>
 </body>
 </html>
