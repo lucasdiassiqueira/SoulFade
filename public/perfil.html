@@ -27,195 +27,68 @@ body {
   transition: all 0.3s ease;
   padding-bottom: 10px;
 }
-h2 {
-  text-align: center;
-  color: #a9714f;
-  margin-bottom: 15px;
-}
-.tabs {
-  display: flex;
-  background: #a9714f;
-  border-bottom: 2px solid #8b5e3c;
-}
-.tab {
-  flex: 1;
-  text-align: center;
-  padding: 14px 0;
-  color: #fff;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
+h2 { text-align: center; color: #a9714f; margin-bottom: 15px; }
+.tabs { display: flex; background: #a9714f; border-bottom: 2px solid #8b5e3c; }
+.tab { flex: 1; text-align: center; padding: 14px 0; color: #fff; font-weight: 500; cursor: pointer; transition: background 0.3s ease; }
 .tab.active { background: #8b5e3c; }
 .tab-content { padding: 25px; display: none; }
 .tab-content.active { display: block; }
 
-/* ===== LOGIN / REGISTER ===== */
-.auth-container {
-  text-align: center;
-  padding: 30px 25px;
-}
+/* LOGIN / REGISTER */
+.auth-container { text-align: center; padding: 30px 25px; }
 .auth-container input {
-  width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border-radius: 10px;
-  border: 1px solid #d1bfa7;
-  background: #fff5f0;
+  width: 100%; padding: 12px; margin: 10px 0;
+  border-radius: 10px; border: 1px solid #d1bfa7; background: #fff5f0;
 }
 .auth-container button {
-  background: #a9714f;
-  color: #fff;
-  padding: 12px;
-  border: none;
-  border-radius: 10px;
-  width: 100%;
-  margin-top: 10px;
-  font-size: 15px;
-  cursor: pointer;
+  background: #a9714f; color: #fff; padding: 12px; border: none; border-radius: 10px;
+  width: 100%; margin-top: 10px; font-size: 15px; cursor: pointer;
   transition: background 0.3s ease, transform 0.2s ease;
 }
-.auth-container button:hover {
-  background: #8b5e3c;
-  transform: translateY(-2px);
-}
-.auth-container a {
-  color: #a9714f;
-  font-weight: 500;
-  cursor: pointer;
-  display: block;
-  margin-top: 10px;
-}
+.auth-container button:hover { background: #8b5e3c; transform: translateY(-2px); }
+.auth-container a { color: #a9714f; font-weight: 500; cursor: pointer; display: block; margin-top: 10px; }
 
-/* ===== PROFILE ===== */
-.profile-wrapper {
-  position: relative;
-  width: 110px;
-  aspect-ratio: 1/1;
-  margin: 0 auto 20px auto;
-  cursor: pointer;
-}
-.profile-pic {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 4px solid #a9714f;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.profile-wrapper:hover .profile-pic {
-  transform: scale(1.1);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-}
-.edit-icon {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  background: #a9714f;
-  color: #fff;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 14px;
-  border: 2px solid #fff8f2;
-  transition: background 0.3s ease;
-}
+/* PROFILE */
+.profile-wrapper { position: relative; width: 110px; aspect-ratio: 1/1; margin: 0 auto 20px auto; cursor: pointer; }
+.profile-pic { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid #a9714f; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.profile-wrapper:hover .profile-pic { transform: scale(1.1); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+.edit-icon { position: absolute; bottom: 0; right: 0; background: #a9714f; color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 14px; border: 2px solid #fff8f2; transition: background 0.3s ease; }
 .edit-icon:hover { background: #8b5e3c; }
 input[type="file"] { display: none; }
 
 input[type="text"], input[type="email"], textarea, select {
-  width: 100%;
-  padding: 12px 14px;
-  margin: 10px 0;
-  border-radius: 10px;
-  border: 1px solid #d1bfa7;
-  font-size: 15px;
-  background: #fff5f0;
-  color: #4b3a2b;
+  width: 100%; padding: 12px 14px; margin: 10px 0; border-radius: 10px; border: 1px solid #d1bfa7;
+  font-size: 15px; background: #fff5f0; color: #4b3a2b;
 }
 textarea { resize: none; height: 90px; }
 label { display: block; margin-top: 15px; font-weight: 500; color: #5a422b; font-size: 14px; }
 
 .save-btn {
-  background: #a9714f;
-  color: #fff;
-  padding: 14px 0;
-  border: none;
-  border-radius: 12px;
-  font-size: 16px;
-  cursor: pointer;
-  width: 100%;
-  margin-top: 20px;
-  transition: background 0.3s ease, transform 0.2s ease;
-  font-weight: 500;
+  background: #a9714f; color: #fff; padding: 14px 0; border: none; border-radius: 12px;
+  font-size: 16px; cursor: pointer; width: 100%; margin-top: 20px; transition: background 0.3s ease, transform 0.2s ease; font-weight: 500;
 }
 .save-btn:hover { background: #8b5e3c; transform: translateY(-2px); }
 
-.logout-btn {
-  background: transparent;
-  border: none;
-  color: #a9714f;
-  margin-top: 15px;
-  cursor: pointer;
-  text-decoration: underline;
-  font-weight: 500;
-}
+.logout-btn { background: transparent; border: none; color: #a9714f; margin-top: 15px; cursor: pointer; text-decoration: underline; font-weight: 500; }
 
-/* ===== MODAL ===== */
-.modal-overlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.5);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-.modal {
-  background: #fff8f2;
-  padding: 30px 25px;
-  border-radius: 15px;
-  width: 320px;
-  text-align: center;
-  box-shadow: 0 6px 25px rgba(0,0,0,0.25);
-  animation: fadeIn 0.3s ease forwards;
-}
-.modal i {
-  font-size: 40px;
-  color: #a9714f;
-  margin-bottom: 15px;
-}
-.modal p {
-  font-size: 16px;
-  color: #4b3a2b;
-  margin-bottom: 20px;
-}
-.modal button {
-  background: #a9714f;
-  color: #fff;
-  border: none;
-  padding: 10px 30px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background 0.3s ease;
-}
-.modal button:hover { background: #8b5e3c; }
+/* AGENDAMENTO */
+#agendamentoContainer { margin-top: 20px; }
 
-@keyframes fadeIn {
-  from { transform: scale(0.9); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-@media(max-width: 480px){ .dashboard { width: 90%; } }
+/* MODAL */
+.modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); display:none; justify-content:center; align-items:center; z-index:9999; }
+.modal { background:#fff8f2; padding:30px 25px; border-radius:15px; width:320px; text-align:center; box-shadow:0 6px 25px rgba(0,0,0,0.25); animation: fadeIn 0.3s ease forwards; }
+.modal i { font-size:40px; color:#a9714f; margin-bottom:15px; }
+.modal p { font-size:16px; color:#4b3a2b; margin-bottom:20px; }
+.modal button { background:#a9714f; color:#fff; border:none; padding:10px 30px; border-radius:10px; cursor:pointer; font-weight:500; transition: background 0.3s ease; }
+.modal button:hover { background:#8b5e3c; }
+
+@keyframes fadeIn { from { transform: scale(0.9); opacity:0; } to { transform: scale(1); opacity:1; } }
+@media(max-width:480px){ .dashboard{width:90%;} }
 </style>
 </head>
 <body>
 
-<!-- ===== MODAL ===== -->
+<!-- MODAL -->
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
     <i class="fas fa-check-circle"></i>
@@ -224,7 +97,7 @@ label { display: block; margin-top: 15px; font-weight: 500; color: #5a422b; font
   </div>
 </div>
 
-<!-- ===== LOGIN / REGISTER ===== -->
+<!-- LOGIN / REGISTER -->
 <div class="dashboard" id="authSection">
   <div class="auth-container" id="loginForm">
     <h2>Entrar</h2>
@@ -234,7 +107,6 @@ label { display: block; margin-top: 15px; font-weight: 500; color: #5a422b; font
     <a onclick="toggleAuthForms('register')">Criar nova conta</a>
     <a onclick="showForgotPassword()">Esqueceu a senha?</a>
   </div>
-
   <div class="auth-container" id="registerForm" style="display:none;">
     <h2>Criar Conta</h2>
     <input type="text" id="regName" placeholder="Nome completo" required>
@@ -243,8 +115,6 @@ label { display: block; margin-top: 15px; font-weight: 500; color: #5a422b; font
     <button onclick="registerUser()">Registrar</button>
     <a onclick="toggleAuthForms('login')">Já tem uma conta? Entrar</a>
   </div>
-
-  <!-- Esqueceu senha -->
   <div class="auth-container" id="forgotPasswordForm" style="display:none;">
     <h2>Redefinir Senha</h2>
     <input type="email" id="forgotEmail" placeholder="Digite seu email">
@@ -253,7 +123,7 @@ label { display: block; margin-top: 15px; font-weight: 500; color: #5a422b; font
   </div>
 </div>
 
-<!-- ===== PERFIL ===== -->
+<!-- PERFIL -->
 <div class="dashboard" id="profileSection" style="display:none;">
   <div class="tabs">
     <div class="tab active" data-tab="profile">Perfil</div>
@@ -275,6 +145,9 @@ label { display: block; margin-top: 15px; font-weight: 500; color: #5a422b; font
 
     <button class="save-btn" onclick="saveUser()">Salvar</button>
     <button class="logout-btn" onclick="logoutUser()">Sair</button>
+
+    <!-- Container do Agendamento -->
+    <div id="agendamentoContainer"></div>
   </div>
 
   <div class="tab-content" id="settings">
@@ -287,7 +160,6 @@ label { display: block; margin-top: 15px; font-weight: 500; color: #5a422b; font
 <script>
 const tabs = document.querySelectorAll('.tab');
 const contents = document.querySelectorAll('.tab-content');
-
 tabs.forEach(tab => {
   tab.addEventListener('click', () => {
     tabs.forEach(t => t.classList.remove('active'));
@@ -297,94 +169,80 @@ tabs.forEach(tab => {
   });
 });
 
-function showModal(message) {
+function showModal(message){
   document.getElementById('modalMessage').innerText = message;
   document.getElementById('modalOverlay').style.display = 'flex';
 }
-function closeModal() {
-  document.getElementById('modalOverlay').style.display = 'none';
-}
+function closeModal(){ document.getElementById('modalOverlay').style.display='none'; }
 
-function toggleAuthForms(form) {
-  document.getElementById('loginForm').style.display = (form === 'login') ? 'block' : 'none';
-  document.getElementById('registerForm').style.display = (form === 'register') ? 'block' : 'none';
-  document.getElementById('forgotPasswordForm').style.display = (form === 'forgot') ? 'block' : 'none';
+function toggleAuthForms(form){
+  document.getElementById('loginForm').style.display = (form==='login')?'block':'none';
+  document.getElementById('registerForm').style.display = (form==='register')?'block':'none';
+  document.getElementById('forgotPasswordForm').style.display = (form==='forgot')?'block':'none';
 }
+function showForgotPassword(){ toggleAuthForms('forgot'); }
 
-function showForgotPassword() {
-  toggleAuthForms('forgot');
-}
-
-function registerUser() {
+function registerUser(){
   const name = document.getElementById('regName').value.trim();
   const email = document.getElementById('regEmail').value.trim();
   const password = document.getElementById('regPassword').value;
-
-  if (!name || !email || !password) return showModal('Preencha todos os campos.');
-
-  const users = JSON.parse(localStorage.getItem('users')) || [];
-  if (users.some(u => u.email === email)) return showModal('Email já cadastrado.');
-
-  users.push({ name, email, password });
-  localStorage.setItem('users', JSON.stringify(users));
+  if(!name||!email||!password) return showModal('Preencha todos os campos.');
+  const users = JSON.parse(localStorage.getItem('users'))||[];
+  if(users.some(u=>u.email===email)) return showModal('Email já cadastrado.');
+  users.push({name,email,password});
+  localStorage.setItem('users',JSON.stringify(users));
   showModal('Conta criada com sucesso!');
   toggleAuthForms('login');
 }
 
-function loginUser() {
+function loginUser(){
   const email = document.getElementById('loginEmail').value.trim();
   const password = document.getElementById('loginPassword').value;
-
-  const users = JSON.parse(localStorage.getItem('users')) || [];
-  const user = users.find(u => u.email === email && u.password === password);
-
-  if (!user) return showModal('Email ou senha incorretos.');
-
-  localStorage.setItem('loggedUser', email);
+  const users = JSON.parse(localStorage.getItem('users'))||[];
+  const user = users.find(u=>u.email===email&&u.password===password);
+  if(!user) return showModal('Email ou senha incorretos.');
+  localStorage.setItem('loggedUser',email);
   showProfile();
   showModal('Login realizado com sucesso!');
 }
 
-function logoutUser() {
+function logoutUser(){
   localStorage.removeItem('loggedUser');
-  document.getElementById('profileSection').style.display = 'none';
-  document.getElementById('authSection').style.display = 'block';
+  document.getElementById('profileSection').style.display='none';
+  document.getElementById('authSection').style.display='block';
   showModal('Você saiu da conta.');
 }
 
-function resetPassword() {
+function resetPassword(){
   const email = document.getElementById('forgotEmail').value.trim();
-  const users = JSON.parse(localStorage.getItem('users')) || [];
-  const userIndex = users.findIndex(u => u.email === email);
-
-  if (userIndex === -1) return showModal('Email não encontrado.');
-
+  const users = JSON.parse(localStorage.getItem('users'))||[];
+  const userIndex = users.findIndex(u=>u.email===email);
+  if(userIndex===-1) return showModal('Email não encontrado.');
   const newPass = Math.random().toString(36).slice(-8);
-  users[userIndex].password = newPass;
-  localStorage.setItem('users', JSON.stringify(users));
+  users[userIndex].password=newPass;
+  localStorage.setItem('users',JSON.stringify(users));
   showModal(`Nova senha gerada: ${newPass}`);
   toggleAuthForms('login');
 }
 
-// ===== PERFIL =====
+// PERFIL
 const profilePic = document.getElementById('profilePic');
 const profileUpload = document.getElementById('profileUpload');
 
-profileUpload.addEventListener('change', function() {
-  const file = this.files[0];
+profileUpload.addEventListener('change',function(){
+  const file=this.files[0];
   if(file){
     const reader = new FileReader();
-    reader.onload = function(e){ profilePic.src = e.target.result; }
+    reader.onload=function(e){ profilePic.src=e.target.result; }
     reader.readAsDataURL(file);
   }
 });
 
-function showProfile() {
+function showProfile(){
   const email = localStorage.getItem('loggedUser');
-  if (!email) return;
-
-  document.getElementById('authSection').style.display = 'none';
-  document.getElementById('profileSection').style.display = 'block';
+  if(!email) return;
+  document.getElementById('authSection').style.display='none';
+  document.getElementById('profileSection').style.display='block';
 
   const savedUser = JSON.parse(localStorage.getItem('userProfile'));
   if(savedUser){
@@ -393,6 +251,8 @@ function showProfile() {
     document.getElementById('userBio').value = savedUser.bio || '';
     profilePic.src = savedUser.foto || 'https://via.placeholder.com/100';
   }
+
+  carregarAgendamento(); // sempre atualiza
 }
 
 function saveUser() {
@@ -419,6 +279,63 @@ window.addEventListener('DOMContentLoaded', () => {
   const logged = localStorage.getItem('loggedUser');
   if (logged) showProfile();
 });
+
+async function carregarAgendamento() {
+  const agendamentoId = localStorage.getItem("agendamentoId");
+  if (!agendamentoId) return;
+
+  try {
+    const response = await fetch(`/api/agendamentos/${agendamentoId}`);
+    if (!response.ok) throw new Error("Agendamento não encontrado");
+    const agendamento = await response.json();
+
+    // Remove card antigo se existir
+    const containerAntigo = document.getElementById("meuAgendamento");
+    if (containerAntigo) containerAntigo.remove();
+
+    const container = document.createElement("div");
+    container.id = "meuAgendamento";
+    container.style.cssText = `
+      margin-top: 25px;
+      background: #fff5f0;
+      border: 1px solid #d1bfa7;
+      border-radius: 12px;
+      padding: 15px;
+      color: #4b3a2b;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    `;
+    container.innerHTML = `
+      <h3 style="color:#a9714f;margin-bottom:10px;">📅 Meu Agendamento</h3>
+      <p><strong>Serviço:</strong> ${agendamento.servico}</p>
+      <p><strong>Barbeiro:</strong> ${agendamento.barbeiro}</p>
+      <p><strong>Dia:</strong> ${agendamento.dia}</p>
+      <p><strong>Horário:</strong> ${agendamento.horario}</p>
+      <p><strong>Forma de pagamento:</strong> ${agendamento.pagamento || "Não informado"}</p>
+      <button id="btnAlterar" class="save-btn" style="background:#a9714f;margin-top:10px;">Alterar Horário via WhatsApp</button>
+      <button id="btnCancelar" class="save-btn" style="background:#b34747;margin-top:10px;">Cancelar Agendamento via WhatsApp</button>
+    `;
+    document.getElementById("agendamentoContainer").appendChild(container);
+
+    const numeroWhats = "5541999016634";
+
+    document.getElementById("btnCancelar").onclick = () => {
+      const msg = encodeURIComponent(
+        `Olá! Gostaria de *cancelar* meu agendamento de ${agendamento.servico} com ${agendamento.barbeiro} no dia ${agendamento.dia} às ${agendamento.horario}.`
+      );
+      window.open(`https://wa.me/${numeroWhats}?text=${msg}`, "_blank");
+    };
+
+    document.getElementById("btnAlterar").onclick = () => {
+      const msg = encodeURIComponent(
+        `Olá! Gostaria de *alterar o horário* do meu agendamento de ${agendamento.servico} com ${agendamento.barbeiro} no dia ${agendamento.dia} às ${agendamento.horario}.`
+      );
+      window.open(`https://wa.me/${numeroWhats}?text=${msg}`, "_blank");
+    };
+  } catch (err) {
+    console.error("Erro ao carregar agendamento:", err);
+  }
+}
 </script>
 </body>
 </html>
