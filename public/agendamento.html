@@ -112,7 +112,7 @@
     }
 
     .barbeiro-card:hover { transform: scale(1.05); }
-    .barbeiro-card.active { border-color: #654321; }
+    .barbeiro-card.active { border-color: #ff8000; }
     .barbeiro-card { position: relative; }
 
     .days {
@@ -257,23 +257,33 @@
   const daysContainer = document.getElementById("days");
 
   function gerarSemana() {
-    const hoje = new Date();
-    daysContainer.innerHTML = "";
-    for (let i = 0; i < 7; i++) {
-      const data = new Date();
-      data.setDate(hoje.getDate() + i);
-      const dia = data.getDate().toString().padStart(2, "0");
-      const mes = (data.getMonth() + 1).toString().padStart(2, "0");
-      const texto = `${diasSemana[data.getDay()]} - ${dia}/${mes}`;
+  const hoje = new Date();
+  daysContainer.innerHTML = "";
+  let diasAdicionados = 0;
+  let i = 0;
 
-      const div = document.createElement("div");
-      div.classList.add("day");
-      div.textContent = texto;
-      div.dataset.date = data.toISOString().split("T")[0];
-      daysContainer.appendChild(div);
-    }
+  // Gera até ter 7 dias válidos 
+  while (diasAdicionados < 7) {
+    const data = new Date();
+    data.setDate(hoje.getDate() + i);
+    i++;
+
+    // pula domingo
+    if (data.getDay() === 0) continue;
+
+    const dia = data.getDate().toString().padStart(2, "0");
+    const mes = (data.getMonth() + 1).toString().padStart(2, "0");
+    const texto = `${diasSemana[data.getDay()]} - ${dia}/${mes}`;
+
+    const div = document.createElement("div");
+    div.classList.add("day");
+    div.textContent = texto;
+    div.dataset.date = data.toISOString().split("T")[0];
+    daysContainer.appendChild(div);
+
+    diasAdicionados++;
   }
-  gerarSemana();
+}
 
   function gerarHorarios() {
     const horarios = [];

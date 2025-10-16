@@ -362,18 +362,39 @@ document.querySelectorAll('.nav-link').forEach((link, index) => {
     link.style.animationDelay = `${index * 0.1}s`;
 });
 
-// Mostrar mais galeria
+// Mostrar mais e mostrar menos
 document.addEventListener("DOMContentLoaded", () => {
-    const showMoreBtn = document.getElementById("show-more-btn");
-    if (showMoreBtn) {
-        showMoreBtn.addEventListener("click", () => {
-            document.querySelectorAll(".gallery-item.extra").forEach(item => {
-                item.style.display = "block";
-            });
-            showMoreBtn.style.display = "none"; // esconde botão depois de abrir
-        });
-    }
+  const showMoreBtn = document.getElementById("show-more-btn");
+  const showLessBtn = document.getElementById("show-less-btn");
+
+  
+  document.querySelectorAll(".gallery-item.extra").forEach(item => {
+    item.style.display = "none";
+  });
+
+  // Mostrar mais
+  showMoreBtn.addEventListener("click", () => {
+    document.querySelectorAll(".gallery-item.extra").forEach(item => {
+      item.style.display = "block";
+    });
+    showMoreBtn.style.display = "none";
+    showLessBtn.style.display = "inline-block";
+  });
+
+  // Mostrar menos
+  showLessBtn.addEventListener("click", () => {
+    document.querySelectorAll(".gallery-item.extra").forEach(item => {
+      item.style.display = "none";
+    });
+    showLessBtn.style.display = "none";
+    showMoreBtn.style.display = "inline-block";
+    window.scrollTo({
+      top: document.querySelector("#gallery").offsetTop,
+      behavior: "smooth"
+    });
+  });
 });
+
 
 document.addEventListener("DOMContentLoaded", () => {
     // ====== GALERIA MODAL ======
