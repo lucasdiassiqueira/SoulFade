@@ -130,6 +130,7 @@ label { display: block; margin-top: 15px; font-weight: 500; color: #5a422b; font
     <div class="tab" data-tab="settings">Configurações</div>
   </div>
 
+  <!-- CONTEÚDO DA ABA PERFIL -->
   <div class="tab-content active" id="profile">
     <label for="profileUpload" class="profile-label">
       <div class="profile-wrapper">
@@ -150,6 +151,7 @@ label { display: block; margin-top: 15px; font-weight: 500; color: #5a422b; font
     <div id="agendamentoContainer"></div>
   </div>
 
+  <!-- CONTEÚDO DA ABA CONFIGURAÇÕES -->
   <div class="tab-content" id="settings">
     <label><input type="checkbox" id="notifEmail"> Receber notificações por email</label>
     <label><input type="checkbox" id="notifApp"> Receber notificações no app</label>
@@ -224,7 +226,19 @@ profileUpload.addEventListener('change',function(){
   }
 });
 
-// salvar perfil
+// TROCAR DE ABA (Perfil / Configurações)
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+
+    document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+    const target = tab.dataset.tab;
+    document.getElementById(target).classList.add('active');
+  });
+});
+
+// SALVAR PERFIL
 function saveUser(){
   const nome = document.getElementById('userName').value.trim();
   const email = document.getElementById('userEmail').value.trim();
@@ -238,7 +252,7 @@ function saveUser(){
   showModal('Perfil salvo com sucesso!');
 }
 
-// mostrar perfil
+// MOSTRAR PERFIL
 function showProfile(){
   const email = localStorage.getItem('loggedUser');
   if(!email) return;
@@ -255,7 +269,7 @@ function showProfile(){
   carregarAgendamento();
 }
 
-// logout
+// LOGOUT
 function logoutUser(){
   localStorage.removeItem('loggedUser');
   document.getElementById('profileSection').style.display='none';
@@ -263,9 +277,16 @@ function logoutUser(){
   showModal('Você saiu da conta.');
 }
 
+// SALVAR CONFIGURAÇÕES (simples exemplo)
+function saveSettings(){
+  const emailNotif = document.getElementById('notifEmail').checked;
+  const appNotif = document.getElementById('notifApp').checked;
+  const settings = {emailNotif, appNotif};
+  localStorage.setItem('userSettings', JSON.stringify(settings));
+  showModal('Configurações salvas!');
+}
 
-// SALVAR AGENDAMENTO COM BACKEND
-// Carregar agendamentos do backend + salvar no localStorage
+// CARREGAR AGENDAMENTOS
 async function carregarAgendamento() {
   const email = localStorage.getItem("loggedUser");
   if (!email) return;
@@ -275,20 +296,15 @@ async function carregarAgendamento() {
     if (!response.ok) throw new Error("Erro ao buscar agendamentos");
 
     const agendamentos = await response.json();
-    
-    // Filtra apenas os agendamentos do usuário logado
     const userAgendamentos = agendamentos.filter(a => a.email === email);
 
-    // Salva no perfil do usuário
     let perfil = JSON.parse(localStorage.getItem("userProfile")) || {};
     perfil.agendamentos = userAgendamentos;
     localStorage.setItem("userProfile", JSON.stringify(perfil));
 
-    // Limpa container antigo
     const containerAntigo = document.getElementById("meuAgendamento");
     if (containerAntigo) containerAntigo.remove();
 
-    // Cria container
     const container = document.createElement("div");
     container.id = "meuAgendamento";
     container.style.cssText = `
@@ -331,7 +347,6 @@ async function carregarAgendamento() {
 
     const numeroWhats = "5541999016634";
 
-    // adiciona os eventos nos botões dinamicamente
     document.querySelectorAll(".btnAlterar").forEach(btn => {
       btn.onclick = () => {
         const ag = userAgendamentos[btn.dataset.index];
@@ -353,12 +368,11 @@ async function carregarAgendamento() {
   }
 }
 
-
+// INICIALIZAÇÃO AO CARREGAR
 window.addEventListener('DOMContentLoaded', () => {
   const logged = localStorage.getItem('loggedUser');
   if (logged) showProfile();
 });
-</script>
 </script>
 </body>
 </html>
