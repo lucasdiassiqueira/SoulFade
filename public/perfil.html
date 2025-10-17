@@ -146,17 +146,6 @@ label { display: block; margin-top: 15px; font-weight: 500; color: #5a422b; font
     <button class="save-btn" onclick="saveUser()">Salvar</button>
     <button class="logout-btn" onclick="logoutUser()">Sair</button>
 
-    <!-- Formulário de Agendamento -->
-    <h3 style="color:#a9714f;margin-top:20px;">📅 Agendar Serviço</h3>
-    <div id="agendamentoForm">
-      <input type="text" id="servico" placeholder="Serviço">
-      <input type="text" id="barbeiro" placeholder="Barbeiro">
-      <input type="date" id="dia">
-      <input type="time" id="horario">
-      <input type="text" id="pagamento" placeholder="Forma de pagamento">
-      <button class="save-btn" onclick="salvarAgendamento()">Salvar Agendamento</button>
-    </div>
-
     <!-- Container do Agendamento -->
     <div id="agendamentoContainer"></div>
   </div>
@@ -297,21 +286,21 @@ async function salvarAgendamento() {
   }
 }
 
-// CARREGAR AGENDAMENTO DO BACKEND
+// Carregar agendamento do backend e mostrar no perfil
 async function carregarAgendamento() {
   const email = localStorage.getItem("loggedUser");
-  if(!email) return;
+  if (!email) return;
 
   try {
-    // Aqui a gente vai buscar todos e pegar o do usuário
     const response = await fetch("/api/agendamentos");
-    if(!response.ok) throw new Error("Erro ao buscar agendamento");
+    if (!response.ok) throw new Error("Erro ao buscar agendamentos");
+
     const agendamentos = await response.json();
-    const agendamento = agendamentos.find(a => a.nome === document.getElementById('userName').value);
+    const nome = document.getElementById('userName').value.trim();
+    const agendamento = agendamentos.find(a => a.nome === nome);
 
     const containerAntigo = document.getElementById("meuAgendamento");
-    if(containerAntigo) containerAntigo.remove();
-    if(!agendamento) return;
+    if (containerAntigo) containerAntigo.remove();
 
     const container = document.createElement("div");
     container.id = "meuAgendamento";
@@ -325,6 +314,16 @@ async function carregarAgendamento() {
       text-align: center;
       box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     `;
+
+    if (!agendamento) {
+      container.innerHTML = `
+        <h3 style="color:#a9714f;margin-bottom:10px;">📅 Meu Agendamento</h3>
+        <p style="color:#8b5e3c;">Você ainda não possui nenhum agendamento ativo.</p>
+      `;
+      document.getElementById("agendamentoContainer").appendChild(container);
+      return;
+    }
+
     container.innerHTML = `
       <h3 style="color:#a9714f;margin-bottom:10px;">📅 Meu Agendamento</h3>
       <p><strong>Serviço:</strong> ${agendamento.servico}</p>
@@ -332,21 +331,29 @@ async function carregarAgendamento() {
       <p><strong>Dia:</strong> ${agendamento.dia}</p>
       <p><strong>Horário:</strong> ${agendamento.horario}</p>
       <p><strong>Forma de pagamento:</strong> ${agendamento.pagamento || "Não informado"}</p>
-      <button id="btnAlterar" class="save-btn" style="background:#a9714f;margin-top:10px;">Alterar Horário via WhatsApp</button>
-      <button id="btnCancelar" class="save-btn" style="background:#b34747;margin-top:10px;">Cancelar Agendamento via WhatsApp</button>
+      <div style="margin-top:15px;">
+        <button id="btnAlterar" class="save-btn" style="background:#a9714f;margin-top:5px;">Alterar Horário via WhatsApp</button>
+        <button id="btnCancelar" class="save-btn" style="background:#b34747;margin-top:10px;">Cancelar Agendamento via WhatsApp</button>
+      </div>
     `;
+
     document.getElementById("agendamentoContainer").appendChild(container);
 
     const numeroWhats = "5541999016634";
-    document.getElementById("btnCancelar").onclick = () => {
-      const msg = encodeURIComponent(`Olá! Gostaria de *cancelar* meu agendamento de ${agendamento.servico} com ${agendamento.barbeiro} no dia ${agendamento.dia} às ${agendamento.horario}.`);
-      window.open(`https://wa.me/${numeroWhats}?text=${msg}`, "_blank");
-    };
+
+    // Botão alterar
     document.getElementById("btnAlterar").onclick = () => {
       const msg = encodeURIComponent(`Olá! Gostaria de *alterar o horário* do meu agendamento de ${agendamento.servico} com ${agendamento.barbeiro} no dia ${agendamento.dia} às ${agendamento.horario}.`);
       window.open(`https://wa.me/${numeroWhats}?text=${msg}`, "_blank");
     };
-  } catch(err){
+
+    // Botão cancelar
+    document.getElementById("btnCancelar").onclick = () => {
+      const msg = encodeURIComponent(`Olá! Gostaria de *cancelar* meu agendamento de ${agendamento.servico} com ${agendamento.barbeiro} no dia ${agendamento.dia} às ${agendamento.horario}.`);
+      window.open(`https://wa.me/${numeroWhats}?text=${msg}`, "_blank");
+    };
+
+  } catch (err) {
     console.error(err);
   }
 }
