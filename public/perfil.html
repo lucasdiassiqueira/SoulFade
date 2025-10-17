@@ -158,78 +158,63 @@ label { display: block; margin-top: 15px; font-weight: 500; color: #5a422b; font
 </div>
 
 <script>
-const tabs = document.querySelectorAll('.tab');
-const contents = document.querySelectorAll('.tab-content');
-tabs.forEach(tab => {
-  tab.addEventListener('click', () => {
-    tabs.forEach(t => t.classList.remove('active'));
-    contents.forEach(c => c.classList.remove('active'));
-    tab.classList.add('active');
-    document.getElementById(tab.dataset.tab).classList.add('active');
-  });
-});
-
-function showModal(message){
-  document.getElementById('modalMessage').innerText = message;
-  document.getElementById('modalOverlay').style.display = 'flex';
-}
-function closeModal(){ document.getElementById('modalOverlay').style.display='none'; }
-
-function toggleAuthForms(form){
-  document.getElementById('loginForm').style.display = (form==='login')?'block':'none';
-  document.getElementById('registerForm').style.display = (form==='register')?'block':'none';
-  document.getElementById('forgotPasswordForm').style.display = (form==='forgot')?'block':'none';
-}
-function showForgotPassword(){ toggleAuthForms('forgot'); }
 
 function registerUser(){
   const name = document.getElementById('regName').value.trim();
   const email = document.getElementById('regEmail').value.trim();
   const password = document.getElementById('regPassword').value;
   if(!name||!email||!password) return showModal('Preencha todos os campos.');
+  
   const users = JSON.parse(localStorage.getItem('users'))||[];
   if(users.some(u=>u.email===email)) return showModal('Email já cadastrado.');
-  users.push({name,email,password});
+
+  const newUser = {name,email,password};
+  users.push(newUser);
   localStorage.setItem('users',JSON.stringify(users));
+
+  // já cria o perfil com as infos
+  localStorage.setItem('userProfile', JSON.stringify({
+    nome: name,
+    email: email,
+    bio: "",
+    foto: ""
+  }));
+
   showModal('Conta criada com sucesso!');
   toggleAuthForms('login');
-}
 
+  // pré-preenche os campos do login
+  document.getElementById('loginEmail').value = email;
+};
+
+// --- LOGIN ---
 function loginUser(){
   const email = document.getElementById('loginEmail').value.trim();
   const password = document.getElementById('loginPassword').value;
   const users = JSON.parse(localStorage.getItem('users'))||[];
-  const user = users.find(u=>u.email===email&&u.password===password);
+  const user = users.find(u=>u.email===email && u.password===password);
   if(!user) return showModal('Email ou senha incorretos.');
+  
   localStorage.setItem('loggedUser',email);
+
+  // Se não existir perfil ainda, cria baseado nos dados do login
+  if(!localStorage.getItem('userProfile')){
+    localStorage.setItem('userProfile', JSON.stringify({
+      nome: user.name,
+      email: user.email,
+      bio: "",
+      foto: ""
+    }));
+  }
+
   showProfile();
   showModal('Login realizado com sucesso!');
 }
 
-function logoutUser(){
-  localStorage.removeItem('loggedUser');
-  document.getElementById('profileSection').style.display='none';
-  document.getElementById('authSection').style.display='block';
-  showModal('Você saiu da conta.');
-}
-
-function resetPassword(){
-  const email = document.getElementById('forgotEmail').value.trim();
-  const users = JSON.parse(localStorage.getItem('users'))||[];
-  const userIndex = users.findIndex(u=>u.email===email);
-  if(userIndex===-1) return showModal('Email não encontrado.');
-  const newPass = Math.random().toString(36).slice(-8);
-  users[userIndex].password=newPass;
-  localStorage.setItem('users',JSON.stringify(users));
-  showModal(`Nova senha gerada: ${newPass}`);
-  toggleAuthForms('login');
-}
-
-// PERFIL
+// --- PERFIL ---
 const profilePic = document.getElementById('profilePic');
 const profileUpload = document.getElementById('profileUpload');
 
-// Upload de foto
 profileUpload.addEventListener('change',function(){
   const file=this.files[0];
   if(file){
@@ -239,54 +224,48 @@ profileUpload.addEventListener('change',function(){
   }
 });
 
-// Mostrar perfil
+// salvar perfil
+function saveUser(){
+  const nome = document.getElementById('userName').value.trim();
+  const email = document.getElementById('userEmail').value.trim();
+  const bio = document.getElementById('userBio').value.trim();
+  const foto = profilePic.src;
+
+  if(!nome || !email) return showModal('Nome e email são obrigatórios!');
+
+  const profileData = {nome,email,bio,foto};
+  localStorage.setItem('userProfile', JSON.stringify(profileData));
+  showModal('Perfil salvo com sucesso!');
+}
+
+// mostrar perfil
 function showProfile(){
   const email = localStorage.getItem('loggedUser');
   if(!email) return;
+
   document.getElementById('authSection').style.display='none';
   document.getElementById('profileSection').style.display='block';
 
-  const savedUser = JSON.parse(localStorage.getItem('userProfile'));
-  if(savedUser){
-    document.getElementById('userName').value = savedUser.nome || '';
-    document.getElementById('userEmail').value = savedUser.email || email;
-    document.getElementById('userBio').value = savedUser.bio || '';
-    profilePic.src = savedUser.foto || 'https://via.placeholder.com/100';
-  }
+  const savedUser = JSON.parse(localStorage.getItem('userProfile')) || {};
+  document.getElementById('userName').value = savedUser.nome || '';
+  document.getElementById('userEmail').value = savedUser.email || email;
+  document.getElementById('userBio').value = savedUser.bio || '';
+  profilePic.src = savedUser.foto || 'https://via.placeholder.com/100';
 
-  carregarAgendamento(); // sempre atualiza
+  carregarAgendamento();
 }
+
+// logout
+function logoutUser(){
+  localStorage.removeItem('loggedUser');
+  document.getElementById('profileSection').style.display='none';
+  document.getElementById('authSection').style.display='block';
+  showModal('Você saiu da conta.');
+}
+
 
 // SALVAR AGENDAMENTO COM BACKEND
-async function salvarAgendamento() {
-  const nome = document.getElementById('userName').value.trim();
-  const servico = document.getElementById('servico').value.trim();
-  const barbeiro = document.getElementById('barbeiro').value.trim();
-  const dia = document.getElementById('dia').value;
-  const horario = document.getElementById('horario').value;
-  const pagamento = document.getElementById('pagamento').value;
-
-  if(!nome || !servico || !barbeiro || !dia || !horario) return showModal("Preencha todos os campos!");
-
-  try {
-    const response = await fetch("/api/agendamentos", {
-      method: "POST",
-      headers: {"Content-Type":"application/json"},
-      body: JSON.stringify({nome, servico, barbeiro, dia, horario, forma_pagamento: pagamento})
-    });
-    if(!response.ok){
-      const err = await response.json();
-      return showModal(err.error || "Erro ao salvar agendamento");
-    }
-    showModal("Agendamento salvo com sucesso!");
-    carregarAgendamento();
-  } catch(err){
-    console.error(err);
-    showModal("Erro ao salvar agendamento");
-  }
-}
-
-// Carregar agendamento do backend e mostrar no perfil
+// Carregar agendamentos do backend + salvar no localStorage
 async function carregarAgendamento() {
   const email = localStorage.getItem("loggedUser");
   if (!email) return;
@@ -296,12 +275,20 @@ async function carregarAgendamento() {
     if (!response.ok) throw new Error("Erro ao buscar agendamentos");
 
     const agendamentos = await response.json();
-    const nome = document.getElementById('userName').value.trim();
-    const agendamento = agendamentos.find(a => a.nome === nome);
+    
+    // Filtra apenas os agendamentos do usuário logado
+    const userAgendamentos = agendamentos.filter(a => a.email === email);
 
+    // Salva no perfil do usuário
+    let perfil = JSON.parse(localStorage.getItem("userProfile")) || {};
+    perfil.agendamentos = userAgendamentos;
+    localStorage.setItem("userProfile", JSON.stringify(perfil));
+
+    // Limpa container antigo
     const containerAntigo = document.getElementById("meuAgendamento");
     if (containerAntigo) containerAntigo.remove();
 
+    // Cria container
     const container = document.createElement("div");
     container.id = "meuAgendamento";
     container.style.cssText = `
@@ -315,48 +302,57 @@ async function carregarAgendamento() {
       box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     `;
 
-    if (!agendamento) {
+    if (!userAgendamentos.length) {
       container.innerHTML = `
-        <h3 style="color:#a9714f;margin-bottom:10px;">📅 Meu Agendamento</h3>
+        <h3 style="color:#a9714f;margin-bottom:10px;">📅 Meus Agendamentos</h3>
         <p style="color:#8b5e3c;">Você ainda não possui nenhum agendamento ativo.</p>
       `;
-      document.getElementById("agendamentoContainer").appendChild(container);
-      return;
+    } else {
+      let htmlAgendamentos = '<h3 style="color:#a9714f;margin-bottom:10px;">📅 Meus Agendamentos</h3>';
+      userAgendamentos.forEach((ag, i) => {
+        htmlAgendamentos += `
+          <div style="border-top:1px solid #d1bfa7; padding-top:10px; margin-top:10px;">
+            <p><strong>Serviço:</strong> ${ag.servico}</p>
+            <p><strong>Barbeiro:</strong> ${ag.barbeiro}</p>
+            <p><strong>Dia:</strong> ${ag.dia}</p>
+            <p><strong>Horário:</strong> ${ag.horario}</p>
+            <p><strong>Pagamento:</strong> ${ag.pagamento || "Não informado"}</p>
+            <div style="margin-top:10px;">
+              <button class="btnAlterar" data-index="${i}" style="background:#a9714f;margin-top:5px;">Alterar via WhatsApp</button>
+              <button class="btnCancelar" data-index="${i}" style="background:#b34747;margin-top:5px;">Cancelar via WhatsApp</button>
+            </div>
+          </div>
+        `;
+      });
+      container.innerHTML = htmlAgendamentos;
     }
-
-    container.innerHTML = `
-      <h3 style="color:#a9714f;margin-bottom:10px;">📅 Meu Agendamento</h3>
-      <p><strong>Serviço:</strong> ${agendamento.servico}</p>
-      <p><strong>Barbeiro:</strong> ${agendamento.barbeiro}</p>
-      <p><strong>Dia:</strong> ${agendamento.dia}</p>
-      <p><strong>Horário:</strong> ${agendamento.horario}</p>
-      <p><strong>Forma de pagamento:</strong> ${agendamento.pagamento || "Não informado"}</p>
-      <div style="margin-top:15px;">
-        <button id="btnAlterar" class="save-btn" style="background:#a9714f;margin-top:5px;">Alterar Horário via WhatsApp</button>
-        <button id="btnCancelar" class="save-btn" style="background:#b34747;margin-top:10px;">Cancelar Agendamento via WhatsApp</button>
-      </div>
-    `;
 
     document.getElementById("agendamentoContainer").appendChild(container);
 
     const numeroWhats = "5541999016634";
 
-    // Botão alterar
-    document.getElementById("btnAlterar").onclick = () => {
-      const msg = encodeURIComponent(`Olá! Gostaria de *alterar o horário* do meu agendamento de ${agendamento.servico} com ${agendamento.barbeiro} no dia ${agendamento.dia} às ${agendamento.horario}.`);
-      window.open(`https://wa.me/${numeroWhats}?text=${msg}`, "_blank");
-    };
+    // adiciona os eventos nos botões dinamicamente
+    document.querySelectorAll(".btnAlterar").forEach(btn => {
+      btn.onclick = () => {
+        const ag = userAgendamentos[btn.dataset.index];
+        const msg = encodeURIComponent(`Olá! Gostaria de *alterar o horário* do meu agendamento de ${ag.servico} com ${ag.barbeiro} no dia ${ag.dia} às ${ag.horario}.`);
+        window.open(`https://wa.me/${numeroWhats}?text=${msg}`, "_blank");
+      };
+    });
 
-    // Botão cancelar
-    document.getElementById("btnCancelar").onclick = () => {
-      const msg = encodeURIComponent(`Olá! Gostaria de *cancelar* meu agendamento de ${agendamento.servico} com ${agendamento.barbeiro} no dia ${agendamento.dia} às ${agendamento.horario}.`);
-      window.open(`https://wa.me/${numeroWhats}?text=${msg}`, "_blank");
-    };
+    document.querySelectorAll(".btnCancelar").forEach(btn => {
+      btn.onclick = () => {
+        const ag = userAgendamentos[btn.dataset.index];
+        const msg = encodeURIComponent(`Olá! Gostaria de *cancelar* meu agendamento de ${ag.servico} com ${ag.barbeiro} no dia ${ag.dia} às ${ag.horario}.`);
+        window.open(`https://wa.me/${numeroWhats}?text=${msg}`, "_blank");
+      };
+    });
 
   } catch (err) {
     console.error(err);
   }
 }
+
 
 window.addEventListener('DOMContentLoaded', () => {
   const logged = localStorage.getItem('loggedUser');
