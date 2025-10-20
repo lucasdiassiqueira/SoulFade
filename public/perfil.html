@@ -8,82 +8,77 @@
 <link rel="icon" type="image/png" href="favicon-removebg-preview.png" />
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: 'Roboto', sans-serif;
-  background: #f5f0eb;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  color: #4b3a2b;
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Roboto',sans-serif;
+  background:#f5f0eb;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+  color:#4b3a2b;
 }
-.dashboard {
-  background: #fff8f2;
-  width: 420px;
-  border-radius: 20px;
-  box-shadow: 0 12px 35px rgba(0,0,0,0.15);
-  overflow: hidden;
-  transition: all 0.3s ease;
-  padding-bottom: 10px;
+.dashboard{
+  background:#fff8f2;
+  width:420px;
+  border-radius:20px;
+  box-shadow:0 12px 35px rgba(0,0,0,0.15);
+  overflow:hidden;
+  transition:all 0.3s ease;
+  padding-bottom:10px;
 }
-h2 { text-align: center; color: #a9714f; margin-bottom: 15px; }
-.tabs { display: flex; background: #a9714f; border-bottom: 2px solid #8b5e3c; }
-.tab { flex: 1; text-align: center; padding: 14px 0; color: #fff; font-weight: 500; cursor: pointer; transition: background 0.3s ease; }
-.tab.active { background: #8b5e3c; }
-.tab-content { padding: 25px; display: none; }
-.tab-content.active { display: block; }
+h2{text-align:center;color:#a9714f;margin-bottom:15px;}
+.tabs{display:flex;background:#a9714f;border-bottom:2px solid #8b5e3c;}
+.tab{flex:1;text-align:center;padding:14px 0;color:#fff;font-weight:500;cursor:pointer;transition:background 0.3s ease;}
+.tab.active{background:#8b5e3c;}
+.tab-content{padding:25px;display:none;}
+.tab-content.active{display:block;}
 
-/* LOGIN / REGISTER */
-.auth-container { text-align: center; padding: 30px 25px; }
-.auth-container input {
-  width: 100%; padding: 12px; margin: 10px 0;
-  border-radius: 10px; border: 1px solid #d1bfa7; background: #fff5f0;
+.auth-container{text-align:center;padding:30px 25px;}
+.auth-container input{
+  width:100%;padding:12px;margin:10px 0;
+  border-radius:10px;border:1px solid #d1bfa7;background:#fff5f0;
 }
-.auth-container button {
-  background: #a9714f; color: #fff; padding: 12px; border: none; border-radius: 10px;
-  width: 100%; margin-top: 10px; font-size: 15px; cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
+.auth-container button{
+  background:#a9714f;color:#fff;padding:12px;border:none;border-radius:10px;
+  width:100%;margin-top:10px;font-size:15px;cursor:pointer;
+  transition:background 0.3s ease,transform 0.2s ease;
 }
-.auth-container button:hover { background: #8b5e3c; transform: translateY(-2px); }
-.auth-container a { color: #a9714f; font-weight: 500; cursor: pointer; display: block; margin-top: 10px; }
+.auth-container button:hover{background:#8b5e3c;transform:translateY(-2px);}
+.auth-container a{color:#a9714f;font-weight:500;cursor:pointer;display:block;margin-top:10px;}
 
-/* PROFILE */
-.profile-wrapper { position: relative; width: 110px; aspect-ratio: 1/1; margin: 0 auto 20px auto; cursor: pointer; }
-.profile-pic { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid #a9714f; transition: transform 0.3s ease, box-shadow 0.3s ease; }
-.profile-wrapper:hover .profile-pic { transform: scale(1.1); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-.edit-icon { position: absolute; bottom: 0; right: 0; background: #a9714f; color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 14px; border: 2px solid #fff8f2; transition: background 0.3s ease; }
-.edit-icon:hover { background: #8b5e3c; }
-input[type="file"] { display: none; }
+.profile-wrapper{position:relative;width:110px;aspect-ratio:1/1;margin:0 auto 20px auto;cursor:pointer;}
+.profile-pic{width:100%;height:100%;border-radius:50%;object-fit:cover;border:4px solid #a9714f;transition:transform 0.3s ease,box-shadow 0.3s ease;}
+.profile-wrapper:hover .profile-pic{transform:scale(1.1);box-shadow:0 4px 15px rgba(0,0,0,0.2);}
+.edit-icon{position:absolute;bottom:0;right:0;background:#a9714f;color:#fff;width:28px;height:28px;border-radius:50%;display:flex;justify-content:center;align-items:center;font-size:14px;border:2px solid #fff8f2;transition:background 0.3s ease;}
+.edit-icon:hover{background:#8b5e3c;}
+input[type="file"]{display:none;}
 
-input[type="text"], input[type="email"], textarea, select {
-  width: 100%; padding: 12px 14px; margin: 10px 0; border-radius: 10px; border: 1px solid #d1bfa7;
-  font-size: 15px; background: #fff5f0; color: #4b3a2b;
+input[type="text"],input[type="email"],textarea{
+  width:100%;padding:12px 14px;margin:10px 0;border-radius:10px;border:1px solid #d1bfa7;
+  font-size:15px;background:#fff5f0;color:#4b3a2b;
 }
-textarea { resize: none; height: 90px; }
-label { display: block; margin-top: 15px; font-weight: 500; color: #5a422b; font-size: 14px; }
+textarea{resize:none;height:90px;}
+label{display:block;margin-top:15px;font-weight:500;color:#5a422b;font-size:14px;}
 
-.save-btn {
-  background: #a9714f; color: #fff; padding: 14px 0; border: none; border-radius: 12px;
-  font-size: 16px; cursor: pointer; width: 100%; margin-top: 20px; transition: background 0.3s ease, transform 0.2s ease; font-weight: 500;
+.save-btn{
+  background:#a9714f;color:#fff;padding:14px 0;border:none;border-radius:12px;
+  font-size:16px;cursor:pointer;width:100%;margin-top:20px;
+  transition:background 0.3s ease,transform 0.2s ease;font-weight:500;
 }
-.save-btn:hover { background: #8b5e3c; transform: translateY(-2px); }
-
-.logout-btn { background: transparent; border: none; color: #a9714f; margin-top: 15px; cursor: pointer; text-decoration: underline; font-weight: 500; }
-
-/* AGENDAMENTO */
-#agendamentoContainer { margin-top: 20px; }
+.save-btn:hover{background:#8b5e3c;transform:translateY(-2px);}
+.logout-btn{background:transparent;border:none;color:#a9714f;margin-top:15px;cursor:pointer;text-decoration:underline;font-weight:500;}
 
 /* MODAL */
-.modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); display:none; justify-content:center; align-items:center; z-index:9999; }
-.modal { background:#fff8f2; padding:30px 25px; border-radius:15px; width:320px; text-align:center; box-shadow:0 6px 25px rgba(0,0,0,0.25); animation: fadeIn 0.3s ease forwards; }
-.modal i { font-size:40px; color:#a9714f; margin-bottom:15px; }
-.modal p { font-size:16px; color:#4b3a2b; margin-bottom:20px; }
-.modal button { background:#a9714f; color:#fff; border:none; padding:10px 30px; border-radius:10px; cursor:pointer; font-weight:500; transition: background 0.3s ease; }
-.modal button:hover { background:#8b5e3c; }
+.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:none;justify-content:center;align-items:center;z-index:9999;}
+.modal{background:#fff8f2;padding:30px 25px;border-radius:15px;width:320px;text-align:center;box-shadow:0 6px 25px rgba(0,0,0,0.25);animation:fadeIn 0.3s ease forwards;}
+.modal i{font-size:40px;color:#a9714f;margin-bottom:15px;}
+.modal p{font-size:16px;color:#4b3a2b;margin-bottom:20px;}
+.modal button{background:#a9714f;color:#fff;border:none;padding:10px 30px;border-radius:10px;cursor:pointer;font-weight:500;transition:background 0.3s ease;}
+.modal button:hover{background:#8b5e3c;}
 
-@keyframes fadeIn { from { transform: scale(0.9); opacity:0; } to { transform: scale(1); opacity:1; } }
-@media(max-width:480px){ .dashboard{width:90%;} }
+@keyframes fadeIn{from{transform:scale(0.9);opacity:0;}to{transform:scale(1);opacity:1;}}
+@media(max-width:480px){.dashboard{width:90%;}}
 </style>
 </head>
 <body>
@@ -105,8 +100,8 @@ label { display: block; margin-top: 15px; font-weight: 500; color: #5a422b; font
     <input type="password" id="loginPassword" placeholder="Senha" required>
     <button onclick="loginUser()">Entrar</button>
     <a onclick="toggleAuthForms('register')">Criar nova conta</a>
-    <a onclick="showForgotPassword()">Esqueceu a senha?</a>
   </div>
+
   <div class="auth-container" id="registerForm" style="display:none;">
     <h2>Criar Conta</h2>
     <input type="text" id="regName" placeholder="Nome completo" required>
@@ -115,161 +110,129 @@ label { display: block; margin-top: 15px; font-weight: 500; color: #5a422b; font
     <button onclick="registerUser()">Registrar</button>
     <a onclick="toggleAuthForms('login')">Já tem uma conta? Entrar</a>
   </div>
-  <div class="auth-container" id="forgotPasswordForm" style="display:none;">
-    <h2>Redefinir Senha</h2>
-    <input type="email" id="forgotEmail" placeholder="Digite seu email">
-    <button onclick="resetPassword()">Enviar nova senha</button>
-    <a onclick="toggleAuthForms('login')">Voltar ao login</a>
-  </div>
 </div>
 
 <!-- PERFIL -->
 <div class="dashboard" id="profileSection" style="display:none;">
   <div class="tabs">
     <div class="tab active" data-tab="profile">Perfil</div>
-    <div class="tab" data-tab="settings">Configurações</div>
+    <div class="tab" data-tab="appointments">Agendamentos</div>
   </div>
 
-  <!-- CONTEÚDO DA ABA PERFIL -->
+  <!-- PERFIL -->
   <div class="tab-content active" id="profile">
-    <label for="profileUpload" class="profile-label">
+    <label for="profileUpload">
       <div class="profile-wrapper">
-        <img src="https://via.placeholder.com/100" alt="Foto de Perfil" class="profile-pic" id="profilePic">
+        <img src="https://via.placeholder.com/100" class="profile-pic" id="profilePic">
         <div class="edit-icon"><i class="fas fa-pencil-alt"></i></div>
       </div>
     </label>
     <input type="file" id="profileUpload" accept="image/*">
-
     <input type="text" id="userName" placeholder="Nome do usuário">
     <input type="email" id="userEmail" placeholder="Email">
     <textarea id="userBio" placeholder="Sobre você..."></textarea>
-
     <button class="save-btn" onclick="saveUser()">Salvar</button>
     <button class="logout-btn" onclick="logoutUser()">Sair</button>
-
-    <!-- Container do Agendamento -->
-    <div id="agendamentoContainer"></div>
   </div>
 
-  <!-- CONTEÚDO DA ABA CONFIGURAÇÕES -->
-  <div class="tab-content" id="settings">
-    <label><input type="checkbox" id="notifEmail"> Receber notificações por email</label>
-    <label><input type="checkbox" id="notifApp"> Receber notificações no app</label>
-    <button class="save-btn" onclick="saveSettings()">Salvar Configurações</button>
+  <!-- AGENDAMENTOS -->
+  <div class="tab-content" id="appointments">
+    <div id="agendamentoContainer" style="margin-top:15px;"></div>
   </div>
 </div>
 
 <script>
+function toggleAuthForms(show){
+  document.getElementById("loginForm").style.display = show === "login" ? "block" : "none";
+  document.getElementById("registerForm").style.display = show === "register" ? "block" : "none";
+}
 
+// MODAL
+function showModal(msg){
+  document.getElementById("modalMessage").textContent = msg;
+  document.getElementById("modalOverlay").style.display = "flex";
+}
+function closeModal(){ document.getElementById("modalOverlay").style.display = "none"; }
+
+// REGISTRO
 function registerUser(){
-  const name = document.getElementById('regName').value.trim();
-  const email = document.getElementById('regEmail').value.trim();
-  const password = document.getElementById('regPassword').value;
-  if(!name||!email||!password) return showModal('Preencha todos os campos.');
-  
-  const users = JSON.parse(localStorage.getItem('users'))||[];
-  if(users.some(u=>u.email===email)) return showModal('Email já cadastrado.');
+  const name=document.getElementById('regName').value.trim();
+  const email=document.getElementById('regEmail').value.trim();
+  const password=document.getElementById('regPassword').value;
+  if(!name||!email||!password)return showModal('Preencha todos os campos.');
 
-  const newUser = {name,email,password};
-  users.push(newUser);
+  const users=JSON.parse(localStorage.getItem('users'))||[];
+  if(users.some(u=>u.email===email))return showModal('Email já cadastrado.');
+
+  users.push({name,email,password});
   localStorage.setItem('users',JSON.stringify(users));
 
-  // já cria o perfil com as infos
-  localStorage.setItem('userProfile', JSON.stringify({
-    nome: name,
-    email: email,
-    bio: "",
-    foto: ""
-  }));
+  localStorage.setItem('userProfile',JSON.stringify({nome:name,email,bio:"",foto:""}));
 
   showModal('Conta criada com sucesso!');
   toggleAuthForms('login');
+  document.getElementById('loginEmail').value=email;
+}
 
-  // pré-preenche os campos do login
-  document.getElementById('loginEmail').value = email;
-};
-
-// --- LOGIN ---
+// LOGIN
 function loginUser(){
-  const email = document.getElementById('loginEmail').value.trim();
-  const password = document.getElementById('loginPassword').value;
-  const users = JSON.parse(localStorage.getItem('users'))||[];
-  const user = users.find(u=>u.email===email && u.password===password);
-  if(!user) return showModal('Email ou senha incorretos.');
-  
+  const email=document.getElementById('loginEmail').value.trim();
+  const password=document.getElementById('loginPassword').value;
+  const users=JSON.parse(localStorage.getItem('users'))||[];
+  const user=users.find(u=>u.email===email&&u.password===password);
+  if(!user)return showModal('Email ou senha incorretos.');
+
   localStorage.setItem('loggedUser',email);
-
-  // Se não existir perfil ainda, cria baseado nos dados do login
   if(!localStorage.getItem('userProfile')){
-    localStorage.setItem('userProfile', JSON.stringify({
-      nome: user.name,
-      email: user.email,
-      bio: "",
-      foto: ""
-    }));
+    localStorage.setItem('userProfile',JSON.stringify({nome:user.name,email:user.email,bio:"",foto:""}));
   }
-
   showProfile();
   showModal('Login realizado com sucesso!');
 }
 
-// --- PERFIL ---
-const profilePic = document.getElementById('profilePic');
-const profileUpload = document.getElementById('profileUpload');
-
-profileUpload.addEventListener('change',function(){
+// PERFIL
+const profilePic=document.getElementById('profilePic');
+document.getElementById('profileUpload').addEventListener('change',function(){
   const file=this.files[0];
   if(file){
-    const reader = new FileReader();
-    reader.onload=function(e){ profilePic.src=e.target.result; }
+    const reader=new FileReader();
+    reader.onload=e=>profilePic.src=e.target.result;
     reader.readAsDataURL(file);
   }
 });
 
-// TROCAR DE ABA (Perfil / Configurações)
-document.querySelectorAll('.tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+document.querySelectorAll('.tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
     tab.classList.add('active');
-
-    document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
-    const target = tab.dataset.tab;
-    document.getElementById(target).classList.add('active');
+    document.querySelectorAll('.tab-content').forEach(tc=>tc.classList.remove('active'));
+    document.getElementById(tab.dataset.tab).classList.add('active');
   });
 });
 
-// SALVAR PERFIL
 function saveUser(){
-  const nome = document.getElementById('userName').value.trim();
-  const email = document.getElementById('userEmail').value.trim();
-  const bio = document.getElementById('userBio').value.trim();
-  const foto = profilePic.src;
-
-  if(!nome || !email) return showModal('Nome e email são obrigatórios!');
-
-  const profileData = {nome,email,bio,foto};
-  localStorage.setItem('userProfile', JSON.stringify(profileData));
+  const nome=document.getElementById('userName').value.trim();
+  const email=document.getElementById('userEmail').value.trim();
+  const bio=document.getElementById('userBio').value.trim();
+  const foto=profilePic.src;
+  if(!nome||!email)return showModal('Nome e email são obrigatórios!');
+  localStorage.setItem('userProfile',JSON.stringify({nome,email,bio,foto}));
   showModal('Perfil salvo com sucesso!');
 }
 
-// MOSTRAR PERFIL
 function showProfile(){
-  const email = localStorage.getItem('loggedUser');
-  if(!email) return;
-
+  const email=localStorage.getItem('loggedUser');
+  if(!email)return;
   document.getElementById('authSection').style.display='none';
   document.getElementById('profileSection').style.display='block';
-
-  const savedUser = JSON.parse(localStorage.getItem('userProfile')) || {};
-  document.getElementById('userName').value = savedUser.nome || '';
-  document.getElementById('userEmail').value = savedUser.email || email;
-  document.getElementById('userBio').value = savedUser.bio || '';
-  profilePic.src = savedUser.foto || 'https://via.placeholder.com/100';
-
+  const p=JSON.parse(localStorage.getItem('userProfile'))||{};
+  document.getElementById('userName').value=p.nome||'';
+  document.getElementById('userEmail').value=p.email||email;
+  document.getElementById('userBio').value=p.bio||'';
+  profilePic.src=p.foto||'https://via.placeholder.com/100';
   carregarAgendamento();
 }
 
-// LOGOUT
 function logoutUser(){
   localStorage.removeItem('loggedUser');
   document.getElementById('profileSection').style.display='none';
@@ -277,101 +240,46 @@ function logoutUser(){
   showModal('Você saiu da conta.');
 }
 
-// SALVAR CONFIGURAÇÕES (simples exemplo)
-function saveSettings(){
-  const emailNotif = document.getElementById('notifEmail').checked;
-  const appNotif = document.getElementById('notifApp').checked;
-  const settings = {emailNotif, appNotif};
-  localStorage.setItem('userSettings', JSON.stringify(settings));
-  showModal('Configurações salvas!');
-}
+// AGENDAMENTO
+async function carregarAgendamento(){
+  const email=localStorage.getItem('loggedUser');
+  if(!email)return;
 
-// CARREGAR AGENDAMENTOS
-async function carregarAgendamento() {
-  const email = localStorage.getItem("loggedUser");
-  if (!email) return;
+  try{
+    const response=await fetch("/api/agendamentos");
+    if(!response.ok)throw new Error("Erro ao buscar agendamentos");
 
-  try {
-    const response = await fetch("/api/agendamentos");
-    if (!response.ok) throw new Error("Erro ao buscar agendamentos");
+    const agendamentos=await response.json();
+    const userAgendamentos=agendamentos.filter(a=>a.email===email);
 
-    const agendamentos = await response.json();
-    const userAgendamentos = agendamentos.filter(a => a.email === email);
+    const container=document.getElementById("agendamentoContainer");
+    container.innerHTML='<h3 style="color:#a9714f;margin-bottom:10px;">📅 Meus Agendamentos</h3>';
 
-    let perfil = JSON.parse(localStorage.getItem("userProfile")) || {};
-    perfil.agendamentos = userAgendamentos;
-    localStorage.setItem("userProfile", JSON.stringify(perfil));
-
-    const containerAntigo = document.getElementById("meuAgendamento");
-    if (containerAntigo) containerAntigo.remove();
-
-    const container = document.createElement("div");
-    container.id = "meuAgendamento";
-    container.style.cssText = `
-      margin-top: 25px;
-      background: #fff5f0;
-      border: 1px solid #d1bfa7;
-      border-radius: 12px;
-      padding: 15px;
-      color: #4b3a2b;
-      text-align: center;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    `;
-
-    if (!userAgendamentos.length) {
-      container.innerHTML = `
-        <h3 style="color:#a9714f;margin-bottom:10px;">📅 Meus Agendamentos</h3>
-        <p style="color:#8b5e3c;">Você ainda não possui nenhum agendamento ativo.</p>
-      `;
-    } else {
-      let htmlAgendamentos = '<h3 style="color:#a9714f;margin-bottom:10px;">📅 Meus Agendamentos</h3>';
-      userAgendamentos.forEach((ag, i) => {
-        htmlAgendamentos += `
-          <div style="border-top:1px solid #d1bfa7; padding-top:10px; margin-top:10px;">
-            <p><strong>Serviço:</strong> ${ag.servico}</p>
-            <p><strong>Barbeiro:</strong> ${ag.barbeiro}</p>
-            <p><strong>Dia:</strong> ${ag.dia}</p>
-            <p><strong>Horário:</strong> ${ag.horario}</p>
-            <p><strong>Pagamento:</strong> ${ag.pagamento || "Não informado"}</p>
-            <div style="margin-top:10px;">
-              <button class="btnAlterar" data-index="${i}" style="background:#a9714f;margin-top:5px;">Alterar via WhatsApp</button>
-              <button class="btnCancelar" data-index="${i}" style="background:#b34747;margin-top:5px;">Cancelar via WhatsApp</button>
-            </div>
-          </div>
-        `;
-      });
-      container.innerHTML = htmlAgendamentos;
+    if(!userAgendamentos.length){
+      container.innerHTML+='<p style="color:#8b5e3c;">Você ainda não possui agendamentos ativos.</p>';
+      return;
     }
 
-    document.getElementById("agendamentoContainer").appendChild(container);
-
-    const numeroWhats = "5541999016634";
-
-    document.querySelectorAll(".btnAlterar").forEach(btn => {
-      btn.onclick = () => {
-        const ag = userAgendamentos[btn.dataset.index];
-        const msg = encodeURIComponent(`Olá! Gostaria de *alterar o horário* do meu agendamento de ${ag.servico} com ${ag.barbeiro} no dia ${ag.dia} às ${ag.horario}.`);
-        window.open(`https://wa.me/${numeroWhats}?text=${msg}`, "_blank");
-      };
+    const numeroWhats="5541999016634";
+    userAgendamentos.forEach((ag,i)=>{
+      container.innerHTML+=`
+        <div style="background:#fff5f0;border:1px solid #d1bfa7;border-radius:12px;padding:12px;margin-top:10px;">
+          <p><strong>Serviço:</strong> ${ag.servico}</p>
+          <p><strong>Barbeiro:</strong> ${ag.barbeiro}</p>
+          <p><strong>Dia:</strong> ${ag.dia}</p>
+          <p><strong>Horário:</strong> ${ag.horario}</p>
+          <div style="display:flex;gap:8px;margin-top:10px;">
+            <button style="flex:1;background:#a9714f;color:#fff;border:none;border-radius:8px;padding:8px;cursor:pointer;" onclick="window.open('https://wa.me/${numeroWhats}?text=${encodeURIComponent('Olá! Gostaria de alterar o horário do meu agendamento de '+ag.servico+' com '+ag.barbeiro+' no dia '+ag.dia+' às '+ag.horario+'.')}','_blank')">Alterar horário</button>
+            <button style="flex:1;background:#b34747;color:#fff;border:none;border-radius:8px;padding:8px;cursor:pointer;" onclick="window.open('https://wa.me/${numeroWhats}?text=${encodeURIComponent('Olá! Gostaria de cancelar meu agendamento de '+ag.servico+' com '+ag.barbeiro+' no dia '+ag.dia+' às '+ag.horario+'.')}','_blank')">Cancelar</button>
+          </div>
+        </div>`;
     });
-
-    document.querySelectorAll(".btnCancelar").forEach(btn => {
-      btn.onclick = () => {
-        const ag = userAgendamentos[btn.dataset.index];
-        const msg = encodeURIComponent(`Olá! Gostaria de *cancelar* meu agendamento de ${ag.servico} com ${ag.barbeiro} no dia ${ag.dia} às ${ag.horario}.`);
-        window.open(`https://wa.me/${numeroWhats}?text=${msg}`, "_blank");
-      };
-    });
-
-  } catch (err) {
-    console.error(err);
-  }
+  }catch(err){console.error(err);}
 }
 
-// INICIALIZAÇÃO AO CARREGAR
-window.addEventListener('DOMContentLoaded', () => {
-  const logged = localStorage.getItem('loggedUser');
-  if (logged) showProfile();
+window.addEventListener('DOMContentLoaded',()=>{
+  const logged=localStorage.getItem('loggedUser');
+  if(logged)showProfile();
 });
 </script>
 </body>
