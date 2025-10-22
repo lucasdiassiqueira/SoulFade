@@ -86,6 +86,43 @@ label{display:block;margin-top:15px;font-weight:500;color:#5a422b;font-size:14px
 
 @keyframes fadeIn{from{transform:scale(0.9);opacity:0;}to{transform:scale(1);opacity:1;}}
 @media(max-width:480px){.dashboard{width:90%;}}
+
+/* BOTÕES DE AGENDAMENTO */
+.botoes {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.botoes button {
+  flex: 1;
+  padding: 12px 0;
+  border: none;
+  border-radius: 10px;
+  background: #a9714f;
+  color: #fff;
+  font-weight: 500;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.botoes button:hover {
+  background: #8b5e3c;
+  transform: translateY(-2px);
+}
+
+
+.botoes button.cancelar {
+  background: #b34747;
+}
+
+.botoes button.cancelar:hover {
+  background: #993939;
+}
+
 </style>
 </head>
 <body>
@@ -176,7 +213,7 @@ label{display:block;margin-top:15px;font-weight:500;color:#5a422b;font-size:14px
     <div id="agendamentoContainer" style="margin-top:15px;">
       <div class="botoes">
         <button onclick="abrirModalAlterar()">Alterar horário/dia</button>
-        <button style="background:#b34747" onclick="abrirModalCancelar()">Cancelar</button>
+        <button class="cancelar" onclick="abrirModalCancelar()">Cancelar</button>
       </div>
     </div>
   </div>
